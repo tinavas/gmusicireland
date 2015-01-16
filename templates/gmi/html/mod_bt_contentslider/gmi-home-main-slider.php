@@ -57,10 +57,12 @@ if(count($list)>0){?>
 							<i class="<?php
 								$cat_title = $item->category_title;
 								switch ($cat_title) {
-									case "Artists" : echo "fa fa-users"; break;
 									case "News" : echo "fa fa-newspaper-o"; break;
-									case "Shows" : echo "fa fa-video-camera fa-3x"; break;
 									case "Videos" : echo "fa fa-play-circle"; break;
+									case "Shows" : echo "fa fa-video-camera fa-3x"; break;
+									case "Artists" : echo "fa fa-users"; break;
+									case "Music" : echo "fa fa-music"; break;
+									case "Movies" : echo "fa fa-film"; break;
 								}
 								?>">
 							</i>

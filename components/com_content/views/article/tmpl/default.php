@@ -46,8 +46,32 @@ if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->
 		<h2 itemprop="name">
 			<?php if ($params->get('show_title')) : ?>
 				<?php if ($params->get('link_titles') && !empty($this->item->readmore_link)) : ?>
-					<a href="<?php echo $this->item->readmore_link; ?>" itemprop="url"> <?php echo $this->escape($this->item->title); ?></a>
+					<a class="blog_link-title" href="<?php echo $this->item->readmore_link; ?>" itemprop="url">
+						<i class="<?php
+							$cat_title = $this->escape($this->item->category_title);
+							switch ($cat_title) {
+								case "News" : echo "fa fa-newspaper-o"; break;
+								case "Videos" : echo "fa fa-play-circle"; break;
+								case "Shows" : echo "fa fa-video-camera"; break;
+								case "Artists" : echo "fa fa-users"; break;
+								case "Music" : echo "fa fa-music"; break;
+								case "Movies" : echo "fa fa-film"; break;
+							}
+							?>">&nbsp;</i>
+						<?php echo $this->escape($this->item->title); ?>
+					</a>
 				<?php else : ?>
+					<i class="<?php
+						$cat_title = $this->escape($this->item->category_title);
+						switch ($cat_title) {
+							case "News" : echo "fa fa-newspaper-o"; break;
+							case "Videos" : echo "fa fa-play-circle"; break;
+							case "Shows" : echo "fa fa-video-camera"; break;
+							case "Artists" : echo "fa fa-users"; break;
+							case "Music" : echo "fa fa-music"; break;
+							case "Movies" : echo "fa fa-film"; break;
+						}
+						?>">&nbsp;</i>
 					<?php echo $this->escape($this->item->title); ?>
 				<?php endif; ?>
 			<?php endif; ?>

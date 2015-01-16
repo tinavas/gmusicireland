@@ -46,14 +46,15 @@ $info    = $params->get('info_block_position', 0);
 <?php if (!$params->get('show_intro')) : ?>
 	<?php echo $this->item->event->afterDisplayTitle; ?>
 <?php endif; ?>
-
-<?php echo $this->item->event->beforeDisplayContent; ?>
-	<a class="blog_link-introtext" href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid)); ?>" itemprop="url" style="display: block;">
-		<?php echo substr($this->item->introtext, 0, 117).' [...]'; ?>
-	</a>
-<?php if ($useDefList && ($info == 1 || $info == 2)) : ?>
-	<?php echo JLayoutHelper::render('joomla.content.info_block.gmi-block', array('item' => $this->item, 'params' => $params, 'position' => 'below')); ?>
-<?php  endif; ?>
+<?php if ($params->get('show_intro')) : ?>
+	<?php echo $this->item->event->beforeDisplayContent; ?>
+		<a class="blog_link-introtext" href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($this->item->slug, $this->item->catid)); ?>" itemprop="url" style="display: block;">
+			<?php echo substr($this->item->introtext, 0, 117).' [...]'; ?>
+		</a>
+	<?php if ($useDefList && ($info == 1 || $info == 2)) : ?>
+		<?php echo JLayoutHelper::render('joomla.content.info_block.gmi-block', array('item' => $this->item, 'params' => $params, 'position' => 'below')); ?>
+	<?php  endif; ?>
+<?php endif; ?>
 
 <?php if ($params->get('show_readmore') && $this->item->readmore) :
 	if ($params->get('access-view')) :

@@ -4736,7 +4736,105 @@ a.badge:focus {
 .visible-desktop {
 	display: inherit !important;
 }
+
+/* FOLLOW US */
+
+.custom_followus {
+	margin-bottom: 20px;
+}
+.counter ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    list-style: outside none none;
+}
+.counter a {
+	color: #000;
+	text-decoration: none;
+    transition: color 0.1s ease-in-out 0s;
+}
+.counter li {
+	width: 49%;
+	float: left;
+	margin: 0 1%;
+	/*border-radius: 2px;*/
+	text-align: center;
+	/*padding: 14px 0 16px;*/
+	padding: 10px 0 10px;
+	color: #FFF;
+	font-size: 12px;
+}
+.counter li .counter-logo,
+.counter li .counter-desc {
+	display: block;
+	vertical-align: middle;
+	text-align: center;
+}
+.counter li .counter-logo { /* left */
+	float: left;
+    width: 40px;
+    margin: auto 10px;
+}
+.counter li .counter-desc { /* right */
+	overflow: hidden;
+	height: 40px;	
+}
+.counter li span, .counter li small {
+	display: block;
+	line-height: 1;
+	font-size: 11px;
+	line-height: 20px;
+}
+.counter li span {
+	font-size: 16px;
+	/*padding: 0 0 4px;*/
+}
+.counter li a {
+	color: #FFF;
+}
+.counter li:first-child {
+	margin-left: 0
+}
+.counter li:last-child {
+	margin-right: 0
+}
+.counter i {
+	width: 40px;
+	height: 30px;
+	background: #CCC;
+	color: #FFF;
+	font-size: 20px;
+	border-radius: 100%;
+	text-align: center;
+	padding: 10px 0 0 0;
+	/*margin: 10px auto;*/
+	display: table;
+}
+.counter .twitter .counter-desc {border-left: 1px solid #3bafda;}
+.counter .facebook .counter-desc {border-left: 1px solid #2c5182;}
+.counter .twitter {background: #4fc0e9}
+.counter .facebook {background: #325c94}
+.counter .rss {background: #f5931f}
+.counter .twitter i {background: #3bafda}
+.counter .facebook i {background: #2c5182}
+.counter .rss i {background: #e27a2f}
+.counter .cell1 {
+	text-align: center;
+	padding: 10px 0;
+	line-height: 18px;
+	font-size: 12px;
+	display: table;
+	margin: 0 auto;
+	color: #FFF;
+}
+.counter .twitter:hover i {background: #0084B4}
+.counter .facebook:hover i {background: #4E69A2}
+
+
 @media (min-width: 768px) and (max-width: 979px) {
+	.counter li .counter-logo { 
+		margin: auto 5px;
+	}
 	.hidden-desktop {
 		display: inherit !important;
 	}
@@ -5742,7 +5840,7 @@ a.badge:focus {
 	.navbar-static .navbar-inner {
 		padding-left: 10px;
 		padding-right: 10px;
-	}
+	}	
 }
 @media (min-width: 980px) {
 	.nav-collapse.collapse {
@@ -7417,6 +7515,7 @@ figcaption {
 	.well {
 		padding: 10px;
 	}
+	
 }
 @media (min-width: 768px) and (max-width: 979px) {
 	#login-form .input-small {
@@ -8425,9 +8524,10 @@ code {
 }
 		 start - custom gmi style */
 .wgr h3 {
-	margin: 0 0 10px !important;
-	color: #E62948;
-	font-size: 2.2em;
+	color:#E62948;
+	font-size:2.2em;
+	line-height:1.2em;
+	margin: 15px 0 10px !important
 }
 		/* end - custom gmi style */
 
@@ -8598,100 +8698,6 @@ start - custom gmi style */
 	border-bottom: 2px solid #ddd;
 }
 
-
-/* FOLLOW US */
-
-.custom_followus {
-	margin-bottom: 20px;
-}
-.counter ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    list-style: outside none none;
-}
-.counter a {
-	color: #000;
-	text-decoration: none;
-    transition: color 0.1s ease-in-out 0s;
-}
-.counter li {
-	width: 49%;
-	float: left;
-	margin: 0 1%;
-	/*border-radius: 2px;*/
-	text-align: center;
-	/*padding: 14px 0 16px;*/
-	padding: 10px 0 10px;
-	color: #FFF;
-	font-size: 12px;
-}
-.counter li .counter-logo,
-.counter li .counter-desc {
-	display: block;
-	vertical-align: middle;
-	text-align: center;
-}
-.counter li .counter-logo { /* left */
-	float: left;
-    width: 40px;
-    margin: auto 10px;
-}
-.counter li .counter-desc { /* right */
-	overflow: hidden;
-	height: 40px;	
-}
-.counter li span, .counter li small {
-	display: block;
-	line-height: 1;
-	font-size: 11px;
-	line-height: 20px;
-}
-.counter li span {
-	font-size: 16px;
-	/*padding: 0 0 4px;*/
-}
-.counter li a {
-	color: #FFF;
-}
-.counter li:first-child {
-	margin-left: 0
-}
-.counter li:last-child {
-	margin-right: 0
-}
-.counter i {
-	width: 40px;
-	height: 30px;
-	background: #CCC;
-	color: #FFF;
-	font-size: 20px;
-	border-radius: 100%;
-	text-align: center;
-	padding: 10px 0 0 0;
-	/*margin: 10px auto;*/
-	display: table;
-}
-.counter .twitter .counter-desc {border-left: 1px solid #3bafda;}
-.counter .facebook .counter-desc {border-left: 1px solid #2c5182;}
-.counter .twitter {background: #4fc0e9}
-.counter .facebook {background: #325c94}
-.counter .rss {background: #f5931f}
-.counter .twitter i {background: #3bafda}
-.counter .facebook i {background: #2c5182}
-.counter .rss i {background: #e27a2f}
-.counter .cell1 {
-	text-align: center;
-	padding: 10px 0;
-	line-height: 18px;
-	font-size: 12px;
-	display: table;
-	margin: 0 auto;
-	color: #FFF;
-}
-.counter .twitter:hover i {background: #0084B4}
-.counter .facebook:hover i {background: #4E69A2}
-
 /* Article content formatting */
 dt.article-info-term {
 	display: none;
@@ -8821,19 +8827,30 @@ p.readmore a .icon-chevron-right {
 .blog .item:hover img {
 	border: 1px solid #E62948;
 }
-.blog .page-header h2 a {
+.blog .page-header h2 a,
+.item-page .page-header h2 a {
 	text-decoration: none;
 }
-.blog .page-header h2 a:hover {
+.blog .page-header h2 a:hover,
+.item-page .page-header h2 a:hover {
 	color: #333;
 	font-weight: bold;
 }
-.blog .page-header h2 a i {
+.blog .page-header h2 a i,
+.item-page .page-header h2 a i {
 	color: #333;
 	font-weight: bold;
 }
-.blog .page-header h2 a:hover i {
+.blog .page-header h2 a:hover i,
+.item-page .page-header h2 a:hover i {
 	color: #E62948;
+}
+/* If "Linked Title" option -> No */
+.item-page .page-header h2 {
+	color: #E62948;
+}
+.item-page .page-header h2 i {
+	color: #333;
 }
 
 /* ARTICLE LAYOUT - GMI CUSTOM */
@@ -8850,6 +8867,7 @@ p.readmore a .icon-chevron-right {
 .item-page div[itemprop="articleBody"] {
 	text-align: center;
 	margin: 20px auto;
+	clear: right;
 }
 .item-page div[itemprop="articleBody"] > p {
 	font-size: 1.2em;
@@ -8929,4 +8947,39 @@ p.readmore a .icon-chevron-right {
 	-webkit-border-bottom-right-radius: 0;
 	-moz-border-radius-bottomright: 0;
 	border-bottom-right-radius: 0;
+}
+
+/* BLOCK QUOTE - GMI CUSTOM */
+blockquote.gmi-quote{
+  background: #fcfcfc;
+  border-left: 10px solid #ccc;
+  margin: 1.5em 20px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+  text-align: left !important;
+}
+blockquote.gmi-quote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote.gmi-quote:after {
+  color: #ccc;
+  content: close-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-left: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote.gmi-quote p {
+  display: inline;
+  font-family: Lora, Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 28px;
+  text-align: left !important;
+  
 }

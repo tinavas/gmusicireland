@@ -21,7 +21,20 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 			<?php if ($params->get('show_title')) : ?>
 				<h2 itemprop="name">
 					<?php if ($params->get('link_titles') && $params->get('access-view')) : ?>
-						<a class="blog_link-title" href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($displayData->slug, $displayData->catid)); ?>" itemprop="url"><i class="fa fa-ellipsis-v"></i>&nbsp;<?php echo $this->escape($displayData->title); ?></a>
+						<a class="blog_link-title" href="<?php echo JRoute::_(ContentHelperRoute::getArticleRoute($displayData->slug, $displayData->catid)); ?>" itemprop="url">
+						<!--i class="<?php /*
+							$cat_title = $this->escape($displayData->category_title);
+							switch ($cat_title) {
+								case "News" : echo "fa fa-newspaper-o"; break;
+								case "Videos" : echo "fa fa-play-circle"; break;
+								case "Shows" : echo "fa fa-video-camera"; break;
+								case "Artists" : echo "fa fa-users"; break;
+								case "Music" : echo "fa fa-music"; break;
+								case "Movies" : echo "fa fa-film"; break;
+							} */
+							?>">&nbsp;</i-->
+							<i class="fa fa-ellipsis-v">&nbsp;</i>
+							<?php echo $this->escape($displayData->title); ?></a>
 					<?php else : ?>
 						<?php echo $this->escape($displayData->title); ?>
 					<?php endif; ?>
