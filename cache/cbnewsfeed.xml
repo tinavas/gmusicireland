@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- generator="Joomla! 1.5 - Open Source Content Management" -->
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+		<title>Joomlapolis News</title>
+		<description>Joomla social networking and Subscription Management software. Community Builder is the top rated, best supported, most complete and reliable community system there is for Joomla!</description>
+		<link>http://www.joomlapolis.com:80/news</link>
+		<lastBuildDate>Fri, 16 Jan 2015 10:29:07 +0000</lastBuildDate>
+		<generator>Joomla! 1.5 - Open Source Content Management</generator>
+		<language>en-gb</language>
+		<item>
+			<title>23 action types in CB Auto Actions 6 now for CB 2.0</title>
+			<link>http://www.joomlapolis.com:80/news/18482-23-action-types-in-cb-auto-actions-6-for-cb-20</link>
+			<guid>http://www.joomlapolis.com:80/news/18482-23-action-types-in-cb-auto-actions-6-for-cb-20</guid>
+			<description><![CDATA[<p><strong><a href="https://www.youtube.com/playlist?list=PLp0puRITgC7McQcw0Sli1qfSUQGwmflzi" target="_blank"><img style="margin-right: 15px; margin-bottom: 7px; float: left;" src="http://www.joomlapolis.com:80/images/jpnewsletter/jpn201501/geers2_226.gif" alt="geers2 226" width="226" height="213" /></a>CB Auto Actions 6</strong> is now <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=article&amp;id=18463&amp;Itemid=198">CB 2.0 Compatible</a> and supports <strong>23 action types</strong> ready to help you <strong>implement your use cases without the need to code</strong>.</p>
+<p>CB Auto Auto Actions lets you and your members save valuable time, by automating specific repetitive processes on your site.</p>
+<p>It executes specific actions depending on specific events if specific conditions are met.</p>
+<p>E.g. When a new user signs-up, you can automatically send an email to a specified manager depending on registration details. Or when a user updates profile data or logs-in, an activity counter can be incremented.</p>
+<div>
+<p><a href="https://www.youtube.com/playlist?list=PLp0puRITgC7McQcw0Sli1qfSUQGwmflzi" target="_blank"><img style="margin-right: 15px; margin-bottom: 7px; float: left;" src="http://www.joomlapolis.com:80/images/jpnewsletter/jpn201501/autoaction-videos-play2_red_226.gif" alt="autoaction-videos-play2 red 226" width="226" height="153" /></a><br /><br />To really understand the power and flexibility and the awesome potential you should spend 5 minutes to <a href="https://www.youtube.com/playlist?list=PLp0puRITgC7McQcw0Sli1qfSUQGwmflzi" target="_blank">watch one of our CB Auto Action tutorial videos</a>.</p>
+</div>
+<div class="clr">&nbsp;</div>
+<p>The 23 action types are: CB Activity, AcyMailing, CB Antispam, CB Blogs, CB Paid Subscriptions, Code (11 different methods), Connection, Content, Email, Field, CB GroupJive, CB Invites, K2, Kunena, Login/Logout, CB Menu, Private Message, CB Privacy, Query, Redirect, Registration, Request, Usergroup.</p>
+<p>Configuring an auto action involves the following steps:</p>
+<ol>
+<li>Select one of the 23 available action types</li>
+<li>Decide the user events and environment that will trigger the execution of your action</li>
+<li>Optionally set extra conditions that need to be present</li>
+<li>Configure your action (based on type selected)</li>
+<li>Enable your auto action</li>
+</ol>
+<p>There are virtually infinite possibilities and combinations available with this awesome <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=article&amp;id=18216&amp;Itemid=135">Professional membership</a> tool.</p>
+<p>To <strong>help and inspire</strong> you, we have prepared a <a href="https://www.youtube.com/playlist?list=PLp0puRITgC7McQcw0Sli1qfSUQGwmflzi" target="_blank">CB Auto Actions video tutorial playlist</a> that currently has 5 short and sweet videos but <strong>many more are in the pipeline</strong> - so <a href="http://www.youtube.com/joomlapolis" target="_blank">subscribe to our video channel now</a>.</p>
+<p><a href="http://www.joomlapolis.com:80/forum/6-news-and-publicity/228080-23-action-types-in-cb-auto-actions-6-now-for-cb-20">Discuss this on our forums</a>.</p>]]></description>
+			<author>nant@joomlapolis.com (Nick A.)</author>
+			<category>News</category>
+			<pubDate>Mon, 12 Jan 2015 11:43:35 +0000</pubDate>
+		</item>
+		<item>
+			<title>11 previously commercial add-ons included in CB 2.0</title>
+			<link>http://www.joomlapolis.com:80/news/18481-11-previously-commercial-add-ons-included-in-cb-20</link>
+			<guid>http://www.joomlapolis.com:80/news/18481-11-previously-commercial-add-ons-included-in-cb-20</guid>
+			<description><![CDATA[<p><img style="display: block; margin-left: auto; margin-right: auto;" src="http://www.joomlapolis.com:80/images/jpnewsletter/jpn201501/11freeaddons_500.gif" alt="11freeaddons 500" width="500" height="180" /></p>
+<p>The Community Builder extension has been around even before the birth of Joomla and it's being used on millions of websites worldwide. And most of all it is both <strong>free as in beer</strong> (no cost to download) and <strong>free as in freedom</strong> (GPL).</p>
+<p>This free status is not easy to maintain as there are many cost elements involved and many moving targets to track. So, no matter how free spirited we are there will always be the reality of expenses and the need for a commecrial aspect that funds and keeps the project going.</p>
+<p>The CB Team and the entire Joomlapolis community <strong>-</strong><strong>THANK YOU-</strong> have been doing a great job of keeping Community Builder powerful and free and very secure.</p>
+<p>The <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=article&amp;id=18462:community-builder-20-released&amp;catid=6:news&amp;Itemid=19">next generation Community Builder 2.0</a> series <strong>has incorporated 11 previously commercial add-ons into its core</strong> - <strong>yes these add-ons are now included in the free CB 2.0+ releases</strong>.</p>
+<p>The previously commercial add-ons now in CB 2.0 are:</p>
+<ol>
+<li>CB Ajax File field</li>
+<li>CB Rating field</li>
+<li>CB Admin Navigation module</li>
+<li>CB Forums</li>
+<li>CB Blogs</li>
+<li>CB Articles</li>
+<li>CB Ajax Points</li>
+<li>CB Bootstrap template</li>
+<li>CB Video Field</li>
+<li>CB Password Strength</li>
+<li>CB Verify Email</li>
+</ol>
+<p>Community Builder 2.0 with these extended features and its new mobile ready user interface is just plain awesome!</p>
+<p>See for yourself watching our <a href="https://www.youtube.com/playlist?list=PLp0puRITgC7PuyzPsMUECDI46VE7IFSAX" target="_blank">40+ short and sweet CB 2.0 Video tutorials</a> and then consider upgrading to any one of our <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=article&amp;id=18216&amp;Itemid=135">12 month paid membership levels</a> to get even <strong>more add-ons</strong> and <strong>great support</strong> and of course <strong>contribute to keep Community Builder free and powerful</strong>.</p>]]></description>
+			<author>nant@joomlapolis.com (Nick A.)</author>
+			<category>News</category>
+			<pubDate>Wed, 07 Jan 2015 14:57:48 +0000</pubDate>
+		</item>
+		<item>
+			<title>Call to action: New EU VAT law could kill E-Commerce and affects everyone</title>
+			<link>http://www.joomlapolis.com:80/news/18480-call-to-action-new-eu-vat-law-could-kill-e-commerce-and-affects-everyone</link>
+			<guid>http://www.joomlapolis.com:80/news/18480-call-to-action-new-eu-vat-law-could-kill-e-commerce-and-affects-everyone</guid>
+			<description><![CDATA[<p><a href="https://www.change.org/p/pierre-moscovici-a-unilateral-suspension-of-the-introduction-of-the-new-eu-vat-laws-for-micro-businesses-and-sole-traders?recruiter=63611314&amp;utm_source=share_petition&amp;utm_medium=email&amp;utm_campaign=share_email_responsive" target="_blank"><img style="display: block; margin-left: auto; margin-right: auto;" src="http://www.joomlapolis.com:80/images/jpnewsletter/jpn201412/eupetition_500.gif" alt="eupetition 500" width="500" height="351" /></a></p>
+<p>First of all we would like to appologize for having to communicate this news with you during the holidays - it was not our intention.</p>
+<p>The new EU-VAT regulations will affect on 1.1.2015 not only all EU consumers but also everyone - worldwide - selling to EU, so it <strong>will affect everyone directly or indirectly</strong>.</p>
+<p>This new - as of Jan 1st, 2015 - regulations completely changes the way in which VAT (consumer sales tax) is charged on digital services.</p>
+<p>Instead of the tax rate being applied according to where the supplier is located, the seller must determine by 2-3 independent methods where the buyer is located and apply the relevant local rate of tax to the purchaser. So that means if you (as seller) live in Italy and someone in Germany purchases your digital file, you need to pay VAT at the German rate to the German authorities. Just to be clear, that's a total of 75 different tax rates across 28 different markets!</p>
+<p>The intention of this new legislation, is to put a stop to billions of euros of the consumer tax being lost due to multi-nationals locating in low tax jurisdictions.</p>
+<p>However, the implementation of these rules will cripple, and potentially force into closure, hundreds of thousands of micro-businesses <strong>including Joomla Extension providers</strong> across the EU and also worldwide.&nbsp; The costs in paperwork, bureaucracy, and amendments to websites and payment processing will simply mean that many businesses are no longer viable.</p>
+<p>And this is just the first step, as there are plans to extend this concept to physical goods selling in 2016!</p>
+<p>More references about new law:</p>
+<ul>
+<li><a href="http://ec.europa.eu/taxation_customs/taxation/vat/how_vat_works/telecom/index_en.htm" target="_blank">European Union notes on VAT tax rule on E-services and telecommunications</a></li>
+<li><a href="http://euvataction.org" target="_blank"> EU VAT Action Site</a></li>
+<li><a href="http://euvataction.org/take-action-now/" target="_blank"> Take action on EU VAT Action Site</a></li>
+<li><a href="https://ec.europa.eu/commission/2014-2019/ansip/blog/euvat_en" target="_blank">Commission Blog on EUVAT (also see comments to the blog)</a></li>
+<li><a href="http://www.telegraph.co.uk/technology/internet/11295953/How-the-EU-is-throttling-online-business-with-idiotic-VAT-reform.html" target="_blank">Telegraph UK article impact analysis on EUVAT</a></li>
+<li><a href="https://www.facebook.com/hashtag/euvat" target="_blank">Facebook #EUVAT pages</a></li>
+<li><a href="https://twitter.com/search?q=%23EUVAT" target="_blank">#EUVAT Tweets</a></li>
+</ul>
+<p>&nbsp;</p>
+<h3>What does this mean to you ?</h3>
+<p>The new law will influence you in one of the following ways:</p>
+<ul>
+<li>If you make a purchase from an EU location, you will be charged VAT accordingly based on your purchasing location (and your invoicing address will have to match, unless there is a third proof of your real location)<br /><br /></li>
+<li>If you sell digital products (no matter where you are located) to EU located purchasers, you need to charge them appropriate VAT and keep digital records for 10 years of all these transactions and of course quarterly funnel collected VAT to each EU state</li>
+</ul>
+<p>So as a purchaser, you will most likely experience price increases when purchasing from a EU location (regardless of the seller's location).</p>
+<p>As a seller, you will most likely need to suffer extra costs to setup compliance with this new EU law and to be able to handle the extra book-keeping and accounting and digital record-keeping. Increasing your prices to offset these extra costs is an option, but it will still affect your business.</p>
+<p>If you use <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=article&amp;id=40&amp;Itemid=4">CBSubs</a> for your digital goods sales, it is useful to know that its Tax integration functionality already supports the new tax calculations. However, as there is no reliable technical way yet to get 2-3 proofs of EU-country of the customer, that part is not yet solved - in no cart yet - as that new regulations' requirement is not implementable yet.</p>
+<p>&nbsp;</p>
+<h3>How can you help ?</h3>
+<p>This law is just plain wrong. It will not accomplish it's main objective, but it will cripple small and mid-size digital businesses and surely increase consumer prices for EU located purchasers.</p>
+<p>Here are some ways you can help and voice your objections <strong>now</strong>:</p>
+<ul>
+<li>Read and sign the <a href="https://www.change.org/p/pierre-moscovici-a-unilateral-suspension-of-the-introduction-of-the-new-eu-vat-laws-for-micro-businesses-and-sole-traders?recruiter=63611314&amp;utm_source=share_petition&amp;utm_medium=email&amp;utm_campaign=share_email_responsive" target="_blank">Petitioning Commissioner for Economic and Financial Affairs, Taxation and Customs PIERRE MOSCOVICI</a><br />Once you sign the petition share it with your friends on all social networking platforms and email<br /><br /></li>
+<li>Send a message to all your Members of European Parliament (MEPs).<br />Just <a href="http://www.europarl.europa.eu/meps/en/map.html" target="_blank">click your country on this map</a> to find your MEPs and send each one your objections about this law.<br /><br /></li>
+<li>Comment directly on the <a href="https://ec.europa.eu/commission/2014-2019/ansip/blog_en" target="_blank">EU Commissioners blog</a> stating your objection / opinion.</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Purchase now instead of later</h3>
+<p>It is not our intention to turn this into a purchasing call. However, if your Joomla livelihood depends on Joomlapolis digital goods and services, then you can avoid price increases that will most likely happen (if this law is not reverted) on January 1st, 2015. So purchase now and even stock up your subscriptions by purchasing back to back yearly subscriptions (you can purchase this way 2 years worth).</p>
+<p>The same of course advise can be used with all your Joomla third-party purchases.</p>
+<p><a href="http://www.joomlapolis.com:80//forum/6-news-and-publicity/227791-call-to-action-new-eu-vat-law-could-kill-e-commerce-and-affects-everyone#255386">Discuss this on our forums</a>.</p>]]></description>
+			<author>nant@joomlapolis.com (Nick A.)</author>
+			<category>News</category>
+			<pubDate>Sun, 21 Dec 2014 08:09:53 +0000</pubDate>
+		</item>
+		<item>
+			<title>Joomla 2.5.28 Released and what it means to you</title>
+			<link>http://www.joomlapolis.com:80/news/18479-joomla-2528-released-and-what-it-means-to-you</link>
+			<guid>http://www.joomlapolis.com:80/news/18479-joomla-2528-released-and-what-it-means-to-you</guid>
+			<description><![CDATA[<p><img style="display: block; margin-left: auto; margin-right: auto;" src="http://www.joomlapolis.com:80/images/jpnewsletter/jpn201412/25-farewell_500.jpg" alt="25-farewell 500" width="500" height="333" /></p>
+<p>The Joomla project has released <a href="http://www.joomla.org/announcements/release-news/5574-joomla-2-5-28-released.html" target="_blank">Joomla 2.5.28</a> that has been tagged as the last release in the Joomla 2.5 series.</p>
+<p>Officially, as of December 31, 2014, the Joomla 2.5 series will no longer be supported. This means that there are no new releases planned for Joomla 2.5, as the Joomla project is putting all its efforts in its Joomla 3.3 and upcoming 3.4 series.</p>
+<p>We have tested <strong>Community Builder 2.0.4</strong> and it <strong>works just fine</strong> with this new Joomla release.</p>
+<p>There are no security related fixes in the Joomla 2.5.28 release, so there is no real rush to upgrade. However as this is the last of the Joomla 2.5 series you should start <strong>planning to upgrade</strong> your Joomla 2.5 websites to the <strong>even more secure</strong>, <strong>feature rich</strong> and <strong>mobile ready</strong> Joomla 3.3.6 environment. From January 1st Joomla 3.X will be the only security maintained release.</p>
+<p>As developers of the most popular Joomla Social Networking extension, we are always here to help out our community. In addition to the <a href="https://docs.joomla.org/Planning_for_Mini-Migration_-_Joomla_2.5_to_3.x" target="_blank">Planning for Mini-Migration - Joomla 2.5 to 3.x</a> Joomla resource,we have compiled a detailed <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=article&amp;id=18478:migrating-from-joomla-25-to-joomla-33&amp;catid=95:installation&amp;Itemid=129">how to upgrade guide</a> that includes a <strong>video tutorial</strong> of the entire process of upgrading a Joomla 2.5.28 site with Community Builder 2.0 installed to Joomla 3.3.</p>
+<p><a href="http://www.joomlapolis.com:80/forum/6-news-and-publicity/227687-joomla-2528-released-and-what-it-means-to-you">Join the discussion</a>.</p>
+<p>&nbsp;</p>]]></description>
+			<author>nant@joomlapolis.com (Nick A.)</author>
+			<category>News</category>
+			<pubDate>Mon, 15 Dec 2014 00:00:00 +0000</pubDate>
+		</item>
+		<item>
+			<title>Community Builder 2.0.4 Released</title>
+			<link>http://www.joomlapolis.com:80/news/18477-community-builder-204-released</link>
+			<guid>http://www.joomlapolis.com:80/news/18477-community-builder-204-released</guid>
+			<description><![CDATA[<p style="text-align: center;"><a href="http://www.joomlapolis.com:80/index.php?option=com_docman&amp;task=doc_details&amp;gid=695&amp;Itemid=105"><img src="http://www.joomlapolis.com:80/images/jpnewsletter/jpn201412/cb204_500b.gif" alt="cb204 500b" width="500" height="182" /></a></p>
+<p style="text-align: center;">The Next Generation Community Builder 2.0.4 is here<br />and it's <a href="http://www.joomlapolis.com:80/index.php?option=com_docman&amp;task=doc_details&amp;gid=695&amp;Itemid=105">free to download</a>.<br />-----</p>
+<p><strong>Community Builder 2.0.4</strong> is here and fixes 17 minor issues (detailed list in discussion thread) identified since the 2.0.3 release. CB 2.0.4 also introduces a minor new feature:</p>
+<ul>
+<li>ability to set a 100% width for Terms and Conditions fields displaying in modal window mode</li>
+</ul>
+<p>If you have not already seen our videos - <a href="http://www.youtube.com/playlist?list=PLp0puRITgC7PuyzPsMUECDI46VE7IFSAX" target="_blank">Community Builder 2.0 Tutorials playlist</a>, this is a great time to do so (and subscribe to channel so you don't miss future releases). There are 37!!! <strong>short and sweet</strong> hands-on videos to help you harness the power of the next generation community builder.</p>
+<p>Upgrading from a CB 2.0+ environment is a simple install over process.</p>
+<p>If you are upgrading from CB 1.9.1, you should take a look at video #30: <a class="pl-video-title-link yt-uix-tile-link yt-uix-sessionlink  spf-link " dir="ltr" href="https://www.youtube.com/watch?v=AtMsAhScimg&amp;list=PLp0puRITgC7PuyzPsMUECDI46VE7IFSAX&amp;index=30" target="_blank" data-sessionlink="ei=BaSGVP6CDufmiwaLt4HYCA&amp;feature=plpp_video">CB 2.0 Tutorials - 30 - Upgrading from CB 1.9.1 to CB 2.0 - Expectations and first steps</a>&nbsp; and also keep in mind the following:</p>
+<ul>
+<li>Unlike CB 1.9.1, CB 2.0+ is now a single installable Joomla package that automatically installs component, modules and plugins</li>
+<li>Make sure your PHP upload_max_filesize parameter is set to at least 4M - see our <a href="http://www.joomlapolis.com:80/support/tutorials/95-installation/18196-checking-your-php-settings">Checking your PHP Settings</a> tutorial for more info about this</li>
+<li>Check our <a href="http://www.joomlapolis.com:80/cb-20-addon-status">Add-ons Compatibility Status</a> page before you start and have latest CB 2.0 add-ons handy so you can upgrade them after your CB 2.0.4 installation</li>
+<li>Make sure that you have a<strong> full backup</strong> available before you upgrade</li>
+<li>If possible test your upgrade process on a cloned environment before attempting to upgrade your live site</li>
+</ul>
+<p>Enjoy this free CB 2.0.4 update and <a href="http://www.joomlapolis.com:80/forum/6-news-and-publicity/227576-community-builder-204-released#254442">discuss this on our forums</a>.</p>]]></description>
+			<author>nant@joomlapolis.com (Nick A.)</author>
+			<category>News</category>
+			<pubDate>Tue, 09 Dec 2014 08:18:40 +0000</pubDate>
+		</item>
+		<item>
+			<title>Controlling Privacy with CB Privacy 4.0</title>
+			<link>http://www.joomlapolis.com:80/news/18476-controlling-privacy-with-cb-privacy-40</link>
+			<guid>http://www.joomlapolis.com:80/news/18476-controlling-privacy-with-cb-privacy-40</guid>
+			<description><![CDATA[<p><img style="display: block; margin-left: auto; margin-right: auto;" src="http://www.joomlapolis.com:80/images/jpnewsletter/jpn201412/cbprivacyfe_400.gif" alt="cbprivacyfe 400" width="400" height="234" /></p>
+<p style="text-align: center;">--<br />See the <strong>huge benefits of CB Privacy</strong> in action in<br />our short and sweet <a href="https://www.youtube.com/playlist?list=PLp0puRITgC7PyiMVKzL-3WKX9Z1iNIyah" target="_blank">CB Privacy tutorials</a><br />--</p>
+<p>CB Privacy 4.0 <strong>gives you full control to deploy your privacy strategy</strong> on your website for your user profiles and user lists.</p>
+<p>Fully compatible with the Next Generation <a href="http://www.joomlapolis.com:80/news/18462-community-builder-20-released">Community Builder 2.0</a>, CB Privacy 4.0 is a powerful tool to<strong> manage the privacy of user profile content</strong>.</p>
+<p>Here are 4 huge benefits that CB Privacy gives you:</p>
+<ul>
+<li>Let your <strong>members decide who sees their profile data (specific fields or tabs, or even entire profile)</strong></li>
+<li>Setup <strong>private content field or tabs for users</strong> on their profiles by specifying "private" as the default privacy setting for this content</li>
+<li>Empower your <strong>users to delete or disable their accounts</strong> and data from your website</li>
+<li>Keep <strong>track</strong>, <strong>monitor</strong> and <strong>administer</strong> all your user privacy settings from backend administration page.</li>
+</ul>
+<p>&nbsp;Here is a short list of configurable features:</p>
+<ul>
+<li>Turn on privacy for <strong>viewing</strong> or <strong>editing</strong> a field or tab basis</li>
+<li>Enable<strong> privacy for entire profile</strong> view<strong></strong></li>
+<li>Configure <strong>initial default privacy settings</strong> for each case</li>
+<li>Let <strong>moderators control privacy</strong> settings from frontend</li>
+<li><strong>Force privacy control </strong>for specific field or tab to default value (instead of allowing user to select privacy level)<strong><br /></strong></li>
+<li>Configure settings to allow users to <strong>disable and/or delete themselves</strong></li>
+</ul>
+<p>This <strong>awesome</strong> add-on is demonstrated and explained in our <a href="https://www.youtube.com/playlist?list=PLp0puRITgC7PyiMVKzL-3WKX9Z1iNIyah" target="_blank">short and sweet CB Privacy tutorials</a> and is available to <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=article&amp;id=18216&amp;Itemid=135">Advanced, Professional and Developer</a> members.</p>]]></description>
+			<author>nant@joomlapolis.com (Nick A.)</author>
+			<category>News</category>
+			<pubDate>Mon, 01 Dec 2014 10:49:03 +0000</pubDate>
+		</item>
+		<item>
+			<title>Community Builder 2.0.3 Released</title>
+			<link>http://www.joomlapolis.com:80/news/18475-community-builder-203-released</link>
+			<guid>http://www.joomlapolis.com:80/news/18475-community-builder-203-released</guid>
+			<description><![CDATA[<p><img style="display: block; margin-left: auto; margin-right: auto;" src="http://www.joomlapolis.com:80/images/jpnewsletter/jpn201411/cb203release_500.gif" alt="cb203release 500" width="500" height="183" /></p>
+<p style="text-align: center;">The Next Generation Community Builder 2.0.3 is here<br />and it's <a href="http://www.joomlapolis.com:80/index.php?option=com_docman&amp;task=doc_details&amp;gid=686&amp;Itemid=105">free to download</a>.<br />-----</p>
+<p><strong>Community Builder 2.0.3</strong> is a maintenance release that fixes 18 identified issues (see discussion thread for detailed list) found since the Community Builder 2.0.2 release and introduces 2 new features:</p>
+<ul>
+<li>template css overrides allowing you to easily make changes to the default CB template</li>
+<li>Joomla menu page class support for CB menu items for individual page styling</li>
+</ul>
+<p>We will be adding new video tutorials to our <a href="http://www.youtube.com/playlist?list=PLp0puRITgC7PuyzPsMUECDI46VE7IFSAX" target="_blank">Community Builder 2.0 Tutorials playlist</a> about these new features and how to use them (subscribe to channel so you don't miss them).</p>
+<p>Repeating once again our upgrading from a CB 1.9.1 environment process for your consideration:</p>
+<ul>
+<li>Unlike CB 1.9.1, CB 2.0+ is now a single installable Joomla package that automatically installs component, modules and plugins</li>
+<li>Make sure your PHP upload_max_filesize parameter is set to at least 4M - see our <a href="http://www.joomlapolis.com:80/support/tutorials/95-installation/18196-checking-your-php-settings">Checking your PHP Settings</a> tutorial for more info about this</li>
+<li>Check our <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=article&amp;id=18463&amp;Itemid=198">Add-ons Compatibility Status</a> page before you start and have latest CB 2.0 add-ons handy so you can upgrade them after your CB 2.0.3 installation</li>
+<li>Make sure that you have a<strong> full backup</strong> available before you upgrade</li>
+<li>If possible test your upgrade process on a cloned environment before attempting to upgrade your live site</li>
+</ul>
+<p>Enjoy this free CB 2.0.3 update and <a href="http://www.joomlapolis.com:80/forum/6-news-and-publicity/227295-community-builder-203-released">discuss this on our forums</a>.</p>]]></description>
+			<author>nant@joomlapolis.com (Nick A.)</author>
+			<category>News</category>
+			<pubDate>Thu, 20 Nov 2014 15:42:09 +0000</pubDate>
+		</item>
+		<item>
+			<title>21 Video Tutorials for Community Builder 2.0</title>
+			<link>http://www.joomlapolis.com:80/news/18474-21-video-tutorials-for-community-builder-20</link>
+			<guid>http://www.joomlapolis.com:80/news/18474-21-video-tutorials-for-community-builder-20</guid>
+			<description><![CDATA[<p><a href="https://www.youtube.com/playlist?list=PLp0puRITgC7PuyzPsMUECDI46VE7IFSAX" target="_blank"><strong><img style="display: block; margin-left: auto; margin-right: auto;" src="http://www.joomlapolis.com:80/images/jpnewsletter/jpn201411/cbtutorials21_500.gif" alt="cbtutorials21 500" width="500" height="298" /></strong></a></p>
+<p><strong>Getting up to speed</strong> with the <strong>powerful next generation</strong> <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=article&amp;id=18462:community-builder-20-released&amp;catid=6:news&amp;Itemid=19">Community Builder 2.0</a> is now <strong>super easy and fun</strong>.</p>
+<p>Since the 2.0 release, we have been publishing a new short video tutorial every day on our <a href="http://www.youtube.com/Joomlapolis" target="_blank">Joomlapolis Video Channel</a>.</p>
+<p>Today we published tutorial # 21 and we intend to keep publishing as often as possible (so make sure to subscribe to our channel) to help our community <strong>harness the incredible power and flexibility</strong> that Community Builder 2.0 provides.</p>
+<p>Keep in mind that all Community Builder 2.0 administrative pages now have a <strong>Help button</strong> that leads to a handy online help page and also make sure you take advantage of our new <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=category&amp;id=129&amp;Itemid=197">Community Builder Getting Started</a> articles.</p>
+<p>Our current <a href="https://www.youtube.com/playlist?list=PLp0puRITgC7PuyzPsMUECDI46VE7IFSAX" target="_blank">CB 2.0 Tutorials playlist</a> has the following tutorials:</p>
+<ol>
+<li>Short tutorial covering first steps to install CB 2.0 on a Joomla 3.x website</li>
+<li>Short tutorial covering basic CB User Profile page updates in frontend and also adding menu links to the Joomla User menu</li>
+<li>Backend and frontend registration processes and approval workflows</li>
+<li>Creating our first user list and making our Joomla menu for user lists publishing</li>
+<li>Grid user list with profile image and canvas image variations</li>
+<li>Getting started with list searching</li>
+<li>Creating our first CB Field - Gender radio button field</li>
+<li>Getting started with Field Layouts and CB Substitutions</li>
+<li>Configuration options for uploaded profile images - how to get perfect squares and have circle images</li>
+<li>User List wrap-up - extra settings and Joomla menu to single list</li>
+<li>Terms and Conditions field and how to configure it</li>
+<li>A first look into Community Builder Tabs</li>
+<li>The CB Articles plugin and how it works</li>
+<li>The Joomla CB Author bot plugin and how to link author of article back to author's CB profile page</li>
+<li>First look at CB Blogs and Internal storage mode</li>
+<li>CB Blogs and Joomla storage mode</li>
+<li>Exploring the Date field type</li>
+<li>File and Video fields</li>
+<li>Single select dropdown and multi-select checkbox fields and user list searching</li>
+<li>The new 6-in-1 CB Online module</li>
+<li>uddeIM Private Messaging integration</li>
+</ol>
+<p><a href="http://www.joomlapolis.com/forum/6-news-and-publicity/227246-21-video-tutorials-for-community-builder-20">Discuss this article on our forums</a>.</p>]]></description>
+			<author>nant@joomlapolis.com (Nick A.)</author>
+			<category>News</category>
+			<pubDate>Mon, 17 Nov 2014 09:30:19 +0000</pubDate>
+		</item>
+		<item>
+			<title>Members invite friends with CB Invites 4.0</title>
+			<link>http://www.joomlapolis.com:80/news/18473-members-invite-friends-with-cb-invites-40</link>
+			<guid>http://www.joomlapolis.com:80/news/18473-members-invite-friends-with-cb-invites-40</guid>
+			<description><![CDATA[<p><img style="display: block; margin-left: auto; margin-right: auto;" src="http://www.joomlapolis.com:80/images/jpnewsletter/jpn201411/cbinvite_500.gif" alt="cbinvite 500" width="500" height="337" /></p>
+<p>CB Invites 4.0 is here and <strong>ready to empower your members</strong> to <strong>invite their friends</strong> to your website.</p>
+<p>Fully compatible with the Next Generation <a href="http://www.joomlapolis.com:80/news/18462-community-builder-20-released">Community Builder 2.0</a>, CB Invites 4.0 is a great tool to <strong>help you increase your members</strong>.</p>
+<p>Here are 3 huge benefits that CB Invites gives you:</p>
+<ul>
+<li>Let your <strong>members send personalized invitations</strong> to their friends to join your website</li>
+<li>Create a <strong>by-invitation-only website</strong> (all you need to do is to make the Invite Code field required)</li>
+<li>Keep track, monitor and administer all your website invitations from backend administration page.</li>
+</ul>
+<p>&nbsp;Here is a list of configurable features:</p>
+<ul>
+<li><strong>Customize invitation email</strong> with your website information and <strong>quick sign-up links</strong></li>
+<li>Let users include their <strong>personal invitation message</strong> (text or HTML)</li>
+<li>Limit access to specific Joomla ACL groups</li>
+<li>Set maximum number of active invites per user</li>
+<li>Specify number of days between resending of pending invites</li>
+<li>Captcha protect invitation form (needs CB Antispam)</li>
+</ul>
+<p>This fantastic add-on tool that empowers your existing members to attract even more people to your website is available to <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=article&amp;id=18216&amp;Itemid=135">Professional and Developer</a> members.</p>]]></description>
+			<author>nant@joomlapolis.com (Nick A.)</author>
+			<category>News</category>
+			<pubDate>Fri, 07 Nov 2014 14:16:10 +0000</pubDate>
+		</item>
+		<item>
+			<title>Eleven social networks supported with CB Connect 6.0.0 </title>
+			<link>http://www.joomlapolis.com:80/news/18472-eleven-social-networks-supported-with-cb-connect-600-</link>
+			<guid>http://www.joomlapolis.com:80/news/18472-eleven-social-networks-supported-with-cb-connect-600-</guid>
+			<description><![CDATA[<p><img style="margin-bottom: 5px; margin-left: 10px; float: right;" src="http://www.joomlapolis.com:80/images/jpnewsletter/jpn201411/cbconnect600_160.gif" alt="cbconnect600 160" width="160" height="471" />CB Connect 6.0 is here and it now supports eleven (11) social networks!</p>
+<p>Fully compatible with the Next Generation <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=article&amp;id=18462:community-builder-20-released&amp;catid=6:news&amp;Itemid=19">Community Builder 2.0</a>, CB Connect 6.0 is your next generation social networking integration tool.</p>
+<p>Totally rewritten for the new CB 2.0 XML MVC <a href="http://vimeo.com/42973612" target="_blank">AhaWow engine</a> technology, CB Connect opens up your website to millions of social networking users from the following providers:</p>
+<p style="text-align: center;"><br /><strong>Facebook</strong> • <strong>Twitter</strong> • <strong>Linkedin</strong></p>
+<p style="text-align: center;"><strong>Windows Live</strong> • <strong>Google</strong> • <strong>Instagram</strong></p>
+<p style="text-align: center;"><strong>Foursquare</strong> • <strong>GitHub</strong> • <strong>VKontakte</strong></p>
+<p style="text-align: center;"><strong>Steam</strong> • <strong>Tumblr</strong></p>
+<p>This super rich add-on not only lets users <strong>sign-up on your website using their social network credentials</strong>, but it can also grab (end-user authorization needed of course)<strong> social profile related data and map it</strong> to your Community Builder fields.</p>
+<h3>New Registration Prefill Feature</h3>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="http://www.joomlapolis.com:80/images/jpnewsletter/jpn201411/cbconnectprefill.gif" alt="cbconnectprefill" width="500" height="481" /></p>
+<p>You can also configure CB Connect 6.0 to show the user a <strong>pre-filled</strong> (with data taken from the social network) <strong>registration form</strong>. This way your users can quickly complete your website registration form and accept your specific terms and conditions. Users are free to confirm prefilled data or make changes if they want.</p>
+<p><strong>Different registration workflows</strong> can be configured based on social network used (e.g., facebook users do not need moderator approval, twitter users must confirm their email, etc.).</p>
+<p>Forgot to mention that you can also <strong>automatically place users in specific Joomla user groups</strong> based on the social network they used to sign-up and you can <strong>redirect users to your own specific landing page</strong> once again based on their social network selection. Plus there is a linking feature to let your already logged in users link their website account to their social network for quick single-click future logins.</p>
+<p>This super add-on is just one of the many great additiions that are available to all <a href="http://www.joomlapolis.com:80/index.php?option=com_content&amp;view=article&amp;id=18216&amp;Itemid=135">Advanced, Professional and Developer</a> members.</p>]]></description>
+			<author>nant@joomlapolis.com (Nick A.)</author>
+			<category>News</category>
+			<pubDate>Tue, 04 Nov 2014 11:02:29 +0000</pubDate>
+		</item>
+	</channel>
+</rss>

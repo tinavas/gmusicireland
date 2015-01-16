@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<field
+		name="view"
+		type="list"
+		onchange="this.form.submit();"
+		class="chzn-small"
+		default="styles"
+		>
+		<option value="styles">COM_TEMPLATES_SUBMENU_STYLES</option>
+		<option value="templates">COM_TEMPLATES_SUBMENU_TEMPLATES</option>
+	</field>
+	<fields name="filter">
+		<field
+			name="search"
+			type="text"
+			label="COM_TEMPLATES_STYLES_FILTER_SEARCH_DESC"
+			hint="JSEARCH_FILTER_LABEL"
+			/>
+		<field
+			name="template"
+			type="template"
+			label="COM_TEMPLATES_FILTER_TEMPLATE"
+			onchange="this.form.submit();"
+			>
+			<option value="">COM_TEMPLATES_FILTER_TEMPLATE</option>
+		</field>
+		<field
+			name="client_id"
+			type="clientid"
+			onchange="this.form.submit();"
+			>
+			<option value="">JGLOBAL_FILTER_CLIENT</option>
+		</field>
+	</fields>
+	<fields name="list">
+		<field
+			name="fullordering"
+			type="list"
+			label="COM_CONTENT_LIST_FULL_ORDERING"
+			description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+			onchange="this.form.submit();"
+			default="a.title ASC"
+			>
+			<option value="">JGLOBAL_SORT_BY</option>
+			<option value="color ASC">NN_HEADING_COLOR_ASC</option>
+			<option value="color DESC">NN_HEADING_COLOR_DESC</option>
+			<option value="a.title ASC">NN_HEADING_STYLE_ASC</option>
+			<option value="a.title DESC">NN_HEADING_STYLE_DESC</option>
+			<option value="a.template ASC">NN_HEADING_TEMPLATE_ASC</option>
+			<option value="a.template DESC">NN_HEADING_TEMPLATE_DESC</option>
+			<option value="a.home ASC">NN_HEADING_DEFAULT_ASC</option>
+			<option value="a.home DESC">NN_HEADING_DEFAULT_DESC</option>
+			<option value="a.client_id ASC">NN_HEADING_CLIENTID_ASC</option>
+			<option value="a.client_id DESC">NN_HEADING_CLIENTID_DESC</option>
+			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
+		</field>
+		<field
+			name="limit"
+			type="limitbox"
+			class="inputbox input-mini"
+			default="25"
+			label="COM_CONTENT_LIST_LIMIT"
+			description="COM_CONTENT_LIST_LIMIT_DESC"
+			onchange="this.form.submit();"
+		/>
+	</fields>
+</form>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="system" method="upgrade">
+	<name>OSPositions</name>
+	<author>OSTraining</author>
+	<creationDate>2014</creationDate>
+	<copyright>Copyright (C) 2014 / Open Source Training LLC</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html</license>
+	<authorEmail>support@ostraining.com</authorEmail>
+	<authorUrl>www.ostraining.com</authorUrl>
+	<version>1.0.0</version>
+	<description>OSPositions is used to toggle the display template/module postions.</description>
+	<files>
+		<filename plugin="ospositions">ospositions.php</filename>
+	</files>
+	
+    <updateservers>
+        <server type="extension" priority="1" name="OSPositions">http://updates.ostraining.com/ospositions.xml</server>
+    </updateservers>
+    
+</extension>

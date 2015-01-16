@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.2" type="component" method="upgrade">
+	<name>com_advancedtemplates</name>
+	<description>COM_ADVANCEDTEMPLATES_DESC</description>
+	<version>1.1.7FREE</version>
+	<creationDate>September 2014</creationDate>
+	<author>NoNumber (Peter van Westen)</author>
+	<authorEmail>peter@nonumber.nl</authorEmail>
+	<authorUrl>http://www.nonumber.nl</authorUrl>
+	<copyright>Copyright © 2014 NoNumber All Rights Reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+
+	<administration>
+		<menu>com_advancedtemplates</menu>
+	</administration>
+
+	<!-- Installation -->
+	<scriptfile>script.advancedtemplates.php</scriptfile>
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">uninstall.advancedtemplates.sql</file>
+		</sql>
+	</uninstall>
+
+	<updateservers>
+		<server type="extension" priority="1" name="com_advancedtemplates"><![CDATA[http://download.nonumber.nl/updates.php?e=advancedtemplatemanager&]]></server>
+	</updateservers>
+</extension>

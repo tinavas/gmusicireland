@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="content" method="upgrade">
+
+	<name>Content - Rich Snippets Vote</name>
+	<author>Marcu Alin</author>
+	<creationDate>Feb 2012</creationDate>
+	<copyright>Copyright (C) 2010 deconf.com. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorUrl>http://deconf.com/</authorUrl>
+	<version>2.5.1</version>
+	<description>	<![CDATA[
+	<u>Rich Snippets Vote</u><br /><br />For help, support and FAQ visit: <a href='http://deconf.com' target='_blank'>Rich Snippets Vote</a>.<br /><br />
+	]]></description>
+	<files>
+		<filename plugin="richsnippetsvote">richsnippetsvote.php</filename>
+		<filename plugin="richsnippetsvote">index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">languages/en-GB/en-GB.plg_content_richsnippetsvote.ini</language>
+	</languages>	
+  <config>
+  
+  <fields name="params" addfieldpath="/plugins/content">
+  
+  <fieldset name="basic">
+	
+	  <field name="showtousers" type="list" default="0" label="RSV_SHOWTOUSERS" description="RSV_SHOWTOUSERS_DESC">
+			<option value="0">RSV_NO</option>
+			<option value="1">RSV_YES</option>
+	  </field>	 
+	  <field name="counttype" type="list" default="0" label="RSV_COUNTTYPE" description="RSV_COUNTTYPE_DESC">
+			<option value="1">RSV_RATINGS</option>
+			<option value="0">RSV_VOTES</option>
+	  </field>
+	  <field name="rsvposition" type="list" default="1" label="RSV_POSITION" description="RSV_POSITION_DESC">
+			<option value="1">RSV_BEFORE</option>
+			<option value="2">RSV_AFTER</option>
+	  </field>	  	  
+  </fieldset>
+  </fields>
+</config>
+</extension>

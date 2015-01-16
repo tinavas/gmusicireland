@@ -1,0 +1,145 @@
+/*
+<header class="header" role="banner">
+	<div class="container">
+		<div class="header-inner clearfix">
+			<a class="brand pull-left" href="/gmusicireland">
+			<nav class="navigation pull-right" role="navigation">
+					<ul class="nav menu nav-pills">
+					<li class="item-101">
+						<a href="/gmusicireland/">HOME</a>
+					</li>
+					<li class="item-132 current active">
+					<li class="item-133">
+					<li class="item-134">
+					<li class="item-135">
+					<li class="item-145">
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<div class="header-search pull-right"> </div>
+</header>
+*/
+
+.nav > li > a,
+.nav > li > a {	
+	border-top: 0 !important;
+	margin-top: -1px !important;
+}
+/* Nav background color on hover */
+.nav > li > a:hover,
+.nav > li > a:focus {
+	text-decoration: none;
+	background-color: #E7294A;	
+	border-top: 0;
+	/*margin-top: -1px !important;*/
+}
+.nav > li.active > a:hover {
+	background-color: #EC516C;
+}
+.nav > li > a.btn-search-custom:hover,
+.nav > li > a.btn-search-custom:focus {
+	text-decoration: none;
+	background-color: transparent;
+	border-top: 0 !important;
+	/*margin-top: -1px !important;*/
+}
+.nav-pills > li > a {
+	/*padding-right: 12px;
+	padding-left: 12px;
+	margin-right: 2px;*/
+	font-size: 25px;
+	height: 80px;
+	line-height: 80px;
+}
+/* button font color */
+.nav-pills > li > a {
+	padding-top: 8px;
+	padding-bottom: 8px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	color: #FFFFFF;
+	transition: all 0.3s;
+}
+.nav-pills > li > a.btn-search-custom {
+	padding: 0;
+	margin: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	-moz-transition-property: none;
+	-webkit-transition-property: none;
+	-o-transition-property: none;
+	transition-property: none;	
+}
+.nav-pills > li > a.btn-search-custom > img {	
+	padding: 0;
+	line-height: 0px;
+	margin-top: -7px;
+	
+}
+.navigation .nav-child li > a:hover,
+.navigation .nav-child li > a:focus,
+.navigation .nav-child:hover > a {
+	text-decoration: none;
+	color: #fff;
+	background-color: #fff;
+	/*background-color: #0081c2;*/
+	background-image: -moz-linear-gradient(top,#fff,#E7294A);
+	background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#E7294A));
+	background-image: -webkit-linear-gradient(top,#fff,#E7294A);
+	background-image: -o-linear-gradient(top,#fff,#E7294A);
+	background-image: linear-gradient(to bottom,#fff,#E7294A);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0076b2', GradientType=0);
+}
+
+
+/* change the background color of the active menu */
+.navigation .navbar-inner,
+.navigation .nav-list > .active > a,
+.navigation .nav-list > .active > a:hover,
+.navigation .dropdown-menu li > a:hover,
+.navigation .dropdown-menu .active > a,
+.navigation .dropdown-menu .active > a:hover,
+.navigation .nav-pills > .active > a,
+.navigation.nav-pills > .active > a:hover,
+.navigation.btn-primary
+{
+  border-radius: 0;
+}
+
+header,
+.header,
+.navigation,
+.container {
+	padding-bottom: 0;	
+	padding-top: 0;
+	margin-bottom: 0;	
+	margin-top: 0;
+}
+.navigation .nav  a {
+	padding-bottom: 0;	
+	padding-top: 0;
+	margin-bottom: 0;	
+	margin-top: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+.navigation {
+    border-top: 0;
+    border-bottom: 0;
+}
+header.header-social-media {
+	border-bottom: 1px solid #666666;
+	padding-top: 4px;
+	/*padding-bottom: 4px;*/
+	margin-bottom: 0;
+}
+header.header-menu {
+	margin-bottom: 20px;
+}

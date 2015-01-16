@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+		<meta name="author" content="caroufredsel.dev7studios.com" />
+	<link rel="stylesheet" type="text/css" href="bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap-responsive.css">
+		<title>carouFredSel: a circular, responsive jQuery carousel</title>
+
+		<style type="text/css" media="all">
+			.list_carousel {
+				background-color: #ccc;
+				margin: 0 0 30px 60px;
+				width: 360px;
+			}
+			.list_carousel ul {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				display: block;
+			}
+			.list_carousel li {
+				font-size: 40px;
+				color: #999;
+				text-align: center;
+				background-color: #eee;
+				border: 5px solid #999;
+				width: 50px;
+				height: auto;
+				padding: 0;
+				margin: 6px;
+				display: block;
+				float: left;
+			}
+			.list_carousel.responsive {
+				width: 100%;
+				margin-left: 0;
+				margin: 0 auto;
+				
+			}
+			.clearfix {
+				float: none;
+				clear: both;
+			}
+			.prev {
+				float: left;
+				margin-left: 10px;
+			}
+			.next {
+				float: right;
+				margin-right: 10px;
+			}
+			.pager {
+				float: left;
+				width: 300px;
+				text-align: center;
+			}
+			.pager a {
+				margin: 0 5px;
+				text-decoration: none;
+			}
+			.pager a.selected {
+				text-decoration: underline;
+			}
+			.timer {
+				background-color: #999;
+				height: 6px;
+				width: 0px;
+			}
+		</style>
+	</head>
+	<body>
+		<p style="text-align: center;">Responsive layout example resizing the items (resize your browser).</p>
+<div class="tabbable">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#pane1" data-toggle="tab">Tab 1</a></li>
+    <li><a href="#pane2" data-toggle="tab">Tab 2</a></li>
+    <li><a href="#pane3" data-toggle="tab">Tab 3</a></li>
+    <li><a href="#pane4" data-toggle="tab">Tab 4</a></li>
+  </ul>
+  <div class="tab-content">
+  
+    <div id="pane1" class="tab-pane active">
+      <h4>The Markup</h4>
+      <div class="list_carousel responsive">
+			<ul id="foo4">
+				<li>
+					<div>header</div>
+					<div>thumbnali</div>
+					<div>desc</div><div>header</div>
+					<div>thumbnali</div>
+					<div>desc</div>
+				</li>
+				<li>a</li>
+				<li>r</li>
+				<li>o</li>
+				<li>u</li>
+				<li>F</li>
+				<li>r</li>
+				<li>e</li>
+				<li>d</li>
+				<li>S</li>
+				<li>e</li>
+				<li>l</li>
+				<li> </li>
+			</ul>
+			<div class="clearfix"></div>
+				<a id="prev2" class="prev" href="#">&lt;</a>
+				<a id="next2" class="next" href="#">&gt;</a>
+				<div id="pager2" class="pager"></div>
+		</div>
+    </div>
+	
+    <div id="pane2" class="tab-pane">
+    <h4>Pane 2 Content</h4>
+      <div class="list_carousel responsive">
+			<ul id="foox">
+				<li>
+					<div>header</div>
+					<div>thumbnali</div>
+					<div>desc</div><div>header</div>
+					<div>thumbnali</div>
+					<div>desc</div>
+				</li>
+				<li>a</li>
+				<li>r</li>
+				<li>o</li>
+				<li>u</li>
+				<li>F</li>
+				<li>r</li>
+				<li>e</li>
+				<li>d</li>
+				<li>S</li>
+				<li>e</li>
+				<li>l</li>
+				<li> </li>
+			</ul>
+			<div class="clearfix"></div>
+				<a id="prev2x" class="prev" href="#">&lt;</a>
+				<a id="next2x" class="next" href="#">&gt;</a>
+				<div id="pager2x" class="pager"></div>
+		</div>
+    </div>
+    <div id="pane3" class="tab-pane">
+      <h4>Pane 3 Content</h4>
+    </div>
+    <div id="pane4" class="tab-pane">
+      <h4>Pane 4 Content</h4>
+    </div>
+  </div><!-- /.tab-content -->
+</div><!-- /.tabbable -->
+		
+		
+		
+<!-- include jQuery + carouFredSel plugin -->
+
+<script type="text/javascript" language="javascript" src="jquery-1.8.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="jquery.carouFredSel-6.2.0-packed.js"></script>
+
+<!-- optionally include helper plugins -->
+<script type="text/javascript" language="javascript" src="helper-plugins/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" language="javascript" src="helper-plugins/jquery.touchSwipe.min.js"></script>
+<script type="text/javascript" language="javascript" src="helper-plugins/jquery.transit.min.js"></script>
+<script type="text/javascript" language="javascript" src="helper-plugins/jquery.ba-throttle-debounce.min.js"></script>
+
+<!-- fire plugin onDocumentReady -->
+<script type="text/javascript" language="javascript">
+$(function() {
+	//	Responsive layout, resizing the items
+	$('#foo4').carouFredSel({
+		auto: true,
+		responsive: true,
+		prev: '#prev2',
+		next: '#next2',
+		pagination: "#pager2",
+		mousewheel: true,
+		scroll: 1,
+		items: {
+			width: 100,
+			//	height: '30%',	//	optionally resize item-height
+			visible: {
+				min: 1,
+				max: 6
+			}
+		}
+	});
+});
+$(function() {
+	//	Responsive layout, resizing the items
+	$('#foox').carouFredSel({
+		auto: true,
+		responsive: true,
+		prev: '#prev2x',
+		next: '#next2x',
+		pagination: "#pager2x",
+		mousewheel: true,
+		scroll: 1,
+		items: {
+			width: 400,
+			//	height: '30%',	//	optionally resize item-height
+			visible: {
+				min: 1,
+				max: 6
+			}
+		}
+	});
+});
+</script>
+	</body>
+</html>

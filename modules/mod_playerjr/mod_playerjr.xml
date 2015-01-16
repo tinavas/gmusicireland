@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension>
+<!--
+/**
+*Jw Player Module : mod_playerjr
+* @version $Id$
+* @package mod_playerjr
+* @subpackage mod_playerjr.j25.xml
+* @author joomlarulez.
+* @copyright (C) www.joomlarulez.com
+* @license Limited  http://www.gnu.org/licenses/gpl.html
+* @final 3.11.0
+*/
+-->
+<extension type="module" version="2.5.0" client="site" method="upgrade">
+    <name>JW Player Module</name>
+	<author>JoomlaRuleZ.com</author>
+	<creationDate>2014-12-20</creationDate>
+	<copyright>(C) 2009-2014 JoomlaRuleZ.com</copyright>
+	<license>http://www.gnu.org/licenses/gpl.html</license>
+	<authorEmail>webmaster@joomlarulez.com</authorEmail>
+	<authorUrl>www.joomlarulez.com</authorUrl>
+	<version>3.11.0</version>
+	<description>MOD_PLAYERJR_XML_DESCRIPTION</description>
+	<scriptfile>install.script.php</scriptfile>
+    <files>
+        <filename module="mod_playerjr">mod_playerjr.php</filename>
+		<filename>index.html</filename>
+        <filename>helper.php</filename>
+		<folder>tmpl</folder>
+		<folder>includes</folder>
+		<folder>library</folder>
+    </files>
+	<media folder="media" destination="jwadvanced">
+		<filename>Box-JWplayer-module.png</filename>
+		<folder>player</folder>
+	</media>
+    <languages>
+    	<language tag="en-GB">language/en-GB/en-GB.mod_playerjr.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_playerjr.sys.ini</language>
+  	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="PLAYERJR_PLAYLIST">
+				<field name="MOD_PLAYERJR_DESC_PLAYLIST" type="spacer" default="" />
+				<field name="mod_plselect" type="list" default="0" label="MOD_PLAYERJR_LABEL_PLAYLISTORI" description="MOD_PLAYERJR_DESC_PLAYLISTORI">
+					<option value="0">MOD_PLAYERJR_VALUE_PLAYLISTSELRSSLI</option>
+					<option value="1">MOD_PLAYERJR_VALUE_PLAYLISTSELSINLI</option>
+				</field>
+				<field name="mod_plfile" type="text" default="http://www.joomlarulez.com/images/stories/playlist/big_buck_bunny/big_buck_bunny.xml" label="MOD_PLAYERJR_LABEL_PLAYLISTRSSFL" description="MOD_PLAYERJR_DESC_PLAYLISTRSSFL" size="70" />
+				<field name="MOD_PLAYERJR_DESC_THUMB" type="spacer" default="" />
+				<field name="Playlistimage" type="text" default="" label="MOD_PLAYERJR_LABEL_THUMBLI" description="MOD_PLAYERJR_DESC_THUMBLI" size="70" />
+			</fieldset>
+			<fieldset name="PLAYERJR_LAYOUT">
+				<field name="MOD_PLAYERJR_DESC_LAYOUT" type="spacer" default="" />
+				<field name="Playlistplaylist" type="list" label="MOD_PLAYERJR_LABEL_POSITION" default="none" description="MOD_PLAYERJR_DESC_POSITION">
+					<option value="none">MOD_PLAYERJR_VALUE_NONE</option>
+					<option value="bottom">MOD_PLAYERJR_VALUE_BOTTOM</option>
+					<option value="right">MOD_PLAYERJR_VALUE_RIGHT</option>
+				</field>
+				<field name="Playlistcontrols" type="radio" class="btn-group" default="1" label="MOD_PLAYERJR_LABEL_CONTROLS" description="MOD_PLAYERJR_DESC_CONTROLS">
+					<option value="0">MOD_PLAYERJR_VALUE_NO</option>
+					<option value="1">MOD_PLAYERJR_VALUE_YES</option>
+				</field>
+				<field name="Playlistplaylistsize" type="text" default="180" label="MOD_PLAYERJR_LABEL_SIZE" description="MOD_PLAYERJR_DESC_SIZE" size="4" /> 
+				<field name="Playlistheight" type="text" default="270" label="MOD_PLAYERJR_LABEL_HEIGHT" description="MOD_PLAYERJR_DESC_HEIGHT" size="4" /> 
+				<field name="Playlistwidth" type="text" default="480" label="MOD_PLAYERJR_LABEL_WIDTH" description="MOD_PLAYERJR_DESC_WIDTH" size="4" /> 
+			</fieldset>
+			<fieldset name="PLAYERJR_BEHAVIOUR">
+				<field name="MOD_PLAYERJR_DESC_BEHAVIOUR" type="spacer" default="" />
+				<field name="Playlistautostart" type="radio" class="btn-group" default="0" label="MOD_PLAYERJR_LABEL_BEHAVIOURAUTOSTART" description="MOD_PLAYERJR_DESC_BEHAVIOURAUTOSTART">
+					<option value="0">MOD_PLAYERJR_VALUE_NO</option>
+					<option value="1">MOD_PLAYERJR_VALUE_YES</option>
+				</field>
+				<field name="Playlistrepeat" type="radio" class="btn-group" default="0" label="MOD_PLAYERJR_LABEL_BEHAVIOURREPEAT" description="MOD_PLAYERJR_DESC_BEHAVIOURREPEAT">
+					<option value="0">MOD_PLAYERJR_VALUE_NO</option>
+					<option value="1">MOD_PLAYERJR_VALUE_YES</option>
+				</field>
+				<field name="Playliststretching" type="list" default="uniform" label="MOD_PLAYERJR_LABEL_BEHAVIOURSTRETCH" description="MOD_PLAYERJR_DESC_BEHAVIOURSTRETCH">
+					<option value="none">MOD_PLAYERJR_VALUE_NONE</option>
+					<option value="exactfit">MOD_PLAYERJR_VALUE_EXFIT</option>
+					<option value="uniform">MOD_PLAYERJR_VALUE_UNI</option>
+					<option value="fill">MOD_PLAYERJR_VALUE_FILL</option>
+				</field>
+				<field name="Playlistmute" type="radio" class="btn-group" default="0" label="MOD_PLAYERJR_LABEL_BEHAVIOURMUTE" description="MOD_PLAYERJR_DESC_BEHAVIOURMUTE">
+					<option value="0">MOD_PLAYERJR_VALUE_NO</option>
+					<option value="1">MOD_PLAYERJR_VALUE_YES</option>
+				</field>
+			</fieldset>
+			<fieldset name="PLAYERJR_GLOBAL">
+				<field name="MOD_PLAYERJR_DESC_GLOBAL" type="spacer" default="" />
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_PLAYERJR_LABEL_GLOBALCLASS" description="MOD_PLAYERJR_DESC_GLOBALCLASS" />
+				<field name="PlaylistFlashinstall" type="radio" class="btn-group" label="MOD_PLAYERJR_LABEL_GLOBALFI" default="1" description="MOD_PLAYERJR_DESC_GLOBALFI">
+					<option value="0">MOD_PLAYERJR_VALUE_NO</option>
+					<option value="1">MOD_PLAYERJR_VALUE_YES</option>
+				</field>
+				<field name="MOD_PLAYERJR_DESC_JOOMLARULEZLINK" type="spacer" default="" />
+				<field name="Playlistjoomlarulezlink" type="radio" class="btn-group" label="MOD_PLAYERJR_LABEL_JRLINK" default="1" description="MOD_PLAYERJR_DESC_JRLINK">
+					<option value="0">MOD_PLAYERJR_VALUE_NO</option>
+					<option value="1">MOD_PLAYERJR_VALUE_YES</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

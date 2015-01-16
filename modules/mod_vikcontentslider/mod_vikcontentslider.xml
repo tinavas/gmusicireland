@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.6.0" client="site" method="upgrade">
+  <name>VikContentSlider</name>
+  <author>Valentina Arras - Extensionsforjoomla.com</author>
+  <creationDate>January 2014</creationDate>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <authorEmail>tech@extensionsforjoomla.com</authorEmail>
+  <authorUrl>www.extensionsforjoomla.com</authorUrl>
+  <version>1.0</version>
+  <description>
+  <![CDATA[ 
+  <div style="font-weight:normal; font-size:13px;">
+  <h2 style="color:#666; font-size:22px; font-weight:normal; border-bottom:1px solid #ddd;">Vik Content Slider</h2>
+  <p>Module to create Image or Content Slideshows.<br/><strong>How-to:</strong><br />
+   This module allow you to create a slider of differents type of content.<br />
+Before to configure it you need to create the “vikcslider” folder inside the “Images” folder of Joomla and upload there the vikcslider images. <br />
+After you do it, you have five fields for each image:<br />
+- <strong>Background image</strong><br />
+This field allow you to choose an image as background for the slide.<br />
+- <strong>Image</strong><br />
+This field allow you to choose an image that will appears over the background image choosed in the first field<br />
+- <strong>Title slide</strong><br />
+In this field you can write the title of your slide<br />
+- <strong>Text</strong><br />
+This is the field for the description of your slide<br />
+- <strong>Read More Link</strong><br />
+In this field you may to insert a link for your slide<br />
+
+You can configure VikContentSlider, so go to Extensions > Module Manager, edit the VikContentSlider module and set up width of the slider, pay attention to write your value with the unit “px” or “%” like the default value.</p>
+  <div style="font-size:12px; float:right;"><a style="color:#666;" href="http://extensionsforjoomla.com/" target="_blank">Copyright Extensions For Joomla</a></div>
+  
+  </div>]]>
+  </description>
+ 
+  <files>
+    <filename module="mod_vikcontentslider">mod_vikcontentslider.php</filename>
+    <filename>mod_vikcontentslider.xml</filename>
+    <filename>index.html</filename>
+    <folder>src</folder>
+    <folder>php</folder>
+  </files>
+ 
+  <languages>
+        <language tag="en-GB">languages/en-GB/en-GB.mod_vikcontentslider.ini</language>
+  </languages>
+ 
+  <config>
+    <fields name="params">
+    <fieldset name="basic" addfieldpath="/modules/mod_vikcontentslider/php">
+   
+    <field name="Header01" type="header" default="VIKSLIDE_01" label="" description="" />
+    
+    <field name="vikcontentsliderback_1" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEBACKGROUND" description="SLIDEBACKGROUNDDESC" />    
+    <field name="vikcontentsliderimg_1" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEIMG" description="SLIDEIMGDESC" />    
+    <field name="title_1" type="text" default="" label="VIKTITLE" description="VIKTITLEDESC" />
+    <field name="text_1" type="text" default="" label="VIKTEXT" description="VIKTEXTDESC" />
+	  <field name="readmore_1" type="text" default="" label="READMORE" description="READMOREDESC" />
+	
+    <field name="Header02" type="header" default="VIKSLIDE_02" label="" description="" />
+
+    <field name="vikcontentsliderback_2" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEBACKGROUND" description="SLIDEBACKGROUNDDESC" />    
+    <field name="vikcontentsliderimg_2" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEIMG" description="SLIDEIMGDESC" />
+    <field name="title_2" type="text" default="" label="VIKTITLE" description="VIKTITLEDESC" />
+    <field name="text_2" type="text" default="" label="VIKTEXT" description="VIKTEXTDESC" />
+    <field name="readmore_2" type="text" default="" label="READMORE" description="READMOREDESC" />
+	
+    <field name="Header03" type="header" default="VIKSLIDE_03" label="" description="" />
+
+    <field name="vikcontentsliderback_3" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEBACKGROUND" description="SLIDEBACKGROUNDDESC" />   
+    <field name="vikcontentsliderimg_3" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEIMG" description="SLIDEIMGDESC" /> 
+    <field name="title_3" type="text" default="" label="VIKTITLE" description="VIKTITLEDESC" />
+    <field name="text_3" type="text" default="" label="VIKTEXT" description="VIKTEXTDESC" />
+  	<field name="readmore_3" type="text" default="" label="READMORE" description="READMOREDESC" />
+	
+    <field name="Header04" type="header" default="VIKSLIDE_04" label="" description="" />
+
+    <field name="vikcontentsliderback_4" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEBACKGROUND" description="SLIDEBACKGROUNDDESC" />    
+    <field name="vikcontentsliderimg_4" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEIMG" description="SLIDEIMGDESC" />
+    <field name="title_4" type="text" default="" label="VIKTITLE" description="VIKTITLEDESC" />
+    <field name="text_4" type="text" default="" label="VIKTEXT" description="VIKTEXTDESC" />
+	  <field name="readmore_4" type="text" default="" label="READMORE" description="READMOREDESC" />
+	 
+    <field name="Header05" type="header" default="VIKSLIDE_05" label="" description="" />
+
+    <field name="vikcontentsliderback_5" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEBACKGROUND" description="SLIDEBACKGROUNDDESC" />   
+    <field name="vikcontentsliderimg_5" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEIMG" description="SLIDEIMGDESC" />
+    <field name="title_5" type="text" default="" label="VIKTITLE" description="VIKTITLEDESC" />
+    <field name="text_5" type="text" default="" label="VIKTEXT" description="VIKTEXTDESC" />
+	  <field name="readmore_5" type="text" default="" label="READMORE" description="READMOREDESC" />
+	
+	  <field name="Header06" type="header" default="VIKSLIDE_06" label="" description="" />
+
+    <field name="vikcontentsliderback_6" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEBACKGROUND" description="SLIDEBACKGROUNDDESC" />
+    <field name="vikcontentsliderimg_6" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEIMG" description="SLIDEIMGDESC" />        
+    <field name="title_6" type="text" default="" label="VIKTITLE" description="VIKTITLEDESC" />
+    <field name="text_6" type="text" default="" label="VIKTEXT" description="VIKTEXTDESC" />
+	<field name="readmore_6" type="text" default="" label="READMORE" description="READMOREDESC" />
+	
+	<field name="Header07" type="header" default="VIKSLIDE_07" label="" description="" />
+
+    <field name="vikcontentsliderback_7" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEBACKGROUND" description="SLIDEBACKGROUNDDESC" /> 
+    <field name="vikcontentsliderimg_7" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEIMG" description="SLIDEIMGDESC" /> 
+    <field name="title_7" type="text" default="" label="VIKTITLE" description="VIKTITLEDESC" />
+    <field name="text_7" type="text" default="" label="VIKTEXT" description="VIKTEXTDESC" />
+	  <field name="readmore_7" type="text" default="" label="READMORE" description="READMOREDESC" />
+	
+	  <field name="Header08" type="header" default="VIKSLIDE_08" label="" description="" />
+
+    <field name="vikcontentsliderback_8" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEBACKGROUND" description="SLIDEBACKGROUNDDESC" />   
+    <field name="vikcontentsliderimg_8" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEIMG" description="SLIDEIMGDESC" /> 
+    <field name="title_8" type="text" default="" label="VIKTITLE" description="VIKTITLEDESC" />
+    <field name="text_8" type="text" default="" label="VIKTEXT" description="VIKTEXTDESC" />
+	  <field name="readmore_8" type="text" default="" label="READMORE" description="READMOREDESC" />
+	
+	  <field name="Header09" type="header" default="VIKSLIDE_09" label="" description="" />
+
+    <field name="vikcontentsliderback_9" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEBACKGROUND" description="SLIDEBACKGROUNDDESC" />   
+    <field name="vikcontentsliderimg_9" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEIMG" description="SLIDEIMGDESC" /> 
+    <field name="title_9" type="text" default="" label="VIKTITLE" description="VIKTITLEDESC" />
+    <field name="text_9" type="text" default="" label="VIKTEXT" description="VIKTEXTDESC" />
+	  <field name="readmore_9" type="text" default="" label="READMORE" description="READMOREDESC" />
+	
+  <field name="Header10" type="header" default="VIKSLIDE_10" label="" description="" />
+
+    <field name="vikcontentsliderback_10" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEBACKGROUND" description="SLIDEBACKGROUNDDESC" />    
+    <field name="vikcontentsliderimg_10" type="filelist" directory="/images/vikcslider" hide_default="1" default="" label="SLIDEIMG" description="SLIDEIMGDESC" />
+    <field name="title_10" type="text" default="" label="VIKTITLE" description="VIKTITLEDESC" />
+    <field name="text_10" type="text" default="" label="VIKTEXT" description="VIKTEXTDESC" />
+	 <field name="readmore_10" type="text" default="" label="READMORE" description="READMOREDESC" />
+	
+    
+
+  </fieldset>
+  <fieldset name="slideroptions" label="SLIDEROPTIONS" addfieldpath="/modules/mod_vikcontentslider/elements">
+    <field name="width" type="text" default="100%" label="DIVWIDTH" description="DIVWIDTH" /> 
+    <field name="interval" type="text" default="4000" label="INTERVAL" description="INTERVALDESC" />
+
+    <field 
+      name="autoplay"
+      type="radio"
+      default="0" 
+      label="AUTOPLAY" 
+      description="AUTOPLAYDESC">
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+    
+<field name="navigation" type="radio" default="0" label="NAVIG" description="NAVIGDESC">
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+
+    <field name="dotsnav" type="radio" default="0" label="DOTS" description="DOTSDESC">
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+
+    <field name="navdotsdalign" type="list" default="center" label="NAVDOTSALIGN" description="NAVDOTSALIGNDESC">
+      <option value="center">CENTER</option>
+      <option value="left">LEFT</option>
+      <option value="right">RIGHT</option>
+    </field>
+
+    <field name="loadjq" type="radio" default="1" label="LOADJQ" description="LOADJQDESC">
+      <option value="1">JYES</option>
+      <option value="0">JNO</option>
+    </field>
+
+    <field name="readmoretext" type="text" default="Read More" label="READMTEXT" description="READMTEXTDESC" />
+     <field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+    
+  </fieldset>
+
+</fields></config>
+
+</extension>
+

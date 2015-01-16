@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5.5" type="plugin" group="content" method="upgrade">
+    <name>Content - OSMeta Content</name>
+    <author>OSTraining</author>
+    <creationDate>Jan 11, 2014</creationDate>
+    <copyright>Copyright (C) 2011, 2014 OSTraining.com. All rights reserved.</copyright>
+    <license>GPL v3</license>
+    <authorEmail>info@ostraining.com</authorEmail>
+    <authorUrl>http://www.ostraining.com</authorUrl>
+    <version>1.0.2</version>
+    <description>OSMeta is an extension to easily manage titles, descriptions and keywords for Joomla articles</description>
+
+    <files>
+        <filename plugin="osmetacontent">osmetacontent.php</filename>
+        <folder>sql</folder>
+        <folder>forms</folder>
+    </files>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+</extension>

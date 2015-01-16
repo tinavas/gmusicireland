@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.2" type="component" method="upgrade">
+	<name>COM_DBREPLACER</name>
+	<description>COM_DBREPLACER_DESC</description>
+	<version>3.2.0FREE</version>
+	<creationDate>July 2014</creationDate>
+	<author>NoNumber (Peter van Westen)</author>
+	<authorEmail>peter@nonumber.nl</authorEmail>
+	<authorUrl>http://www.nonumber.nl</authorUrl>
+	<copyright>Copyright © 2014 NoNumber All Rights Reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+
+	<administration>
+		<menu img="../media/dbreplacer/images/icon_dbreplacer.png">COM_DBREPLACER</menu>
+	</administration>
+</extension>

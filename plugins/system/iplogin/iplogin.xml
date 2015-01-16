@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.2" type="plugin" group="system">
+	<name>PLG_SYSTEM_IPLOGIN</name>
+	<description>PLG_SYSTEM_IPLOGIN_DESC</description>
+	<version>1.2.5FREE</version>
+	<creationDate>August 2014</creationDate>
+	<author>NoNumber (Peter van Westen)</author>
+	<authorEmail>peter@nonumber.nl</authorEmail>
+	<authorUrl>http://www.nonumber.nl</authorUrl>
+	<copyright>Copyright © 2014 NoNumber All Rights Reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+
+	<!-- Files -->
+	<files>
+		<filename plugin="iplogin">iplogin.php</filename>
+		<filename>index.html</filename>
+	</files>
+
+	<!-- Parameters -->
+	<config>
+		<fields name="params" addfieldpath="/plugins/system/nnframework/fields">
+			<fieldset name="description">
+				<field name="@loadlanguage_nnframework" type="nn_loadlanguage" extension="plg_system_nnframework" />
+				<field name="@loadlanguage" type="nn_loadlanguage" extension="plg_system_iplogin" />
+				<field name="@license" type="nn_license" extension="IPLOGIN" />
+				<field name="@version" type="nn_version" extension="IPLOGIN" />
+				<field name="@header" type="nn_header"
+					label="IPLOGIN"
+					description="IPLOGIN_DESC"
+					url="http://www.nonumber.nl/iplogin" />
+			</fieldset>
+			<fieldset name="basic">
+				<field name="remove_key" type="radio" class="btn-group" default="1" label="IPL_REMOVE_KEY" description="IPL_REMOVE_KEY_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+					<option value="admin">NN_ADMIN</option>
+					<option value="site">NN_FRONTEND</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

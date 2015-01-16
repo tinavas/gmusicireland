@@ -1,0 +1,430 @@
+/* Sticky Footer - START */
+/*html, body {
+	height: 100%;
+}  Sticky Footer */
+
+/*#wrap {min-height: 100%;}  Sticky Footer */
+/*.body {overflow:auto; padding-bottom: 0px;}   Sticky Footer - must be same height as the footer */
+/*footer {position: relative; margin-top: -0px;  negative value of footer height */ /*height: 0px; clear:both;}  Sticky Footer */
+/*body:before {content:"";	height:100%; float:left; width:0; margin-top:-32767px;/}  Sticky Footer - Opera Fix */
+/* Sticky Footer - END */
+
+/* Sticky Footer - START */
+html, body {
+    height: 100%;
+} /* Sticky Footer */
+#wrap {min-height: 70%;} /* Sticky Footer */
+.body{
+    overflow:auto;
+    padding-bottom: 0px;
+}  /* Sticky Footer - must be same height as the footer */
+footer {
+    position: relative;
+    margin-top: 0px; /* negative value of footer height */
+    min-height: 200px; clear:both;
+} /* Sticky Footer */
+body:before {
+    content:"";
+    height:100%;
+    float:left;
+    width:0;
+    margin-top:-32767px;
+} /* Sticky Footer - Opera Fix */
+/* Sticky Footer - END */
+
+footer {
+    background-color: #222325;
+    color: white;
+    padding: 30px 0;
+}
+.sudo-footer {
+    /*margin-top: 10px;*/
+    background-color: #222325;
+    height: 5px;
+    margin-top: 20px;
+}
+.sudo-footer-spacer {
+    background-color: #222325;
+    height: 5px;
+}
+/* Breadcrumbs */
+section.breadcrumbs {
+    background-color: #646473;
+    padding: 0;
+    margin: 0;
+}
+
+/* Breadcrumb Default - Begin */
+.toUppercase {
+    text-transform: uppercase;
+}
+.breadcrumb {
+    padding: 0px;
+    margin: 0;
+}
+.breadcrumb > a, .breadcrumb > span {
+    display: block;
+    float: left;
+    font-size: 12px;
+    line-height: 36px;
+    color: white;
+    /*need more margin on the left of links to accomodate the numbers*/
+    background: #646473;
+    position: relative;
+}
+.breadcrumb > a {
+    padding: 0 10px 0 40px;
+    text-decoration: none;
+    text-transform: uppercase;
+    outline: none;
+}
+/*since the first link does not have a triangle before it we can
+ reduce the left padding to make it look consistent with other links*/
+.breadcrumb > span:first-child {
+    padding-left: 10px; /* 46 */
+    padding-right: 10px; /* 20 */
+    /* border-radius: 5px 0 0 5px; to match with the parent's radius*/
+}
+.breadcrumb span:first-child:before {
+    left: 14px;
+}
+.breadcrumb  span:last-child{
+    /*border-radius: 0 5px 5px 0; this was to prevent glitches on hover*/
+    padding-left: 20px;
+    padding-right: 10px; /* 20 */
+}
+/*hover/active styles*/
+.breadcrumb a.active, .breadcrumb a:hover{
+    background: #E62948;
+}
+.breadcrumb > a.active:after, .breadcrumb > a:hover:after {
+    background: #E62948;
+}
+/*adding the arrows for the breadcrumbs using rotated pseudo elements*/
+.breadcrumb > a:after, .breadcrumb > span:first-child:after  {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -18px; /*half of square's length*/
+    /*same dimension as the line-height of .breadcrumb a */
+    width: 36px;
+    height: 36px;
+    /*as you see the rotated square takes a larger height. which makes it tough to position it properly.
+    So we are going to scale it down so that the diagonals become equal to the line-height of the link.
+    We scale it to 70.7% because if square's:
+    length = 1; diagonal = (1^2 + 1^2)^0.5 = 1.414 (pythagoras theorem)
+    if diagonal required = 1; length = 1/1.414 = 0.707*/
+    transform: scale(0.707) rotate(45deg);
+    /*we need to prevent the arrows from getting buried under the next link*/
+    z-index: 1;
+    /*background same as links but the gradient will be rotated to compensate with the transform applied*/
+    background: #646473;
+    /*background: linear-gradient(135deg, #666, #333);
+    stylish arrow design using box shadow*/
+    box-shadow:
+    5px -5px 0 5px #222325,
+    5px -5px 0 5px #222325;
+    /*
+        5px - for rounded arrows and
+        50px - to prevent hover glitches on the border created using shadows*/
+    border-radius: 0 5px 0 50px;
+}
+/*we dont need an arrow after the last link*/
+.breadcrumb > a:last-child:after {
+    content: none;
+}
+
+.breadcrumb > a, .breadcrumb > a:after {
+    background: white;
+    color: black;
+    transition: all 0.5s;
+}
+.breadcrumb > a:before {
+    background: white;
+    box-shadow: 0 0 0 1px #ccc;
+}
+.breadcrumb > a:hover, .breadcrumb > a.active,
+.breadcrumb > a:hover:after, .breadcrumb > a.active:after{
+    color: white;
+}
+.breadcrumb .bread-home i {
+    color: white;
+}
+.breadcrumb .bread-home a:hover {
+    background-color: transparent;
+}
+.breadcrumb .bread-home i:hover {
+    color: #E62948;
+    background-color: transparent;
+}
+section.sudo-footer {
+    border-top: 4px solid #E62948;
+}
+
+/* Footer Menu */
+.nav-footer {
+    background-color: #404049;
+}
+.nav-footer > .container {
+	height: 27px;
+	padding: 15px 0;
+}
+.nav-footer > .container > .footermenu {
+    float: left;
+	height: 27px;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+.nav-footer  .footer-logo {
+    background-image: url("../../../images/gmi_logo_notext.png");
+    background-size: 100px auto;
+    float: left;
+    height: 27px;
+    width: 100px;
+	margin-right: 5px;
+}
+.nav-footer  .footer-logo a{
+    display: inline-block;
+	height: 27px;
+    text-decoration: none;
+    width: 100px;
+}
+.nav-footer  .footer-logo a:hover {
+    cursor: pointer;
+}
+.nav-footer .container ul {
+	float: left;
+	padding: 0;
+	margin-bottom: 0;	
+}
+.nav-footer .menu-footer > li {	
+    display: inline-block;
+	line-height: 27px;
+	font-size: 1.8em;
+    margin: 0 5px;
+}
+.nav-footer .menu-footer > li:last-child {    
+    margin-right: 0;
+}
+.nav-footer .menu-footer > li > a {
+    display: inline-block;
+    color: #FFFFFF;
+}
+.nav-footer .menu-footer > li > a:hover,
+.nav-footer .menu-footer > li > a:focus {
+    background-color: transparent;
+    color: #e62948;
+}
+.nav-footer .menu-footer > li.active > a{
+	color: #e62948;
+}
+.nav-footer .menu-footer > li.active > a:hover {
+	color: #EC516C;
+}
+.nav-footer > .container > .footersearch {
+    overflow: hidden;
+}
+.nav-footer > .container > .footersearch > div {
+	float: right;
+}
+.nav-footer > .container > .footersearch  > div > form {
+	padding: 0 !important;
+	margin-bottom: 0 !important;
+}
+.nav-footer > .container  > .footersearch > div > form > .finder > input,
+.nav-footer > .container  > .footersearch > div > form > .finder > button,
+.footer-subscribe .acysubbuttons input {	
+	border-radius: 0;
+	box-shadow: none;
+}
+.nav-footer > .container  > .footersearch > div > form > .finder > button,
+.footer-subscribe .acysubbuttons input {
+	border: /*1px solid #e62948*/ 0;
+	height: 28px;
+    line-height: 21px;
+}
+.nav-footer > .container  > .footersearch > div > form > .finder > button:hover,
+.nav-footer > .container  > .footersearch > div > form > .finder > button:focus,
+.footer-subscribe .acysubbuttons input:hover,
+.footer-subscribe .acysubbuttons input:focus {
+	background-color: #EC516C;
+}
+/* Links & Subscribe Section */
+.footer-socialmedia,
+.footer-newsfeed,
+.footer-corporate,
+.footer-subscribe,
+.footer-copy,
+.footer-logo,
+.footer-backtop {
+	color: #ddd;
+	/*border: 1px solid red;*/
+}
+.footer-socialmedia ul,
+.footer-newsfeed ul,
+.footer-corporate ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.footer-socialmedia ul li,
+.footer-newsfeed ul li,
+.footer-corporate ul li,
+.footer-subscribe > div {
+	margin: 5px auto !important;	
+}
+a.footer-sociallinks {
+	padding-left: 30px;
+	line-height: 26px;
+	text-decoration: none;
+	color: #ddd;
+}
+a.footer-sociallinks:hover {	
+	color: #EC516C;
+}
+/* GMI - Header style - News*/
+.footer-blocks-header{
+	display: inline-block;
+	height: 16px;
+	/*width: 100%;*/
+	background-color: none
+}
+.footer-socialmedia .page-header,
+.footer-newsfeed .page-header,
+.footer-corporate .page-header,
+.footer-subscribe .page-header {
+	margin: 2px 0 5px;
+    padding-bottom: 0px;
+    border-bottom: 0;
+	font-weight: normal;
+}
+.page-header.footer-blocks-header div:last-child {
+    margin-left: 15px;
+	padding-bottom: 4px;
+	height: 16px;
+	line-height: 16px;
+	padding-left: 7px;
+}
+
+.footer-socialmedia .page-header.footer-blocks-header div:first-child,
+.footer-newsfeed .page-header.footer-blocks-header div:first-child,
+.footer-corporate .page-header.footer-blocks-header div:first-child,
+.footer-subscribe .page-header.footer-blocks-header div:first-child   {	
+    float : left;
+    width: 16px;
+	height: 100%;
+}
+.footer-socialmedia .page-header.footer-blocks-header div:first-child {
+	background: url("../../../images/navigation/footer_social.png") no-repeat 0 0;
+}
+.footer-newsfeed .page-header.footer-blocks-header div:first-child {
+	background: url("../../../images/navigation/footer_newsfeed.png") no-repeat 0 0;
+}
+.footer-corporate .page-header.footer-blocks-header div:first-child {
+	background: url("../../../images/navigation/footer_corporate.png") no-repeat 0 0;
+}
+.footer-subscribe .page-header.footer-blocks-header div:first-child {
+	background: url("../../../images/navigation/footer_subscribe.png") no-repeat 0 0;
+}
+.footer-corporate li::before {
+	content: url("../../../images/navigation/arrow_right_bullet.png");	
+	padding-left: 5px;
+}
+.footer-corporate a {
+	text-decoration: none;
+	padding-left: 5px;
+	color: #ddd;
+}
+.footer-corporate a:hover {
+	color: #EC516C;
+}
+.footer hr {
+    border: 0;
+    height: 1px;
+    background: #4A4A4A;
+     
+}
+.footer-logo p {
+	float: right;
+	padding: 0;
+	margin: 0;
+}
+.footer-backtop {
+	text-align: center;
+}
+.footer-backtop a {
+	background: url("../../../images/navigation/backtop.png") no-repeat 0 -26px;
+	display: inline-block;
+	height: 26px;
+	width: 26px;
+	text-decoration: none;
+	color: #ddd;
+}
+.footer-backtop a:hover {
+	background-position: 0 -0;
+}
+.footer-corporate input[type="radio"], input[type="checkbox"] {
+    line-height: normal;
+    margin: 0;
+}
+.footer-subscribe div.acymailing_module,
+.footer-subscribe .acymailing_module div {
+    border-style: none !important;
+    margin: 5px 0 0 0 !important;
+    padding: 0 !important;
+}
+.footer-subscribe .onefield.fieldacyterms {
+margin: 2px 0 0 0 !important;
+}
+.footer-subscribe .acymailing_form > p {
+	margin-bottom: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+.footer-subscribe .acymailing_form > p input {
+	margin-bottom: 0 !important;
+}
+.footer-subscribe .acysubbuttons input{
+	text-transform: uppercase;	
+}
+.footer-subscribe .acysubbuttons {
+	text-align: right !important;	
+}
+.footer-subscribe .acymailing_form label a {
+	text-decoration: none;
+	color: #ddd;
+}
+.footer-subscribe .acymailing_form label a:hover {
+	color: #EC516C;
+}
+.footer-subscribe .acymailing_form input.inputbox {
+	background-color: #222325;
+	border-width: 2px;
+	border-color: #404049;
+	color: #ddd;
+}
+.footer-subscribe textarea:focus,
+.footer-subscribe input[type="text"]:focus,
+.footer-subscribe input[type="password"]:focus,
+.footer-subscribe input[type="datetime"]:focus,
+.footer-subscribe input[type="datetime-local"]:focus,
+.footer-subscribe input[type="date"]:focus,
+.footer-subscribe input[type="month"]:focus,
+.footer-subscribe input[type="time"]:focus,
+.footer-subscribe input[type="week"]:focus,
+.footer-subscribe input[type="number"]:focus,
+.footer-subscribe input[type="email"]:focus,
+.footer-subscribe input[type="url"]:focus,
+.footer-subscribe input[type="search"]:focus,
+.footer-subscribe input[type="tel"]:focus,
+.footer-subscribe input[type="color"]:focus,
+.footer-subscribe .uneditable-input:focus {
+	border-color: rgba(230,41,72, 0.5);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(230,41,72, 0.6);
+    outline: 0 none;
+} 
+@media (max-width: 980px) {
+    section.nav-footer,
+	section.breadcrumbs  {
+        display: none;
+    }
+}

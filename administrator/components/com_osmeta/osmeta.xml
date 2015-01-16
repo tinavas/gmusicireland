@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5.5" method="upgrade">
+    <name>OSMeta</name>
+    <author>OSTraining</author>
+    <creationDate>Jan 11, 2014</creationDate>
+    <copyright>Copyright (C) 2014 OSTraining.com</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <authorEmail>info@ostraining.com</authorEmail>
+    <authorUrl>http://www.ostraining.com</authorUrl>
+    <version>1.0.2</version>
+    <description>OSMeta is an extension to easily manage titles, descriptions and keywords for Joomla articles.</description>
+
+    <scriptfile>script.php</scriptfile>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8" folder="sql">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <files folder="site">
+        <filename>osmeta.php</filename>
+    </files>
+
+    <administration>
+        <menu img="../media/com_osmeta/admin/images/ostraining_logo_16x16.png">OSMeta</menu>
+
+        <files folder="admin">
+            <folder>classes</folder>
+            <folder>features</folder>
+            <folder>language</folder>
+            <folder>models</folder>
+            <folder>views</folder>
+            <folder>sql</folder>
+            <filename>controller.php</filename>
+            <filename>osmeta.php</filename>
+            <filename>config.xml</filename>
+        </files>
+
+        <languages folder="admin/language">
+            <language tag="en-GB">en-GB/en-GB.com_osmeta.ini</language>
+            <language tag="en-GB">en-GB/en-GB.com_osmeta.sys.ini</language>
+        </languages>
+    </administration>
+
+    <media destination="com_osmeta" folder="media">
+        <folder>admin</folder>
+    </media>
+
+    <updateservers>
+        <server type="extension" priority="1" name="OSMeta Package"><![CDATA[http://deploy.ostraining.com/updates/joomla/com_osmeta.xml]]></server>
+    </updateservers>
+</extension>

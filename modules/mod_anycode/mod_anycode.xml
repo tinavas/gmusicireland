@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.0" client="site" method="upgrade">
+	<name>AnyCode</name>
+	<author>Hyde-Design</author>
+	<creationDate>August 2012</creationDate>
+	<copyright>2012</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>sales@hyde-design.co.uk</authorEmail>
+	<authorUrl>www.hyde-design.co.uk</authorUrl>
+	<version>3.0</version>
+	<description>A simple Module to enable you to embed any code within a module position without fear of the code being stripped.</description>
+
+	<files>
+		<filename module="mod_anycode">mod_anycode.php</filename>
+	</files>
+	
+	<config>
+        <fields name="params">	
+		<fieldset name="basic">
+        <field name="@spacer_general" type="spacer" default="Enter your code below, it will be rendered as is." label="" description="" />
+		<field name="anycode" type="textarea"  filter="raw" default="" label="Any Code" description="Replace with your code." rows="34" cols="45"></field>
+	</fieldset>
+	
+		<fieldset name="advanced">
+        <field name="@spacer_general" type="spacer" default="Enter your code below, it will be rendered as is." label="" description="" />
+		<field name="urlsniffer" type="text" filter="raw" default="" label="URL Sniffer" description="Add an element of a URL here if you only wish the module to render on a page whose URL contains this element."></field>
+		<field name="browsersniffer" type="list" default="all" label="Browser Sniffer" description="Select if you wish your module to be rendered on a specific browser only.">
+             <option value="all">All Browsers</option>
+             <option value="msie">Internet Explorer</option>
+             <option value="firefox">FireFox</option>
+             <option value="safari">Safari</option>
+             <option value="chrome">Chrome</option>
+             <option value="opera">Opera</option>
+             <option value="iphone">iPhone</option>
+             <option value="ipad">iPad</option>
+             <option value="android">Android</option>
+             <option value="mobile">All mobile devices</option>
+             </field>
+	</fieldset>
+	</fields>
+	</config>
+</extension>
