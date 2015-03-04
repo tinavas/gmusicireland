@@ -1,16 +1,16 @@
 <?php
 /**
  * @package         Advanced Module Manager
- * @version         4.18.3
+ * @version         4.20.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
 /**
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -41,14 +41,42 @@ class AdvancedModulesController extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
+		$view = $this->input->get('view', 'modules');
+		$layout = $this->input->get('layout', 'default');
+		$id = $this->input->getInt('id');
+
+		$document = JFactory::getDocument();
+
+		// For JSON requests
+		if ($document->getType() == 'json')
+		{
+
+			$view = new ModulesViewModule;
+
+			// Get/Create the model
+			if ($model = new ModulesModelModule)
+			{
+				// Checkin table entry
+				if (!$model->checkout($id))
+				{
+					JFactory::getApplication()->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'), 'error');
+
+					return false;
+				}
+
+				// Push the model into the view (as default)
+				$view->setModel($model, true);
+			}
+
+			$view->document = $document;
+
+			return $view->display();
+		}
+
 		require_once JPATH_COMPONENT.'/helpers/modules.php';
 
 		// Load the submenu.
 		ModulesHelper::addSubmenu($this->input->get('view', 'modules'));
-
-		$view   = $this->input->get('view', 'modules');
-		$layout = $this->input->get('layout', 'default');
-		$id     = $this->input->getInt('id');
 
 		return parent::display();
 	}

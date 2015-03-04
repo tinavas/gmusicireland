@@ -6,7 +6,7 @@
 	<author>Acyba</author>
 	<authorEmail>dev@acyba.com</authorEmail>
 	<authorUrl>http://www.acyba.com</authorUrl>
-	<copyright>Copyright (C) 2009-2014 ACYBA SARL - All rights reserved.</copyright>
+	<copyright>Copyright (C) 2009-2015 ACYBA SARL - All rights reserved..</copyright>
 	<license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
 	<description>Subscribe / Unsubscribe Module for AcyMailing</description>
 	<files>
@@ -219,7 +219,7 @@
 
 			</fieldset>
 			<fieldset name="advanced">
-			<field name="moduleclass_sfx" type="text" default="" label="MODULE_CLASSSUF" description="PARAMMODULECLASSSUFFIX" />
+			<field name="moduleclass_sfx" type="text" default="" label="MODULE_CLASSSUF" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 			<field name="textalign" type="list" default="0" label="MODULE_ALIGNMENT" description="This option enables you to align the text inside the module">
 				<option value="none">Default CSS alignment</option>
 				<option value="right">Right</option>

@@ -106,7 +106,7 @@ function com_akeeba_postinstall_confwiz_condition()
 	}
 	else
 	{
-		$params = new JParameter($component->params);
+		$params = new JRegistry($component->params);
 	}
 
 	$lv = $params->get('lastversion', '');
@@ -142,7 +142,7 @@ function com_akeeba_postinstall_angie_condition()
 	}
 	else
 	{
-		$params = new JParameter($component->params);
+		$params = new JRegistry($component->params);
 	}
 
 	$angieupgrade = $params->get('angieupgrade', '0');

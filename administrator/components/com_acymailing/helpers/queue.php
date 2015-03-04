@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -196,7 +196,7 @@ class acyqueueHelper{
 				}
 			}
 
-			$messageOnScreen = '['.$oneQueue->mailid.'] '.$mailHelper->reportMessage;
+			$messageOnScreen = '[ ID '.$oneQueue->mailid.'] '.$mailHelper->reportMessage;
 			if(!empty($otherMessage)) $messageOnScreen .= ' => '.$otherMessage;
 			$this->_display($messageOnScreen,$result,$currentMail);
 
@@ -267,7 +267,7 @@ class acyqueueHelper{
 				$nbdeleted = $this->db->getAffectedRows();
 				if($nbdeleted != $nbsub){
 					$status = false;
-					$this->_display(JText::_('QUEUE_DOUBLE'));
+					$this->_display($nbdeleted < $nbsub ? JText::_('QUEUE_DOUBLE') : $nbdeleted.' emails deleted from the queue whereas we only have '.$nbsub.' subscribers');
 				}
 			}
 		}
@@ -287,17 +287,18 @@ class acyqueueHelper{
 
 		foreach($statsAdd as $mailid => $infos){
 			$mailid = intval($mailid);
+
 			foreach($infos as $status => $infosSub){
 				foreach($infosSub as $html => $subscribers){
-					$query = 'INSERT IGNORE INTO '.acymailing_table('userstats').' (mailid,subid,html,sent,senddate) VALUES ('.$mailid.','.implode(','.$html.',0,'.$time.'),('.$mailid.',',$subscribers).','.$html.',0,'.$time.')';
+
+					$query = 'INSERT INTO '.acymailing_table('userstats').' (mailid,subid,html,sent,fail,senddate) VALUES ';
+					$query .= '('.$mailid.','.implode(','.$html.','.($status ? 1 : 0).','.($status ? 0 : 1).','.$time.'),('.$mailid.',',$subscribers).','.$html.','.($status ? 1 : 0).','.($status ? 0 : 1).','.$time.') ';
+					$query .= 'ON DUPLICATE KEY UPDATE html = '.$html.',sent = sent + '.($status ? 1 : 0).', fail = '.($status ? '0' : 'fail + 1').', senddate = '.$time;
 					$this->db->setQuery($query);
 					$this->db->query();
 
 					if($status){
 						$subids = array_merge($subids,$subscribers);
-						$query = 'UPDATE '.acymailing_table('userstats').' SET html = '.$html.',sent = sent +1, fail = 0, senddate = '.$time.' WHERE mailid = '.$mailid.' AND subid IN  ('.implode(',',$subscribers).')';
-					}else{
-						$query = 'UPDATE '.acymailing_table('userstats').' SET html = '.$html.',senddate = '.$time.', fail = fail +1 WHERE mailid = '.$mailid.' AND subid IN  ('.implode(',',$subscribers).')';
 					}
 
 					$this->db->setQuery($query);
@@ -305,20 +306,18 @@ class acyqueueHelper{
 				}
 			}
 
-			$nbhtml = empty($infos[1][1]) ? 0 : count($infos[1][1]);
-			$nbtext = empty($infos[1][0]) ? 0 : count($infos[1][0]);
+			$nbhtml = empty($infos[1][1]) ? 0 : count($infos[1][1]); //nbhtml sent
+			$nbtext = empty($infos[1][0]) ? 0 : count($infos[1][0]); //nbtext sent
 			$nbfail = 0;
-			if(!empty($infos[0][0])) $nbfail += count($infos[0][0]);
-			if(!empty($infos[0][1])) $nbfail += count($infos[0][1]);
+			if(!empty($infos[0][0])) $nbfail += count($infos[0][0]); //fail text version
+			if(!empty($infos[0][1])) $nbfail += count($infos[0][1]); //fail html version
 
-			$query = 'UPDATE '.acymailing_table('stats').' SET senthtml = senthtml + '.$nbhtml.', senttext = senttext + '.$nbtext.', fail = fail + '.$nbfail.', senddate = '.$time.' WHERE mailid = '.$mailid.' LIMIT 1';
+			$query = 'INSERT INTO '.acymailing_table('stats').' (mailid,senthtml,senttext,fail,senddate) ';
+			$query .= 'VALUES ('.$mailid.','.$nbhtml.', '.$nbtext.', '.$nbfail.', '.$time.') ';
+			$query .= 'ON DUPLICATE KEY UPDATE senthtml = senthtml + '.$nbhtml.', senttext = senttext + '.$nbtext.', fail = fail + '.$nbfail.', senddate = '.$time;
 			$this->db->setQuery($query);
 			$this->db->query();
-			if(!$this->db->getAffectedRows()){
-				$query = 'INSERT INTO '.acymailing_table('stats').' (mailid,senthtml,senttext,fail,senddate) VALUES ('.$mailid.','.$nbhtml.', '.$nbtext.', '.$nbfail.', '.$time.')';
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+
 		}
 
 		if(!empty($subids)){
@@ -343,17 +342,17 @@ class acyqueueHelper{
 	private function _handleError(){
 		$this->finish = true;
 		$message = JText::_('SEND_STOPED');
-		$message .= '<br/>';
+		$message .= '<br />';
 		$message .= JText::_('SEND_KEPT_ALL');
-		$message .= '<br/>';
+		$message .= '<br />';
 		if($this->report){
 			if(empty($this->successSend) AND empty($this->start)){
 				$message .= JText::_('SEND_CHECKONE');
-				$message .= '<br/>';
+				$message .= '<br />';
 				$message .= JText::_('SEND_ADVISE_LIMITATION');
 			}else{
 				$message .= JText::_('SEND_REFUSE');
-				$message .= '<br/>';
+				$message .= '<br />';
 				if(!acymailing_level(1)){
 					$message .= JText::_('SEND_CONTINUE_COMMERCIAL');
 				}else{
@@ -372,7 +371,7 @@ class acyqueueHelper{
 
 		if(!empty($num)){
 			$color = $status ? 'green' : 'red';
-			echo '<br/>'.$num.' : <font color="'.$color.'">'.$message.'</font>';
+			echo '<br />'.$num.' : <font color="'.$color.'">'.$message.'</font>';
 		}else{
 			echo '<script type="text/javascript" language="javascript">setInfo(\''. addslashes($message) .'\')</script>';
 		}
@@ -396,11 +395,11 @@ class acyqueueHelper{
 				$listId = $this->config->get('bounce_action_lists_maxtry');
 				if(!empty($listId)){
 					$message .= ' user '.$subid.' subscribed to '.$listId;
-								if(empty($status[$listId])){
+					if(empty($status[$listId])){
 						$this->listsubClass->addSubscription($subid,array('1' => array($listId)));
-								}elseif($status[$listId]->status != 1){
+					}elseif($status[$listId]->status != 1){
 					 	$this->listsubClass->updateSubscription($subid,array('1' => array($listId)));
-								}
+					}
 				}
 			case 'remove' :
 				$unsubLists = array_diff(array_keys($status),array($listId));

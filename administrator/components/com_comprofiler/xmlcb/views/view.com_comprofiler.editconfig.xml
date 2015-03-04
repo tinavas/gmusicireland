@@ -143,7 +143,7 @@
 						<param name="moderatorEmail" type="yesno" default="1" label="Send Moderators Email" description="Choose if moderators should receive emails if an action is performed requiring moderator attention." />
 						<param name="allowUserReports" type="yesno" default="1" label="Allow User Reports" description="Choose if users can report other users for inappropriate behavior to moderators." />
 						<param name="avatarUploadApproval" type="yesno" default="1" label="Require Upload Image Approval" description="Choose if images uploaded by users require moderator approval." />
-						<param name="allowModeratorsUserEdit" type="xml:cfg_allowModeratorsUserEdit" default="0" label="Allow Moderators to Edit User Profiles" description="Choose if moderators can edit users profiles. Moderators can not edit same or higher-level moderators." />
+						<param name="allowModeratorsUserEdit" type="xml:cfg_allowModeratorsUserEdit" default="0" label="Allow Moderators to Edit User Profiles" description="Choose if moderators can edit users profiles. Moderators can not edit same or higher-level moderators. Note moderators must have Access Administration Interface and Edit permissions within User Management - Permissions." />
 						<param name="allowUserBanning" type="yesno" default="1" label="Allow Profile Banning" description="Choose if moderators can ban users profiles from being displayed." />
 					</tabpanetab>
 					<tabpanetab name="connections" label="Connections" description="">
@@ -177,6 +177,12 @@
 						<if name="jsJquery" nametype="data:int" operator="=" value="0" valuetype="const:int" type="showhide">
 							<param name="jQueryOffWarning" type="group" label="" formatting="none">
 								<param name="" type="spacer" default="Note Community Builder jQuery has been shut off for frontend. Please ensure another means of jQuery is available. This could cause compatibility issues with jQuery plugins." label="" alertclass="warning" />
+							</param>
+						</if>
+						<param name="jsJqueryMigrate" type="yesno" default="1" label="jQuery Migrate" description="Choose if jQuery Migrate should be loaded from the Community Builder JS automatically. Recommended to always leave this on unless another compatible means of jQuery Migrate is loaded or all jQuery usages are compatible with the loaded version of jQuery. Note this will affect frontend only." />
+						<if name="jsJqueryMigrate" nametype="data:int" operator="=" value="0" valuetype="const:int" type="showhide">
+							<param name="jQueryMigrateOffWarning" type="group" label="" formatting="none">
+								<param name="" type="spacer" default="Note Community Builder jQuery Migrate has been shut off for frontend. Please ensure another means of jQuery Migrate is available or all jQuery usage is compatible with the loaded version of jQuery. This could cause compatibility issues with jQuery usages." label="" alertclass="warning" />
 							</param>
 						</if>
 						<param name="footerfWarning" type="group" label="Footer" formatting="span">

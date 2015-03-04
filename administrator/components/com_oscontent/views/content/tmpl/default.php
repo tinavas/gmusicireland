@@ -1,14 +1,9 @@
 <?php
 /**
- * @category  Joomla Component
- * @package   com_oscontent
- * @author    Johann Eriksen
- * @copyright 2007-2009 Johann Eriksen
- * @copyright 2011, 2014 Open Source Training, LLC. All rights reserved
- * @contact   www.ostraining.com, support@ostraining.com
- * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version   1.9.3
- * @link      http://www.ostraining.com/downloads/joomla-extensions/oscontent/
+ * @package   OSContent
+ * @contact   www.alledia.com, hello@alledia.com
+ * @copyright 2014 Alledia.com, All rights reserved
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
@@ -34,9 +29,11 @@ if (version_compare(JVERSION, '3.0', '<')) {
 }
 ?>
 
+<div class="row-fluid">
 <?php if (!empty($this->sidebar)): ?>
 <div id="j-sidebar-container" class="span2">
     <?php echo $this->sidebar; ?>
+
 </div>
 <div id="j-main-container" class="span10">
 <?php else : ?>
@@ -44,40 +41,15 @@ if (version_compare(JVERSION, '3.0', '<')) {
 <?php endif; ?>
 
 <script language="javascript" type="text/javascript">
-    // Copy Title
-    function copyTitle() {
-        if (document.getElementById("duplicateTitle").checked) {
-            for (i = 1; i < <?php echo $this->params->get('nbOSContent', 10) + 1; ?>; i++) {
-                if (document.getElementById("alias_" + i).value == "") {
-                    document.getElementById("alias_" + i).value = document.getElementById("title_" + i).value;
-                }
-            }
-        }
-        else {
-            for (i = 1; i < <?php echo $this->params->get('nbOSContent', 10) + 1; ?>; i++) {
-                if (document.getElementById("alias_" + i).value == document.getElementById("title_" + i).value) {
-                    document.getElementById("alias_" + i).value = "";
-                }
-            }
-        }
-    }
+    // Execute when page is loaded
+    window.onload = setDateTime;
 
-    // Copy Meta
-    function copyMeta(meta) {
-        if (document.getElementById("duplicate" + meta).checked) {
-            for (i = 2; i < <?php echo $this->params->get('nbOSContent', 10) + 1; ?>; i++) {
-                if (document.getElementById(meta + "_" + i).value == "") {
-                    document.getElementById(meta + "_" + i).value = document.getElementById(meta + "_1").value;
-                }
-            }
-        }
-        else {
-            for (i = 2; i < <?php echo $this->params->get('nbOSContent', 10) + 1; ?>; i++) {
-                if (document.getElementById(meta + "_" + i).value == document.getElementById(meta + "_1").value) {
-                    document.getElementById(meta + "_" + i).value = "";
-                }
-            }
-        }
+    // Set date/time
+    function setDateTime() {
+        document.getElementById("created").value = "<?php echo $createdate; ?>";
+        document.getElementById("publish_up").value = "<?php echo $createdate; ?>";
+
+        return false;
     }
 
     // Copy 1st introtext to all the other introtext
@@ -107,7 +79,7 @@ if (version_compare(JVERSION, '3.0', '<')) {
                 }
 
                 if (document.getElementById("title_" + i).value == "") {
-                    document.getElementById("title_" + i).value = document.getElementById("title_1").value;
+                    document.getElementById("title_" + i).value = document.getElementById("title_1").value + " " + i;
                 }
 
                 <?php if (/*($editor->_name == "tinymce" || $editor->_name == "jce") &&*/ $this->params->get('displayWysiwyg', 0) != "0"): ?>
@@ -143,7 +115,7 @@ if (version_compare(JVERSION, '3.0', '<')) {
 
         if (!document.getElementById("published").checked) {
             document.getElementById("publish_up").value = "";
-            document.getElementById("state").value = 0;
+            document.getElementById("published").value = 0;
         }
 
         if ((form.addMenu.checked) && (form.menuselect.value == '')) {
@@ -159,7 +131,7 @@ if (version_compare(JVERSION, '3.0', '<')) {
 
         if (!document.getElementById("published").checked) {
             document.getElementById("publish_up").value = "";
-            document.getElementById("state").value = 0;
+            document.getElementById("published").value = 0;
         }
 
         if ((form.addMenu.checked) && (form.menuselect.value == '')) {
@@ -208,43 +180,39 @@ if (version_compare(JVERSION, '3.0', '<')) {
     ?>
 </script>
 
-<table border="0" cellpadding="3" cellspacing="0">
-    <tr>
-        <td>
+<div class="row-fluid ost-oscontent-container">
+        <div class="span8 ost-table-cell-left">
             <fieldset>
-                <legend><?php echo JText::_("COM_OSCONTENT_CREATEUPTO") . " " . $this->params->get(
-                            'nbOSContent',
-                            10
-                        ) . " " . JText::_("COM_OSCONTENT_ARTICLESINAROW"); ?></legend>
-                <table border="0" cellpadding="3" cellspacing="0">
-
-                    <?php $k = 0; ?>
-                    <?php for ($i = 1; $i < $this->params->get('nbOSContent', 10) + 1; $i++): ?>
-                        <tr bgcolor="<?php echo ($k == 0) ? "#f9f9f9" : "#eeeeee"; ?>">
-                            <td><?php echo JText::_("COM_OSCONTENT_TITLE"); ?> (<?php echo JText::_(
-                                        "COM_OSCONTENT_PAGE"
-                                    ) . " " . $i; ?>):
-                            </td>
-                            <td><input class="inputbox" type="text" size="50" maxlength="255"
-                                       id="title_<?php echo $i; ?>" name="title[]"
-                                       value="<?php echo(@$post["title"][$i - 1]); ?>"></td>
-
+            <!-- articles -->
+            <legend><?php echo JText::_("COM_OSCONTENT_CREATEUPTO") . " " . $this->params->get(
+                        'nbOSContent',
+                        10
+                    ) . " " . JText::_("COM_OSCONTENT_ARTICLESINAROW"); ?></legend>
+            <table class="table table-striped">
+                <?php $k = 0; ?>
+                <?php for ($i = 1; $i < $this->params->get('nbOSContent', 10) + 1; $i++): ?>
+                    <tr>
+                        <td class="ost-number">
+                            <strong><?php echo $i; ?></strong>
+                        </td>
+                        <td class="ost-medium-sc">
+                            <div class="control-label"><label><?php echo JText::_("COM_OSCONTENT_TITLE"); ?></label></div>
+                            <input class="inputbox span11" type="text" size="50" maxlength="255"
+                                   id="title_<?php echo $i; ?>" name="title[]"
+                                   value="<?php echo(@$post["title"][$i - 1]); ?>">
                             <?php if ($this->params->get('displayAlias', 1) == 1): ?>
-                                <td><?php echo JText::_("COM_OSCONTENT_ALIAS"); ?></td>
-                                <td><input class="inputbox" type="text" size="50" maxlength="255"
+                                <div class="control-label"><label><?php echo JText::_("COM_OSCONTENT_ALIAS"); ?></label></div>
+                                <input class="inputbox span11" type="text" size="50" maxlength="255"
                                            id="alias_<?php echo $i; ?>" name="alias[]"
-                                           value="<?php echo(@$post["alias"][$i - 1]); ?>"></td>
+                                           value="<?php echo(@$post["alias"][$i - 1]); ?>"
+                                           placeholder="<?php echo JText::_("COM_OSCONTENT_ALIAS_DESCRIPTION_PLACEHOLDER"); ?>">
                             <?php else: ?>
                                 <?php $hidden .= '<input type="hidden" id="alias_<?php echo $i; ?>" name="alias[]" value =""  >'; ?>
                             <?php endif; ?>
-                        </tr>
-
-                        <tr bgcolor="<?php echo ($k == 0) ? "#f9f9f9" : "#eeeeee"; ?>">
-                            <?php if ($this->params->get('displayIntroText', 1) == 1): ?>
-                                <td><?php echo JText::_("COM_OSCONTENT_INTRO_TEXT") . " (" . JText::_(
-                                            "COM_OSCONTENT_PAGE"
-                                        ) . " " . $i; ?>):
-                                </td>
+                        </td>
+                        <?php if ($this->params->get('displayIntroText', 1) == 1): ?>
+                            <td class="ost-medium-sc">
+                                <div class="control-label"><label><?php echo JText::_("COM_OSCONTENT_INTRO_TEXT"); ?></label></div>
                                 <?php if (($i == 1 && $this->params->get(
                                             'displayWysiwyg'
                                         ) == "1") || $this->params->get('displayWysiwyg') == "2"
@@ -256,173 +224,138 @@ if (version_compare(JVERSION, '3.0', '<')) {
                                             '50',
                                             '20',
                                             '50'
-                                        ) . "</td></tr><tr>"; ?>
+                                        ) . "</td>"; ?>
                                 <?php else: ?>
-                                    <td>
-                                        <textarea id="<?php echo 'introtext_' . $i; ?>"
-                                                  name="<?php echo 'introtext_' . $i; ?>" rows="4"
-                                                  cols="35"><?php echo(@$post["introtext_" . ($i)]); ?></textarea>
-                                    </td>
+                                    <textarea id="<?php echo 'introtext_' . $i; ?>"
+                                              name="<?php echo 'introtext_' . $i; ?>" rows="4"
+                                              cols="35"
+                                              class="span11"><?php echo(@$post["introtext_" . ($i)]); ?></textarea>
                                 <?php endif; ?>
-                            <?php
-                            else:
-                                $hidden .= '<input type="hidden" id="introtext_' . $i . '" name="introtext_' . $i . '" value =""  >'; ?>
-                            <?php endif; ?>
+                            </td>
+                        <?php
+                        else:
+                            $hidden .= '<input type="hidden" id="introtext_' . $i . '" name="introtext_' . $i . '" value =""  >'; ?>
+                        <?php endif; ?>
 
-                            <?php if ($this->params->get('displayFullText', 1) == 1): ?>
-                                <td><?php echo JText::_("COM_OSCONTENT_FULL_TEXT") . " (" . JText::_(
-                                            "COM_OSCONTENT_PAGE"
-                                        ) . " " . $i; ?>):
-                                </td>
+                        <?php if ($this->params->get('displayFullText', 1) == 1): ?>
+                            <td class="ost-medium-sc">
+                                <div class="control-label"><label><?php echo JText::_("COM_OSCONTENT_FULL_TEXT"); ?></label></div>
                                 <?php if (($i == 1 && $this->params->get(
                                             'displayWysiwyg'
                                         ) == "1") || $this->params->get('displayWysiwyg') == "2"
                                 ): ?>
-                                    <?php echo "<td colspan=\"4\">" . $editor->display(
+                                    <?php echo $editor->display(
                                             'fulltext_' . $i,
                                             @$post["fulltext_" . $i],
                                             '50%',
                                             '50',
                                             '20',
                                             '50'
-                                        ) . "</td>"; ?>
+                                        ); ?>
                                 <?php else: ?>
-                                    <td>
                                         <textarea id="<?php echo 'fulltext_' . $i; ?>"
                                                   name="<?php echo 'fulltext_' . $i; ?>" rows="4"
-                                                  cols="35"><?php echo(@$post["fulltext_" . $i]); ?></textarea>
-                                    </td>
+                                                  cols="35"
+                                                  class="span11"><?php echo(@$post["fulltext_" . $i]); ?></textarea>
+
                                 <?php endif; ?>
-                            <?php else: ?>
-                                <?php $hidden .= '<input type="hidden" id="fulltext_' . $i . '" name="fulltext_' . $i . '" value =""  >'; ?>
-                            <?php endif; ?>
-                        </tr>
+                            </td>
+                        <?php else: ?>
+                            <?php $hidden .= '<input type="hidden" id="fulltext_' . $i . '" name="fulltext_' . $i . '" value =""  >'; ?>
+                        <?php endif; ?>
+                    </tr>
 
-                        <tr>
-                            <?php if ($this->params->get('displayMetaDescription') == 1): ?>
-                                <td><?php echo JText::_("COM_OSCONTENT_META_DESC"); ?></td>
-                                <td>
-                                    <textarea id="metadesc_<?php echo $i; ?>" name="metadesc[]" rows="1"
-                                              cols="35"><?php echo(@$post["metadesc"][$i - 1]); ?></textarea>
-                                </td>
-                            <?php else: ?>
-                                <?php $hidden .= '<input type="hidden" id="metadesc_' . $i . '" name="metadesc[]" value ="">'; ?>
-                            <?php endif; ?>
+                    <?php $hidden .= '<input type="hidden" id="metadesc_' . $i . '" name="metadesc[]" value ="">'; ?>
+                    <?php $hidden .= '<input type="hidden" id="metakey_' . $i . '" name="metakey[]" value ="">'; ?>
 
-                            <?php if ($this->params->get('displayMetaKeywords') == 1): ?>
-                                <td><?php echo JText::_("COM_OSCONTENT_META_KEY"); ?></td>
-                                <td><textarea id="metakey_<?php echo $i; ?>" name="metakey[]" rows="1"
-                                              cols="35"><?php echo(@$post["metakey"][$i - 1]); ?></textarea></td>
-                            <?php else: ?>
-                                <?php $hidden .= '<input type="hidden" id="metakey_' . $i . '" name="metakey[]" value ="">'; ?>
-                            <?php endif; ?>
-                        </tr>
-
-                        <?php $k = 1 - $k; ?>
-                    <?php endfor; ?>
-                </table>
+                    <?php $k = 1 - $k; ?>
+                <?php endfor; ?>
+            </table>
             </fieldset>
-        </td>
-
-        <td valign="top">
-            <fieldset>
+            <!-- /articles -->
+        </div>
+        <div class="span4 ost-table-cell-right">
+            <!-- options -->
+            <div class="well">
                 <legend><?php echo JText::_("COM_OSCONTENT_OPTIONS"); ?></legend>
-
                 <table border="0" cellpadding="3" cellspacing="0">
                     <tr>
-                        <td><?php echo JText::_("COM_OSCONTENT_COPY_TITLE_ALIAS"); ?></td>
-                        <td><input type="checkbox" id="duplicateTitle" name="duplicateTitle"
-                                   onClick="javascript:copyTitle()"></td>
+                        <td>
+                            <?php echo JText::_("COM_OSCONTENT_COPY_FIRST_TITLE"); ?>
+                            <?php
+                            echo JHTML::tooltip(JText::_("COM_OSCONTENT_COPY_FIRST_TITLE_TOOLTIP"),
+                            '',
+                            'tooltip.png',
+                            '',
+                            '');
+                            ?>
+                            <input type="checkbox" id="duplicateText" name="duplicateText"
+                                   onClick="javascript:copyText()">
+                        </td>
                     </tr>
 
                     <tr>
-                        <td><?php echo JText::_("COM_OSCONTENT_COPY_FIRST_TITLE"); ?></td>
-                        <td><input type="checkbox" id="duplicateText" name="duplicateText"
-                                   onClick="javascript:copyText()"></td>
-                    </tr>
-
-                    <?php if ($this->params->get('displayMetaDescription') == 1): ?>
-                        <tr>
-                            <td><?php echo JText::_("COM_OSCONTENT_COPY_FIRST_META"); ?></td>
-                            <td><input type="checkbox" id="duplicatemetadesc" name="duplicatemetadesc"
-                                       onClick="javascript:copyMeta('metadesc')"></td>
-                        </tr>
-                    <?php endif; ?>
-
-                    <?php if ($this->params->get('displayMetaKeywords') == 1): ?>
-                        <tr>
-                            <td><?php echo JText::_("COM_OSCONTENT_COPY_FIRST_KEYWORDS"); ?></td>
-                            <td><input type="checkbox" id="duplicatemetakey" name="duplicatemetakey"
-                                       onClick="javascript:copyMeta('metakey')"></td>
-                        </tr>
-                    <?php endif; ?>
-
-                    <tr>
-                        <td colspan="2"><?php echo JText::_("COM_OSCONTENT_PAGES_TITLE_ONLY"); ?></td>
+                        <td>
+                            <?php echo JText::_("COM_OSCONTENT_PAGES_TITLE_ONLY"); ?>
+                        </td>
                     </tr>
 
                     <tr>
-                        <td><?php echo JText::_("COM_OSCONTENT_PUBLISHED"); ?></td>
-                        <td><input type="checkbox" id="published" name="published" checked></td>
+                        <td>
+                            <?php echo JText::_("COM_OSCONTENT_PUBLISHED"); ?>
+                            <input type="checkbox" id="published" name="published" value="1" checked>
+                        </td>
                     </tr>
 
                     <tr>
-                        <td><?php echo JText::_("COM_OSCONTENT_FRONTPAGE"); ?></td>
-                        <td><input type="checkbox" id="frontpage" name="frontpage"></td>
+                        <td>
+                            <?php echo JText::_("COM_OSCONTENT_FEATURED"); ?>
+                            <input type="checkbox" id="featured" name="featured" value="1">
+                        </td>
                     </tr>
 
                     <tr>
-                        <td><?php echo JText::_("COM_OSCONTENT_ARCHIVED"); ?></td>
-                        <td><input type="checkbox" id="state2" name="state2"></td>
+                        <td>
+                            <div class="control-label"><label><?php echo JText::_("COM_OSCONTENT_ACCESS_LEVEL"); ?></label></div>
+                            <?php echo $this->lists['access']; ?>
+                        </td>
                     </tr>
 
                     <tr>
-                        <td><?php echo JText::_("COM_OSCONTENT_ACCESS_LEVEL"); ?></td>
-                        <td><?php echo $this->lists['access']; ?></td>
+                        <td>
+                            <div class="control-label"><label><?php echo JText::_("COM_OSCONTENT_AUTHOR"); ?></label></div>
+                            <?php echo $this->lists['created_by']; ?>
+                        </td>
                     </tr>
 
                     <tr>
-                        <td><?php echo JText::_("COM_OSCONTENT_AUTHOR"); ?></td>
-                        <td><?php echo $this->lists['created_by']; ?></td>
+                        <td>
+                            <div class="control-label"><label><?php echo JText::_("COM_OSCONTENT_AUTHOR_ALIAS"); ?></label></div>
+                            <input type="text" name="created_by_alias" id="created_by_alias" value="" size="20"/>
+                        </td>
                     </tr>
 
                     <tr>
-                        <td><?php echo JText::_("COM_OSCONTENT_AUTHOR_ALIAS"); ?></td>
-                        <td><input type="text" name="created_by_alias" id="created_by_alias" value="" size="20"/></td>
+                        <td>
+                            <div class="control-label"><label><?php echo JText::_("COM_OSCONTENT_CATEGORY"); ?></label></div>
+                            <?php echo $this->lists['catid']; ?>
+                        </td>
                     </tr>
 
                     <tr>
-                        <td><?php echo JText::_("COM_OSCONTENT_CATEGORY"); ?></td>
-                        <td> <?php echo $this->lists['catid']; ?></td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2"><input type="checkbox" name="addMenu"><?php echo JText::_(
+                        <td>
+                            <div class="control-label"><label><input type="checkbox" name="addMenu" value="1"><?php echo JText::_(
                                 "COM_OSCONTENT_LINK_TO_MENU"
-                            ); ?></td>
+                            ); ?></label></div>
+                            <?php echo $this->lists['menuselect']; ?>
+                            <?php echo $this->lists['menuselect3']; ?>
+                        </td>
                     </tr>
 
                     <tr>
-                        <td colspan="2"><?php echo $this->lists['menuselect']; ?> <?php echo $this->lists['menuselect3']; ?></td>
-                    </tr>
-
-                    <?php if ($this->params->get('displayMetaRobots') == 1): ?>
-                        <tr>
-                            <td><?php echo JText::_("COM_OSCONTENT_ROBOTS"); ?></td>
-                            <td><input type="text" name="robots" size="20"></td>
-                        </tr>
-                    <?php endif; ?>
-
-                    <?php if ($this->params->get('displayMetaAuthor') == 1): ?>
-                        <tr>
-                            <td><?php echo JText::_("COM_OSCONTENT_AUTHOR"); ?></td>
-                            <td><input type="text" name="author" size="20"></td>
-                        </tr>
-                    <?php endif; ?>
-
-                    <tr>
-                        <td><?php echo JText::_("COM_OSCONTENT_CREATED_DATE"); ?></td>
-                        <td><?php echo JHTML::_(
+                        <td>
+                            <div class="control-label"><label><?php echo JText::_("COM_OSCONTENT_CREATED_DATE"); ?></label></div>
+                            <?php echo JHTML::_(
                                 'calendar',
                                 JHTML::_('date', $createdate, 'Y-m-d H:i:s'),
                                 "created",
@@ -432,8 +365,9 @@ if (version_compare(JVERSION, '3.0', '<')) {
                     </tr>
 
                     <tr>
-                        <td><?php echo JText::_("COM_OSCONTENT_PUBLISH_UP"); ?></td>
-                        <td><?php echo JHTML::_(
+                        <td>
+                            <div class="control-label"><label><?php echo JText::_("COM_OSCONTENT_PUBLISH_UP"); ?></label></div>
+                            <?php echo JHTML::_(
                                 'calendar',
                                 JHTML::_('date', $createdate, 'Y-m-d H:i:s'),
                                 "publish_up",
@@ -443,14 +377,16 @@ if (version_compare(JVERSION, '3.0', '<')) {
                     </tr>
 
                     <tr>
-                        <td><?php echo JText::_("COM_OSCONTENT_PUBLISH_DOWN"); ?></td>
-                        <td><?php echo JHTML::_('calendar', "Never", "publish_down", "publish_down"); ?></td>
+                        <td>
+                            <div class="control-label"><label><?php echo JText::_("COM_OSCONTENT_PUBLISH_DOWN"); ?></label></div>
+                            <?php echo JHTML::_('calendar', "Never", "publish_down", "publish_down"); ?>
+                        </td>
                     </tr>
                 </table>
-            </fieldset>
-        </td>
-    </tr>
-</table>
+            </div>
+            <!-- /options -->
+    </div>
+</div>
 
 <input type="hidden" name="task" value=""/>
 <?php echo JHtml::_('form.token'); ?>
@@ -459,3 +395,6 @@ if (version_compare(JVERSION, '3.0', '<')) {
 
 </div>
 <!-- #j-main-container -->
+
+</div>
+</div>

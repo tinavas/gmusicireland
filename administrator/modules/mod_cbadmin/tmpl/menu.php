@@ -3,7 +3,7 @@
 * Community Builder (TM)
 * @version $Id: $
 * @package CommunityBuilder
-* @copyright (C) 2004-2014 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2015 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -32,7 +32,7 @@ if ( Application::MyUser()->isAuthorizedToPerformActionOnAsset( 'core.manage', '
 													array(	'title' => CBTxt::Th( 'Plugin Management' ), 'link' => $_CB_framework->backendViewUrl( 'showPlugins' ), 'access' => array( 'core.manage', 'com_comprofiler.plugins' ), 'icon' => 'cb-plugin_management',
 															'submenu' => array( array( 'title' => CBTxt::Th( 'Install New Plugin' ), 'link' => $_CB_framework->backendViewUrl( 'installcbplugin' ), 'access' => array( 'core.admin', 'root' ), 'icon' => 'cb-upload' ) )
 													),
-													array(	'title' => CBTxt::Th( 'Tools' ), 'link' => $_CB_framework->backendViewUrl( 'tools' ), 'access' => array( 'core.admin', 'com_comprofiler' ), 'icon' => 'cb-tools' ),
+													array(	'title' => CBTxt::Th( 'Tools' ), 'link' => $_CB_framework->backendViewUrl( 'tools' ), 'access' => array( 'core.manage', 'com_comprofiler.tools' ), 'icon' => 'cb-tools' ),
 													array(	'title' => CBTxt::Th( 'Configuration' ), 'link' => $_CB_framework->backendViewUrl( 'showconfig' ), 'access' => array( 'core.admin', 'com_comprofiler' ), 'icon' => 'cb-configuration' ),
 													array(	'title' => CBTxt::Th( 'Credits' ), 'link' => $_CB_framework->backendViewUrl( 'credits' ), 'icon' => 'cb-credits' )
 												);

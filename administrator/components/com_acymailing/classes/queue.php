@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -80,8 +80,11 @@ class queueClass extends acymailingClass{
 		$config = acymailing_config();
 		if($config->get('require_confirmation','0')){ $querySelect .= 'AND sub.confirmed = 1 '; }
 
-		if(!empty($this->orderBy) && $this->orderBy == 'rand') $querySelect .= ' ORDER BY RAND()';
+		if(!empty($this->orderBy)) $querySelect .= ' ORDER BY '.$this->orderBy;
+		elseif(!empty($queryClass->orderBy)) $querySelect .= ' ORDER BY '.$queryClass->orderBy;
+
 		if(!empty($this->limit)) $querySelect .= ' LIMIT '. $this->limit;
+		elseif(!empty($queryClass->limit)) $querySelect .= ' LIMIT '. $queryClass->limit;
 
 		$query = 'INSERT IGNORE INTO '.acymailing_table('queue').' (subid,mailid,senddate,priority) '.$querySelect;
 
@@ -112,11 +115,24 @@ class queueClass extends acymailingClass{
 	public function getReady($limit,$mailid = 0){
 		if(empty($limit)) return array();
 
+		$config = acymailing_config();
+		$order = $config->get('sendorder');
+		if(empty($order)){
+			$order = 'a.`subid` ASC';
+		}else{
+			if($order == 'rand'){
+				$order = 'RAND()';
+			}else{
+				$ordering = explode(',',$order);
+				$order = 'a.`'.acymailing_secureField(trim($ordering[0])).'` '.acymailing_secureField(trim($ordering[1]));
+			}
+		}
+
 		$query = 'SELECT a.* FROM '.acymailing_table('queue').' as a';
 		$query .= ' JOIN '.acymailing_table('mail').' as b on a.`mailid` = b.`mailid` ';
 		$query .= ' WHERE a.`senddate` <= '.time().' AND b.`published` = 1';
 		if(!empty($mailid)) $query .= ' AND a.`mailid` = '.$mailid;
-		$query .= ' ORDER BY a.`priority` ASC, a.`senddate` ASC, a.`subid` ASC';
+		$query .= ' ORDER BY a.`priority` ASC, a.`senddate` ASC, '.$order;
 		$query .= ' LIMIT '.JRequest::getInt('startqueue',0).','.intval($limit);
 
 		$this->database->setQuery($query);

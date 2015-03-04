@@ -116,7 +116,9 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		<field name="@notice_show_assignto_easyblog" type="nn_plaintext" label="NN_EASYBLOG" description="AMM_SHOW_PUBLISHING_OPTION" default="NN_ONLY_AVAILABLE_IN_PRO" />
 		<field name="@notice_show_assignto_flexicontent" type="nn_plaintext" label="NN_FLEXICONTENT" description="AMM_SHOW_PUBLISHING_OPTION" default="NN_ONLY_AVAILABLE_IN_PRO" />
+		<field name="@notice_show_assignto_form2content" type="nn_plaintext" label="NN_FORM2CONTENT" description="AMM_SHOW_PUBLISHING_OPTION" default="NN_ONLY_AVAILABLE_IN_PRO" />
 		<field name="@notice_show_assignto_k2" type="nn_plaintext" label="NN_K2" description="AMM_SHOW_PUBLISHING_OPTION" default="NN_ONLY_AVAILABLE_IN_PRO" />
 		<field name="@notice_show_assignto_zoo" type="nn_plaintext" label="NN_ZOO" description="AMM_SHOW_PUBLISHING_OPTION" default="NN_ONLY_AVAILABLE_IN_PRO" />
 		<field name="@notice_show_assignto_akeebasubs" type="nn_plaintext" label="NN_AKEEBASUBS" description="AMM_SHOW_PUBLISHING_OPTION" default="NN_ONLY_AVAILABLE_IN_PRO" />

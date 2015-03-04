@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 				</td>
 				<td>
 					<?php echo JHTML::_('acyselect.booleanlist', "config[email_botscout]" , '',$this->config->get('email_botscout',0) ); ?>
-					<br/>API Key: <input class="inputbox" type="text" name="config[email_botscout_key]" style="width:100px" value="<?php echo $this->escape($this->config->get('email_botscout_key')) ?>" />
+					<br />API Key: <input class="inputbox" type="text" name="config[email_botscout_key]" style="width:100px" value="<?php echo $this->escape($this->config->get('email_botscout_key')) ?>" />
 				</td>
 			</tr>
 			<tr>

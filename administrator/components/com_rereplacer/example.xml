@@ -2,12 +2,12 @@
 <replacements>
 	<name>Example XML file for ReReplacer</name>
 	<description>This is an example file to show you how to build up an xml file with multiple replacements for ReReplacer.</description>
-	<version>5.12.2FREE</version>
-	<creationDate>November 2014</creationDate>
+	<version>5.13.2FREE</version>
+	<creationDate>February 2015</creationDate>
 	<author>NoNumber (Peter van Westen)</author>
 	<authorEmail>peter@nonumber.nl</authorEmail>
 	<authorUrl>http://www.nonumber.nl</authorUrl>
-	<copyright>Copyright © 2014 NoNumber All Rights Reserved</copyright>
+	<copyright>Copyright © 2015 NoNumber All Rights Reserved</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 
 	<items>

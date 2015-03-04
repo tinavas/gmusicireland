@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -23,6 +23,10 @@ class fieldsClass extends acymailingClass{
 
 	var $dispatcher;
 
+	var $currentUser;
+
+	var $origin;
+
 	function  __construct( $config = array() ){
 		JPluginHelper::importPlugin('acymailing');
 		$this->dispatcher = JDispatcher::getInstance();
@@ -40,16 +44,23 @@ class fieldsClass extends acymailingClass{
 			$where[] = 'a.`core` = 0';
 		}elseif($area == 'backlisting'){
 			$where[] = 'a.`listing` = 1';
+			$where[] = 'a.`type` != \'category\'';
 		}elseif($area == 'frontcomp'){
 			$where[] = 'a.`frontcomp` = 1';
 		}elseif($area == 'frontlisting'){
 			$where[] = 'a.`frontlisting` = 1';
+			$where[] = 'a.`type` != \'category\'';
 		}elseif($area == 'frontjoomlaprofile'){
 			$where[] = 'a.`frontjoomlaprofile` = 1';
+			$where[] = 'a.`type` != \'category\'';
 		}elseif($area == 'frontjoomlaregistration'){
 			$where[] = 'a.`frontjoomlaregistration` = 1';
+			$where[] = 'a.`type` != \'category\'';
 		}elseif($area == 'joomlaprofile'){
 			$where[] = 'a.`joomlaprofile` = 1';
+			$where[] = 'a.`type` != \'category\'';
+		}elseif($area == 'fieldcat'){
+			$where[] = "a.`type`='category'";
 		}elseif($area == 'module'){
 		}elseif($area != 'all'){
 			$area = $this->database->Quote($area);
@@ -57,9 +68,27 @@ class fieldsClass extends acymailingClass{
 			$where[] = "a.`namekey` IN (".$namesField.")";
 		}
 
-		$this->database->setQuery('SELECT * FROM `#__acymailing_fields` as a WHERE '.implode(' AND ',$where).' ORDER BY a.`ordering` ASC');
-		$fields = $this->database->loadObjectList('namekey');
+		$app = JFactory::getApplication();
+		if(!$app->isAdmin() && acymailing_level(3)){
+			$my = JFactory::getUser();
+			if(!ACYMAILING_J16){
+				$groups = $my->gid;
+				$condGroup = ' OR a.access LIKE (\'%,'.$groups.',%\')';
+			}else{
+				jimport('joomla.access.access');
+				$groups = JAccess::getGroupsByUser($my->id,false);
+				$condGroup = '';
+				foreach($groups as $group){
+					$condGroup .= ' OR a.access LIKE (\'%,'.$group.',%\')';
+				}
+			}
+			$filterAccess = 'AND (a.access = \'all\'' . $condGroup .')';
+		} else{
+			$filterAccess = '';
+		}
 
+		$this->database->setQuery('SELECT * FROM `#__acymailing_fields` as a WHERE '.implode(' AND ',$where).' '. $filterAccess .' ORDER BY a.`ordering` ASC');
+		$fields = $this->database->loadObjectList('namekey');
 		foreach($fields as $namekey => $field){
 			if(!empty($fields[$namekey]->options)){
 				$fields[$namekey]->options = unserialize($fields[$namekey]->options);
@@ -70,7 +99,58 @@ class fieldsClass extends acymailingClass{
 			if($field->type == 'file') $this->formoption = 'enctype="multipart/form-data"';
 			if(empty($user->subid)) $user->$namekey = $field->default;
 		}
+		if(acymailing_level(3)){
+			$this->database->setQuery('SELECT * FROM `#__acymailing_fields`');
+			$allFields = $this->database->loadObjectList('fieldid');
+
+			$baseElem = array();
+			$elemInCat = array();
+			foreach($fields as $namekey => $field){
+				if($field->fieldcat == 0) $baseElem[] = $field; // root element
+				else{
+					$parentId = $this->getParentCat($field, $fields, $allFields);
+					$field->fieldcat = $parentId;
+					if($parentId == 0) $baseElem[] = $field; // No parent
+					else{
+						if(empty($elemInCat[$field->fieldcat])) $elemInCat[$field->fieldcat] = array();
+						$elemInCat[$field->fieldcat][] = $field;
+					}
+				}
+			}
+			$finalField = array();
+			foreach($baseElem as $oneField){
+				$finalField[$oneField->namekey] = $oneField;
+				if($oneField->type == 'category' && !empty($elemInCat[$oneField->fieldid])){
+					$childs = $this->getChildFields($oneField->fieldid, $elemInCat);
+					$finalField = $finalField + $childs;
+				}
+			}
+			$fields = $finalField;
+		}
 		return $fields;
+	}
+
+	private function getParentCat($elem, $fields, $allFields){
+		$parent = $allFields[$elem->fieldcat];
+		if(array_key_exists($parent->namekey,$fields)){
+			return $parent->fieldid;
+		} else{
+			if($parent->fieldcat == 0) return 0;
+			else return $this->getParentCat($parent, $fields, $allFields);
+		}
+	}
+
+	private function getChildFields($fieldcatid, $elemInCat){
+		$childs = array();
+		$childElems = $elemInCat[$fieldcatid];
+		foreach($childElems as $oneField){
+			$childs[$oneField->namekey] = $oneField;
+			if($oneField->type == 'category' && !empty($elemInCat[$oneField->fieldid])){
+				$subChilds = $this->getChildFields($oneField->fieldid, $elemInCat);
+				$childs = $childs + $subChilds;
+			}
+		}
+		return $childs;
 	}
 
 	function getFieldName($field){

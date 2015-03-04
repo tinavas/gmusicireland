@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset
+		name="config"
+		label="Config"
+		description="Configuration for multicategorie">
+ 		<field
+			name="use_canonical_urls"
+			type="radio"
+			default="0"
+			label="Use canonical urls"
+			description="If set yes, canonical urls are created to links for articles directing to url for article detail in first category">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>  
+ 		<field
+			name="layout"
+			type="list"
+			default="standard"
+			label="Layout type"
+			description="Choose a layout type for Category selection">
+			<option
+				value="standard">Standard</option>
+			<option
+				value="chosen">Chosen</option>
+		</field>
+	</fieldset>
+	<fieldset
+		name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC"
+		>
+
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			filter="rules"
+			validate="rules"
+			component="com_multicats"
+			section="component" />
+	</fieldset>
+</config>

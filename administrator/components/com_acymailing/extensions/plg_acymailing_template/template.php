@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -138,7 +138,7 @@ class plgAcymailingTemplate extends JPlugin
 		$newbody = preg_replace('#(<(div|tr|td|table)[^>]*)title="[^"]*"#Uis','$1',$email->body);
 		if(!empty($newbody)) $email->body = $newbody;
 
-		$newbody = preg_replace('# *(acyeditor_text|acyeditor_picture|acyeditor_delete) *#is','',$email->body);
+		$newbody = preg_replace('# *(acyeditor_text|acyeditor_picture|acyeditor_delete|acyeditor_sortable) *#is','',$email->body);
 		$newbody = preg_replace('#(class|title|style)=" *"#Ui','',$newbody);
 		if(!empty($newbody)) $email->body = $newbody;
 

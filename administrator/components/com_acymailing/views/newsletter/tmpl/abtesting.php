@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 		acymailing_display(JText::_('PLEASE_SELECT_NEWSLETTERS'),'warning');
 		return;
 	}
+	if(!empty($this->missingMail)) return;
 	if($this->validationStatus == 'abTestFinalSend') return; ?>
 
 	<fieldset>
@@ -95,7 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 				if(!empty($this->mailReceiver->filter)){
 					$resultFilters = $this->filterClass->displayFilters($this->mailReceiver->filter);
 					if(!empty($resultFilters)){
-						echo '<br/>'.JText::_('RECEIVER_LISTS').'<br/>'.JText::_('FILTER_ONLY_IF');
+						echo '<br />'.JText::_('RECEIVER_LISTS').'<br />'.JText::_('FILTER_ONLY_IF');
 						echo '<ul><li>'.implode('</li><li>',$resultFilters).'</li></ul>';
 					}
 				}
@@ -115,9 +116,9 @@ defined('_JEXEC') or die('Restricted access');
 		<fieldset>
 			<?php echo JText::sprintf('ABTESTING_DELAY_ACTION', '<input type="text" id="abTesting_delay" name="abTesting_delay" style="width:20px;" value="'.$this->abTestDetail['delay'].'">'); ?>
 			<div class="abtesting_actions">
-				<input type="radio" name="abTesting_action" id="abTesting_action_manual" value="manual" <?php echo ($this->abTestDetail['action']=='manual')?'checked="checked"':'';?>><label for="abTesting_action_manual" class="radiobtn"><?php echo JText::_('DO_NOTHING');?></label><br/>
-				<input type="radio" name="abTesting_action" id="abTesting_action_open" value="open" <?php echo ($this->abTestDetail['action']=='open')?'checked="checked"':'';?>><label for="abTesting_action_open" class="radiobtn"><?php echo JText::_('ABTESTING_ACTION_GENERATE_OPEN');?></label><br/>
-				<input type="radio" name="abTesting_action" id="abTesting_action_click" value="click" <?php echo ($this->abTestDetail['action']=='click')?'checked="checked"':'';?>><label for="abTesting_action_click" class="radiobtn"><?php echo JText::_('ABTESTING_ACTION_GENERATE_CLICK');?></label><br/>
+				<input type="radio" name="abTesting_action" id="abTesting_action_manual" value="manual" <?php echo ($this->abTestDetail['action']=='manual')?'checked="checked"':'';?>><label for="abTesting_action_manual" class="radiobtn"><?php echo JText::_('DO_NOTHING');?></label><br />
+				<input type="radio" name="abTesting_action" id="abTesting_action_open" value="open" <?php echo ($this->abTestDetail['action']=='open')?'checked="checked"':'';?>><label for="abTesting_action_open" class="radiobtn"><?php echo JText::_('ABTESTING_ACTION_GENERATE_OPEN');?></label><br />
+				<input type="radio" name="abTesting_action" id="abTesting_action_click" value="click" <?php echo ($this->abTestDetail['action']=='click')?'checked="checked"':'';?>><label for="abTesting_action_click" class="radiobtn"><?php echo JText::_('ABTESTING_ACTION_GENERATE_CLICK');?></label><br />
 				<input type="radio" name="abTesting_action" id="abTesting_action_mix" value="mix" <?php echo ($this->abTestDetail['action']=='mix')?'checked="checked"':'';?>><label for="abTesting_action_mix" class="radiobtn"><?php echo JText::_('ABTESTING_ACTION_GENERATE_MIX');?></label>
 			</div>
 		</fieldset>

@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo acymailing_tooltip(JText::_('FROM_ADDRESS_DESC'), JText::_('FROM_ADDRESS'), '', JText::_('FROM_ADDRESS')); ?>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="config[from_email]" style="width:200px" value="<?php echo $this->escape($this->config->get('from_email')); ?>">
+					<input class="inputbox" type="text" onchange="validateEmail(this.value, '<?php echo addslashes(JText::_('FROM_ADDRESS')); ?>')" id="fromemail" name="config[from_email]" style="width:200px" value="<?php echo $this->escape($this->config->get('from_email')); ?>">
 				</td>
 			</tr>
 			<tr>
@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo acymailing_tooltip(JText::_('REPLYTO_ADDRESS_DESC'), JText::_('REPLYTO_ADDRESS'), '', JText::_('REPLYTO_ADDRESS')); ?>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="config[reply_email]" style="width:200px" value="<?php echo $this->escape($this->config->get('reply_email')); ?>">
+					<input class="inputbox" type="text" onchange="validateEmail(this.value, '<?php echo addslashes(JText::_('REPLYTO_ADDRESS')); ?>')" id="replyemail" name="config[reply_email]" style="width:200px" value="<?php echo $this->escape($this->config->get('reply_email')); ?>">
 				</td>
 			</tr>
 			<tr>
@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo acymailing_tooltip(JText::_('BOUNCE_ADDRESS_DESC'), JText::_('BOUNCE_ADDRESS'), '', JText::_('BOUNCE_ADDRESS')); ?>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="config[bounce_email]" style="width:200px" value="<?php echo $this->escape($this->config->get('bounce_email')); ?>">
+					<input class="inputbox" type="text" onchange="validateEmail(this.value, '<?php echo addslashes(JText::_('BOUNCE_ADDRESS')); ?>')" id="bounceemail" name="config[bounce_email]" style="width:200px" value="<?php echo $this->escape($this->config->get('bounce_email')); ?>">
 				</td>
 			</tr>
 			<tr>
@@ -133,7 +133,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td class="key">
 						<?php
 						$defaultHostName = !empty($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'localhost.localdomain';
-						echo acymailing_tooltip(JText::_('HOSTNAME_DESC').'<br/><br/>'.JText::_('FIELD_DEFAULT').' : '.$defaultHostName, JText::_('HOSTNAME'), '', JText::_('HOSTNAME')); ?>
+						echo acymailing_tooltip(JText::_('HOSTNAME_DESC').'<br /><br />'.JText::_('FIELD_DEFAULT').' : '.$defaultHostName, JText::_('HOSTNAME'), '', JText::_('HOSTNAME')); ?>
 					</td>
 					<td>
 						<input class="inputbox" type="text" name="config[hostname]" style="width:160px" value="<?php echo $this->escape($this->config->get('hostname')); ?>">
@@ -275,7 +275,7 @@ defined('_JEXEC') or die('Restricted access');
 							API Key
 						</td>
 						<td>
-							<input class="inputbox" autocomplete="off" type="password" name="config[elasticemail_password]" style="width:160px" value="<?php echo $this->config->get('elasticemail_password','') ?>" />
+							<input class="inputbox" autocomplete="off" type="text" name="config[elasticemail_password]" style="width:160px" value="<?php echo str_repeat('*',strlen($this->config->get('elasticemail_password'))); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -294,7 +294,7 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 				</table>
 				<?php echo JText::_('NO_ACCOUNT_YET').' <a href="'.ACYMAILING_REDIRECT.'elasticemail" target="_blank" >'.JText::_('CREATE_ACCOUNT').'</a>'; ?>
-				<?php echo '<br/><a href="'.ACYMAILING_REDIRECT.'smtp_services" target="_blank">'.JText::_('TELL_ME_MORE').'</a>'; ?>
+				<?php echo '<br /><a href="'.ACYMAILING_REDIRECT.'smtp_services" target="_blank">'.JText::_('TELL_ME_MORE').'</a>'; ?>
 			</fieldset>
 <?php
 if(acymailing_level(1)){
@@ -373,13 +373,13 @@ if(acymailing_level(1)){
 						}else{
 							$publicKey = trim(str_replace(array('acy._domainkey	IN	TXT	"','v=DKIM1;k=rsa;g=*;s=email;h=sha1;t=s;p=','-----BEGIN PUBLIC KEY-----','-----END PUBLIC KEY-----',"\n"),'',$this->config->get('dkim_public','')),'"');
 
-							echo JText::sprintf('DKIM_CONFIGURE','<input class="inputbox" type="text" id="dkim_domain" name="config[dkim_domain]" style="width:120px;" value="'.$this->escape($domain).'" />'); ?><br/>
+							echo JText::sprintf('DKIM_CONFIGURE','<input class="inputbox" type="text" id="dkim_domain" name="config[dkim_domain]" style="width:120px;" value="'.$this->escape($domain).'" />'); ?><br />
 							<?php echo JText::_('DKIM_KEY') ?> <input type="text" readonly="readonly" onclick="select();" style="width:80px;font-size:10px;" value="acy._domainkey" />
-							<br/><?php echo JText::_('DKIM_VALUE') ?> <input type="text" readonly="readonly" onclick="select();" style="width:220px;font-size:10px;" value="v=DKIM1;s=email;t=s;p=<?php echo $this->escape($publicKey); ?>" />
-							<br/><input type="checkbox" value="1" id="dkimletme" name="dkimletme"/> <label for="dkimletme"><?php echo JText::_('DKIM_LET_ME');?></label>
+							<br /><?php echo JText::_('DKIM_VALUE') ?> <input type="text" readonly="readonly" onclick="select();" style="width:220px;font-size:10px;" value="v=DKIM1;s=email;t=s;p=<?php echo $this->escape($publicKey); ?>" />
+							<br /><input type="checkbox" value="1" id="dkimletme" name="dkimletme"/> <label for="dkimletme"><?php echo JText::_('DKIM_LET_ME');?></label>
 							<?php
 						}
-						echo '<br/>';
+						echo '<br />';
 					} ?>
 				<a href="https://www.acyba.com/index.php?option=com_content&amp;view=article&amp;catid=34:documentation-acymailing&amp;Itemid=30&amp;id=156:acymailing-dkim" target="_blank"><?php echo JText::_('ACY_HELP'); ?></a>
 			</fieldset>
@@ -390,4 +390,5 @@ if(acymailing_level(1)){
 		</tr>
 		</table>
 	</fieldset>
+<?php echo acymailing_getFunctionsEmailCheck(array('save','apply','test'), true); ?>
 </div>

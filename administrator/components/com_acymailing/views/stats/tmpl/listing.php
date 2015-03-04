@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo JHTML::_('grid.sort',   JText::_( 'SENT_TEXT' ), 'a.senttext', $this->pageInfo->filter->order->dir, $this->pageInfo->filter->order->value,'listing' ); ?>
 				</th>
 				<?php if(acymailing_level(3)){?>
-				<th class="title">
+				<th class="title titletoggle">
 					<?php echo JHTML::_('grid.sort',   JText::_( 'BOUNCES' ), 'a.bounceunique', $this->pageInfo->filter->order->dir, $this->pageInfo->filter->order->value,'listing' ); ?>
 				</th>
 				<?php } ?>
@@ -64,7 +64,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo JHTML::_('grid.sort',   JText::_( 'FAILED' ), 'a.fail', $this->pageInfo->filter->order->dir, $this->pageInfo->filter->order->value,'listing' ); ?>
 				</th>
 				<?php if(acymailing_level(3)){?>
-				<th class="title">
+				<th class="title titletoggle">
 					<?php echo JText::_( 'STATS_PER_LIST' ); ?>
 				</th>
 				<?php } ?>
@@ -78,7 +78,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td colspan="14">
 					<?php echo $this->pagination->getListFooter();
 					echo $this->pagination->getResultsCounter();
-					if(ACYMAILING_J30) echo '<br/>'.$this->pagination->getLimitBox(); ?>
+					if(ACYMAILING_J30) echo '<br />'.$this->pagination->getLimitBox(); ?>
 				</td>
 			</tr>
 		</tfoot>
@@ -108,7 +108,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php
 						if(!empty($row->senthtml)){
 							$text = '<b>'.JText::_('OPEN_UNIQUE').' : </b>'.$row->openunique;
-							$text .= '<br/><b>'.JText::_('OPEN_TOTAL').' : </b>'.$row->opentotal;
+							$text .= '<br /><b>'.JText::_('OPEN_TOTAL').' : </b>'.$row->opentotal;
 							$pourcent = (substr($row->openunique/$row->senthtml*100,0,5)).'%';
 							$title = JText::sprintf('PERCENT_OPEN',$pourcent);
 							echo acymailing_tooltip( $text, $title, '', $row->openunique.' ('.$pourcent.')',acymailing_completeLink('stats&task=detaillisting&filter_status=open&filter_mail='.$row->mailid));
@@ -120,7 +120,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php
 						if(!empty($row->senthtml)){
 							$text = '<b>'.JText::_('UNIQUE_HITS').' : </b>'.$row->clickunique;
-							$text .= '<br/><b>'.JText::_('TOTAL_HITS').' : </b>'.$row->clicktotal;
+							$text .= '<br /><b>'.JText::_('TOTAL_HITS').' : </b>'.$row->clicktotal;
 							$pourcent = (substr($row->clickunique/$row->senthtml*100,0,5)).'%';
 							$title = JText::sprintf('PERCENT_CLICK',$pourcent);
 							echo acymailing_tooltip( $text, $title, '',$row->clickunique.' ('.$pourcent.')',acymailing_completeLink('statsurl&filter_mail='.$row->mailid));
@@ -133,11 +133,11 @@ defined('_JEXEC') or die('Restricted access');
 
 
 						<?php $pourcent = (empty($row->senthtml) AND empty($row->senttext)) ? '0%' : (substr($row->unsub/($row->senthtml+$row->senttext)*100,0,5)).'%';
-						echo '<a class="modal" href="'.acymailing_completeLink('stats&task=unsubscribed&filter_mail='.$row->mailid,true).'" rel="{handler: \'iframe\', size: {x: 800, y: 590}}">'.$row->unsub.' ('.$pourcent.')</a>'; ?>
+						echo '<a class="modal" href="'.acymailing_completeLink('stats&start=0&task=unsubscribed&filter_mail='.$row->mailid,true).'" rel="{handler: \'iframe\', size: {x: 800, y: 590}}">'.$row->unsub.' ('.$pourcent.')</a>'; ?>
 					</td>
 					<?php if(acymailing_level(1)){?>
 						<td align="center" style="text-align:center" >
-							<?php echo '<a class="modal" href="'.acymailing_completeLink('stats&task=forward&filter_mail='.$row->mailid,true).'" rel="{handler: \'iframe\', size: {x: 800, y: 590}}">'.$row->forward.'</a>'; ?>
+							<?php echo '<a class="modal" href="'.acymailing_completeLink('stats&start=0&task=forward&filter_mail='.$row->mailid,true).'" rel="{handler: \'iframe\', size: {x: 800, y: 590}}">'.$row->forward.'</a>'; ?>
 						</td>
 					<?php } ?>
 					<td align="center" style="text-align:center" >
@@ -147,7 +147,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo $row->senttext; ?>
 					</td>
 					<?php if(acymailing_level(3)){?>
-					<td align="center" style="text-align:center" >
+					<td align="center" style="text-align:center" nowrap="nowrap" >
 						<?php echo '<a class="modal" href="'.acymailing_completeLink('bounces&task=chart&mailid='.$row->mailid,true).'" rel="{handler: \'iframe\', size: {x: 800, y: 590}}"><img src="'.ACYMAILING_IMAGES.'icons/icon-16-stats.png" /></a>'; ?>
 
 						<?php $pourcent = (empty($row->senthtml) AND empty($row->senttext)) ? '0%' : (substr($row->bounceunique/($row->senthtml+$row->senttext)*100,0,5)).'%';

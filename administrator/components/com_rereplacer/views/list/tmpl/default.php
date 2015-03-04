@@ -3,11 +3,11 @@
  * List View Template: Default
  *
  * @package         ReReplacer
- * @version         5.12.2
+ * @version         5.13.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -47,7 +47,7 @@ $cols += ($this->config->show_fields ? 2 : 0);
 require_once JPATH_PLUGINS . '/system/nnframework/helpers/versions.php';
 if ($this->config->show_update_notification)
 {
-	echo NNVersions::getInstance()->getMessage('rereplacer', '', '', 'component');
+	echo nnVersions::getInstance()->getMessage('rereplacer', '', '', 'component');
 }
 ?>
 	<form action="<?php echo JRoute::_('index.php?option=com_rereplacer&view=list'); ?>" method="post" name="adminForm" id="adminForm">
@@ -231,10 +231,10 @@ if ($this->config->show_update_notification)
 <?php
 // PRO Check
 require_once JPATH_PLUGINS . '/system/nnframework/helpers/licenses.php';
-echo NNLicenses::getInstance()->getMessage('REREPLACER', 0);
+echo nnLicenses::getInstance()->getMessage('REREPLACER', 0);
 
 // Copyright
-echo NNVersions::getInstance()->getCopyright('REREPLACER', '', 4336, 'rereplacer', 'component');
+echo nnVersions::getInstance()->getCopyright('REREPLACER', '', 0, 'rereplacer', 'component');
 
 function makeTooltipSafe($str)
 {

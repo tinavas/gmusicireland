@@ -1,11 +1,11 @@
 <?php
 /**
  * @package         Advanced Template Manager
- * @version         1.1.7
+ * @version         1.3.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -32,7 +32,7 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 require_once JPATH_PLUGINS . '/system/nnframework/helpers/versions.php';
 if ($this->config->show_update_notification)
 {
-	echo NNVersions::getInstance()->getMessage('advancedtemplates', '', '', 'component');
+	echo nnVersions::getInstance()->getMessage('advancedtemplates', '', '', 'component');
 }
 ?>
 
@@ -137,13 +137,13 @@ if ($this->config->show_update_notification)
 
 <?php if ($this->config->show_switch) : ?>
 	<div style="text-align:right">
-		<a href="<?php echo JRoute::_('index.php?option=com_templates&force=1'); ?>"><?php echo JText::_('AMM_SWITCH_TO_CORE'); ?></a>
+		<a href="<?php echo JRoute::_('index.php?option=com_templates&force=1'); ?>"><?php echo JText::_('ATP_SWITCH_TO_CORE'); ?></a>
 	</div>
 <?php endif; ?>
 <?php
 // PRO Check
 require_once JPATH_PLUGINS . '/system/nnframework/helpers/licenses.php';
-echo NNLicenses::getInstance()->getMessage('ADVANCED_TEMPLATE_MANAGER', 0);
+echo nnLicenses::getInstance()->getMessage('ADVANCED_TEMPLATE_MANAGER', 0);
 
 // Copyright
-echo NNVersions::getInstance()->getCopyright('ADVANCED_TEMPLATE_MANAGER', '', 10307, 'advancedtemplates', 'component');
+echo nnVersions::getInstance()->getCopyright('ADVANCED_TEMPLATE_MANAGER', '', 0, 'advancedtemplates', 'component');

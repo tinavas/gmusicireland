@@ -1,11 +1,11 @@
 <?php
 /**
  * @package         Advanced Template Manager
- * @version         1.1.7
+ * @version         1.3.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -180,7 +180,7 @@ class AdvancedTemplatesViewTemplate extends JViewLegacy
 		if (!isset($this->config))
 		{
 			require_once JPATH_PLUGINS . '/system/nnframework/helpers/parameters.php';
-			$parameters = NNParameters::getInstance();
+			$parameters = nnParameters::getInstance();
 			$this->config = $parameters->getComponentParams('advancedtemplates');
 		}
 		return $this->config;

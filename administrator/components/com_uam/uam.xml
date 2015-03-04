@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.6.0" client="site" method="upgrade">
+	<name>COM_UAM</name>
+	<!-- The following elements are optional and free of formatting conttraints -->
+	<creationDate>2013-03-18</creationDate>
+	<author>Rob Sykes</author>
+	<authorEmail>uamproject@gmx.co.uk</authorEmail>
+	<copyright></copyright>
+	<license>GPLv2</license>
+	<!--  The version string is recorded in the components table -->
+	<version>0.18a</version>
+	<!-- The description is optional and defaults to the name -->
+	<description><![CDATA[The <big>User Article Manager (UAM)</big> component displays an article list, allowing users to edit, copy, publish, trash and have better overall control of their articles.<br />
+<br />
+<br />Project forked from the original Frontend User Article Manager (FUAL v2.0b) by Felipe Quinto Busanello
+<br />
+
+]]></description>
+
+	<scriptfile>script.php</scriptfile>	
+	
+	<!-- Site Main File Copy Section -->
+	<files folder="site">
+	
+		<filename>assets/css/index.html</filename>
+		<filename>assets/css/style.css</filename>
+		
+		<filename>assets/images/15/background_edit_alias_form.png</filename>
+		<filename>assets/images/15/ico_alias.png</filename>
+		<filename>assets/images/15/ico_article_add.png</filename>
+		<filename>assets/images/15/ico_copy.png</filename>
+		<filename>assets/images/15/ico_edit.png</filename>
+		<filename>assets/images/15/ico_edit_unpublished.png</filename>
+		<filename>assets/images/15/ico_restore.png</filename>
+		<filename>assets/images/15/ico_trash.png</filename>
+		<filename>assets/images/15/bw_ico_alias.png</filename>
+		<filename>assets/images/15/bw_ico_edit.png</filename>
+		<filename>assets/images/15/bw_ico_restore.png</filename>
+		<filename>assets/images/15/bw_ico_trash.png</filename>
+		<filename>assets/images/15/index.html</filename>
+		<filename>assets/images/15/ico_publish_g.png</filename>
+		<filename>assets/images/15/ico_publish_r.png</filename>
+		<filename>assets/images/15/ico_publish_x.png</filename>
+		<filename>assets/images/15/ico_publish_y.png</filename>
+		<filename>assets/images/15/bw_ico_publish_g.png</filename>
+		<filename>assets/images/15/bw_ico_publish_r.png</filename>
+		<filename>assets/images/15/bw_ico_publish_x.png</filename>
+		<filename>assets/images/15/bw_ico_publish_y.png</filename>
+		<filename>assets/images/15/ico_featured.png</filename>
+		<filename>assets/images/15/bw_ico_featured.png</filename>
+		<filename>assets/images/15/ico_not_featured.png</filename>
+		<filename>assets/images/15/bw_ico_not_featured.png</filename>
+		<filename>assets/images/15/checked_out.png</filename>
+		
+		<filename>assets/images/17/background_edit_alias_form.png</filename>
+		<filename>assets/images/17/ico_alias.png</filename>
+		<filename>assets/images/17/ico_article_add.png</filename>
+		<filename>assets/images/17/ico_copy.png</filename>
+		<filename>assets/images/17/ico_edit.png</filename>
+		<filename>assets/images/17/ico_edit_unpublished.png</filename>
+		<filename>assets/images/17/ico_restore.png</filename>
+		<filename>assets/images/17/ico_trash.png</filename>
+		<filename>assets/images/17/bw_ico_alias.png</filename>
+		<filename>assets/images/17/bw_ico_edit.png</filename>
+		<filename>assets/images/17/bw_ico_restore.png</filename>
+		<filename>assets/images/17/bw_ico_trash.png</filename>
+		<filename>assets/images/17/index.html</filename>
+		<filename>assets/images/17/ico_publish_g.png</filename>
+		<filename>assets/images/17/ico_publish_r.png</filename>
+		<filename>assets/images/17/ico_publish_x.png</filename>
+		<filename>assets/images/17/ico_publish_y.png</filename>
+		<filename>assets/images/17/bw_ico_publish_g.png</filename>
+		<filename>assets/images/17/bw_ico_publish_r.png</filename>
+		<filename>assets/images/17/bw_ico_publish_x.png</filename>
+		<filename>assets/images/17/bw_ico_publish_y.png</filename>
+		<filename>assets/images/17/ico_featured.png</filename>
+		<filename>assets/images/17/bw_ico_featured.png</filename>
+		<filename>assets/images/17/ico_not_featured.png</filename>
+		<filename>assets/images/17/bw_ico_not_featured.png</filename>
+		<filename>assets/images/17/checked_out.png</filename>
+
+		<filename>assets/javascript/index.html</filename>
+		<filename>assets/javascript/script.js</filename>
+		
+		<filename>models/uam.php</filename>
+		<filename>models/index.html</filename>
+		
+		<filename>views/uam/tmpl/default.php</filename>
+		<filename>views/uam/tmpl/default.xml</filename>
+		<filename>views/uam/tmpl/default_edit_alias.php</filename>
+		<filename>views/uam/tmpl/index.html</filename>
+		<filename>views/uam/index.html</filename>
+		<filename>views/uam/view.html.php</filename>
+		<filename>views/index.html</filename>
+		
+		<filename>controller.php</filename>
+		<filename>uam.php</filename>
+		<filename>index.html</filename>
+		
+	</files>
+	
+	<languages folder="site">
+		<language tag="en-GB">language/en-GB/en-GB.com_uam.ini</language>
+		<language tag="fr-FR">language/fr-FR/fr-FR.com_uam.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.com_uam.ini</language>
+		<language tag="es-ES">language/es-ES/es-ES.com_uam.ini</language>
+		<language tag="it-IT">language/it-IT/it-IT.com_uam.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.com_uam.ini</language>
+		<language tag="nl-NL">language/nl-NL/nl-NL.com_uam.ini</language>
+		<language tag="da-DK">language/da-DK/da-DK.com_uam.ini</language>
+		<language tag="pl-PL">language/pl-PL/pl-PL.com_uam.ini</language>
+		<language tag="nb-NO">language/nb-NO/nb-NO.com_uam.ini</language>
+		<language tag="pt-BR">language/pt-BR/pt-BR.com_uam.ini</language>
+		<language tag="zh-CN">language/zh-CN/zh-CN.com_uam.ini</language>
+		<language tag="zh-TW">language/zh-TW/zh-TW.com_uam.ini</language>
+		<language tag="ar-AA">language/ar-AA/ar-AA.com_uam.ini</language>
+		<language tag="fa-IR">language/fa-IR/fa-IR.com_uam.ini</language>
+		<language tag="sv-SE">language/sv-SE/sv-SE.com_uam.ini</language>
+		<language tag="bg-BG">language/bg-BG/bg-BG.com_uam.ini</language>
+		<language tag="fi-FI">language/fi-FI/fi-FI.com_uam.ini</language>
+		<language tag="el-GR">language/el-GR/el-GR.com_uam.ini</language>
+		<language tag="ro-RO">language/ro-RO/ro-RO.com_uam.ini</language>
+	</languages>
+	
+	<administration>
+		<menu img="components/com_uam/assets/images/logouam_18.png">COM_UAM</menu>
+		<files folder="admin">
+		<!-- Site Main File Copy Section -->
+			<filename>assets/css/index.html</filename>
+			<filename>assets/css/style.css</filename>
+			
+			<filename>assets/index.html</filename>
+			
+			<filename>assets/images/index.html</filename>
+			<filename>assets/images/logouam.png</filename>
+			<filename>assets/images/logouam_18.png</filename>
+			
+			<filename>views/uam/tmpl/default.php</filename>
+			<filename>views/uam/tmpl/index.html</filename>
+			<filename>views/uam/index.html</filename>
+			<filename>views/uam/view.html.php</filename>
+			<filename>views/index.html</filename>
+			
+			<filename>tables/uam.php</filename>
+			<filename>tables/index.html</filename>
+			
+			<filename>uam.php</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>LICENSE.txt</filename>
+			<filename>index.html</filename>
+		</files>
+
+		<!-- Administration Language File Copy Section -->
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB/en-GB.com_uam.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_uam.sys.ini</language>
+			<language tag="de-DE">language/de-DE/de-DE.com_uam.ini</language>
+			<language tag="de-DE">language/de-DE/de-DE.com_uam.sys.ini</language>
+			<language tag="es-ES">language/es-ES/es-ES.com_uam.ini</language>
+			<language tag="es-ES">language/es-ES/es-ES.com_uam.sys.ini</language>
+			<language tag="ru-RU">language/ru-RU/ru-RU.com_uam.ini</language>
+			<language tag="ru-RU">language/ru-RU/ru-RU.com_uam.sys.ini</language>
+			<language tag="nl-NL">language/nl-NL/nl-NL.com_uam.ini</language>
+			<language tag="nl-NL">language/nl-NL/nl-NL.com_uam.sys.ini</language>
+			<language tag="fr-FR">language/fr-FR/fr-FR.com_uam.ini</language>
+			<language tag="fr-FR">language/fr-FR/fr-FR.com_uam.sys.ini</language>
+			<language tag="pl-PL">language/pl-PL/pl-PL.com_uam.ini</language>
+			<language tag="pl-PL">language/pl-PL/pl-PL.com_uam.sys.ini</language>
+			<language tag="nb-NO">language/nb-NO/nb-NO.com_uam.ini</language>
+			<language tag="nb-NO">language/nb-NO/nb-NO.com_uam.sys.ini</language>
+			<language tag="zh-CN">language/zh-CN/zh-CN.com_uam.ini</language>
+			<language tag="zh-CN">language/zh-CN/zh-CN.com_uam.sys.ini</language>
+			<language tag="zh-TW">language/zh-TW/zh-TW.com_uam.ini</language>
+			<language tag="zh-TW">language/zh-TW/zh-TW.com_uam.sys.ini</language>
+			<language tag="fa-IR">language/fa-IR/fa-IR.com_uam.ini</language>
+			<language tag="fa-IR">language/fa-IR/fa-IR.com_uam.sys.ini</language>
+			<language tag="bg-BG">language/bg-BG/bg-BG.com_uam.ini</language>
+			<language tag="bg-BG">language/bg-BG/bg-BG.com_uam.sys.ini</language>
+			<language tag="el-GR">language/el-GR/el-GR.com_uam.ini</language>
+			<language tag="el-GR">language/el-GR/el-GR.com_uam.sys.ini</language>
+        </languages>
+	</administration>
+</extension>

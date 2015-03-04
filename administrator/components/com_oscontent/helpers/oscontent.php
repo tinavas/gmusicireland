@@ -1,14 +1,9 @@
 <?php
 /**
- * @category  Joomla Component
- * @package   com_oscontent
- * @author    Johann Eriksen
- * @copyright 2007-2009 Johann Eriksen
- * @copyright 2011, 2014 Open Source Training, LLC. All rights reserved
- * @contact   www.ostraining.com, support@ostraining.com
- * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version   1.9.3
- * @link      http://www.ostraining.com/downloads/joomla-extensions/oscontent/
+ * @package   OSContent
+ * @contact   www.alledia.com, hello@alledia.com
+ * @copyright 2014 Alledia.com, All rights reserved
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
@@ -39,7 +34,7 @@ class OSContentHelper
         $subMenuClass::addEntry(
             JText::_('COM_OSCONTENT_SUBMENU_CREATE'),
             'index.php?option=com_oscontent&view=content',
-            $vName == 'content'
+            $vName == 'content' || empty($vName)
         );
 
         $subMenuClass::addEntry(
@@ -52,5 +47,15 @@ class OSContentHelper
             'index.php?option=com_oscontent&view=delete',
             $vName == 'delete'
         );
+
+        // Load CSS
+        JHtml::stylesheet( Juri::base() . 'components/com_oscontent/media/css/style.css' );
+
+        // Load responsive CSS
+        if (version_compare(JVERSION, '3', 'ge')) {
+            JHtml::stylesheet( Juri::base() . 'components/com_oscontent/media/css/responsive.css' );
+        }else{
+            JHtml::stylesheet( Juri::base() . 'components/com_oscontent/media/css/non-responsive.css' );
+        }
     }
 }

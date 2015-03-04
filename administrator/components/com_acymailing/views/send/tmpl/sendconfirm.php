@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 			if(!empty($this->mail->filter)){
 				$resultFilters = $filterClass->displayFilters($this->mail->filter);
 				if(!empty($resultFilters)){
-					echo '<br/>'.JText::_('RECEIVER_LISTS').'<br/>'.JText::_('FILTER_ONLY_IF');
+					echo '<br />'.JText::_('RECEIVER_LISTS').'<br />'.JText::_('FILTER_ONLY_IF');
 					echo '<ul><li>'.implode('</li><li>',$resultFilters).'</li></ul>';
 				}
 			}
@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if(!empty($this->values->alreadySent)){
 				$filterClass->onlynew = true;
 				$nbTotalReceivers = $nbTotalReceiversAlready = $filterClass->countReceivers($listids,$this->mail->filter,$this->mail->mailid);
-				acymailing_display(JText::sprintf('ALREADY_SENT',$this->values->alreadySent).'<br/>'.JText::_('REMOVE_ALREADY_SENT').'<br/>'.JHTML::_('acyselect.booleanlist', "onlynew",'onclick="if(this.value == 1){document.getElementById(\'nbreceivers\').innerHTML = \''.$nbTotalReceiversAlready.'\';}else{document.getElementById(\'nbreceivers\').innerHTML = \''.$nbTotalReceiversAll.'\'}"',1,JText::_('JOOMEXT_YES'),JText::_('SEND_TO_ALL')),'warning');
+				acymailing_display(JText::sprintf('ALREADY_SENT',$this->values->alreadySent).'<br />'.JText::_('REMOVE_ALREADY_SENT').'<br />'.JHTML::_('acyselect.booleanlist', "onlynew",'onclick="if(this.value == 1){document.getElementById(\'nbreceivers\').innerHTML = \''.$nbTotalReceiversAlready.'\';}else{document.getElementById(\'nbreceivers\').innerHTML = \''.$nbTotalReceiversAll.'\'}"',1,JText::_('JOOMEXT_YES'),JText::_('SEND_TO_ALL')),'warning');
 			}elseif($displayWarning){
 				$config = acymailing_config();
 				if($config->get('warninglimitation',1)){
@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 			}
 		}else{ acymailing_display(JText::_( 'EMAIL_AFFECT' ),'warning');}
 	}else{
-		acymailing_display(JText::sprintf('NB_PENDING_EMAIL',$this->values->nbqueue,'<b><i>'.$this->mail->subject.'</i></b>').'<br/>'.JText::_('SEND_CONTINUE'),'info');
+		acymailing_display(JText::sprintf('NB_PENDING_EMAIL',$this->values->nbqueue,'<b><i>'.$this->mail->subject.'</i></b>').'<br />'.JText::_('SEND_CONTINUE'),'info');
 		?>
 		<input type="hidden" name="totalsend" value="<?php echo $this->values->nbqueue; ?>" />
 		<?php
@@ -74,7 +74,7 @@ defined('_JEXEC') or die('Restricted access');
 	?>
 	<?php if(!empty($this->mail->mailid) AND (!empty($this->lists) OR !empty($this->values->nbqueue))){?>
 		<div style="text-align:center;font-size:14px;padding:20px;">
-			<?php if(empty($this->values->nbqueue)) echo JText::sprintf('SENT_TO_NUMBER','<span style="font-weight:bold;" id="nbreceivers" >'.$nbTotalReceivers.'</span>').'<br/>';?>
+			<?php if(empty($this->values->nbqueue)) echo JText::sprintf('SENT_TO_NUMBER','<span style="font-weight:bold;" id="nbreceivers" >'.$nbTotalReceivers.'</span>').'<br />';?>
 			<input class="btn btn-primary" style="padding:10px 30px;margin:5px;font-size:14px;cursor:pointer;" type="submit" value="<?php echo empty($this->values->nbqueue) ? JText::_('SEND') : JText::_('CONTINUE')?>" />
 		</div>
 	<?php }?>

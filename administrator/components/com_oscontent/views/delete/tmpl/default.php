@@ -1,14 +1,9 @@
 <?php
 /**
- * @category  Joomla Component
- * @package   com_oscontent
- * @author    Johann Eriksen
- * @copyright 2007-2009 Johann Eriksen
- * @copyright 2011, 2014 Open Source Training, LLC. All rights reserved
- * @contact   www.ostraining.com, support@ostraining.com
- * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version   1.9.3
- * @link      http://www.ostraining.com/downloads/joomla-extensions/oscontent/
+ * @package   OSContent
+ * @contact   www.alledia.com, hello@alledia.com
+ * @copyright 2014 Alledia.com, All rights reserved
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
@@ -64,9 +59,9 @@ JHtml::_('behavior.tooltip');
                 <?php
                         // $i = 0;
                         // foreach ($this->lists['sectioncategories'] as $k=>$items) {
-                        // 	foreach ($items as $v) {
-                        // 		echo "sectioncategories[".$i++."] = new Array('$k','".addslashes($v->id)."','".addslashes($v->name)."');\t";
-                        // 	}
+                        //  foreach ($items as $v) {
+                        //      echo "sectioncategories[".$i++."] = new Array('$k','".addslashes($v->id)."','".addslashes($v->name)."');\t";
+                        //  }
                         // }
                         // ?>
             </script>

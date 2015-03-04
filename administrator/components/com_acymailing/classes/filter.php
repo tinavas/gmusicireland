@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -68,9 +68,9 @@ class filterClass extends acymailingClass{
 		if(!empty($filters['type'])){
 			foreach($filters['type'] as $num => $oneType){
 				if(empty($oneType)) continue;
-				$oldObject = count($query->where) + count($query->leftjoin) + count($query->join);
+				$oldObject = (count($query->where) + count($query->leftjoin) + count($query->join)).'_'.$query->limit.$query->orderBy;
 				$res = $this->dispatcher->trigger('onAcyProcessFilter_'.$oneType,array(&$query,$filters[$num][$oneType],$num));
-				$newObject = count($query->where) + count($query->leftjoin) + count($query->join);
+				$newObject = (count($query->where) + count($query->leftjoin) + count($query->join)).'_'.$query->limit.$query->orderBy;
 				if(count($res) == 0 && $newObject == $oldObject){
 					$query->where[] = '0 = 1';
 					$this->report[] = 'Function onAcyProcessFilter_'.$oneType.' did not add a condition, filter blocked. Maybe a plugin is missing ?';
@@ -209,8 +209,12 @@ class filterClass extends acymailingClass{
 					$app = JFactory::getApplication();
 					if(!$app->isAdmin()) $js .= " return; ";
 					$js .= "
+					if(document.getElementById('filtertype'+num).value == ''){
+						document.getElementById('countresult_'+num).innerHTML = '';
+						return;
+					}
 					document.getElementById('countresult_'+num).innerHTML = '<span class=\"onload\"></span>';
-					var form = $('adminForm');
+					var form = document.getElementById('adminForm');
 					var data = form.toQueryString();
 					data += '&task=countresults&ctrl=filter';
 					try{
@@ -240,6 +244,9 @@ class filterClass extends acymailingClass{
 					}
 					filterArea = 'filter__num__'+currentFilterType;
 					window.document.getElementById('filterarea_'+filterNum).innerHTML = window.document.getElementById(filterArea).innerHTML.replace(/__num__/g,filterNum);
+					if(typeof(window['onAcyDisplayFilter_'+currentFilterType]) == 'function') {
+						try{ window['onAcyDisplayFilter_'+currentFilterType](filterNum); }catch(e){alert('Error in the onAcyDisplayFilter_'+currentFilterType+' function : '+e); }
+					}
 				}
 
 				function displayCondFilter(fct, element, num, extra){";
@@ -452,6 +459,8 @@ class acyQuery{
 	var $join = array();
 	var $where = array();
 	var $from = '#__acymailing_subscriber as sub';
+	var $limit = '';
+	var $orderBy = '';
 
 	function acyQuery(){
 		$this->db = JFactory::getDBO();
@@ -470,6 +479,8 @@ class acyQuery{
 		if(!empty($this->join)) $query .= ' JOIN '.implode(' JOIN ',$this->join);
 		if(!empty($this->leftjoin)) $query .= ' LEFT JOIN '.implode(' LEFT JOIN ',$this->leftjoin);
 		if(!empty($this->where)) $query .= ' WHERE ('.implode(') AND (',$this->where).')';
+		if(!empty($this->orderBy)) $query .= ' ORDER BY '.$this->orderBy;
+		if(!empty($this->limit)) $query .= ' LIMIT '.$this->limit;
 
 		return $query;
 	}

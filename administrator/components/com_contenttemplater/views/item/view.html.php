@@ -3,11 +3,11 @@
  * Item View
  *
  * @package         Content Templater
- * @version         4.10.2
+ * @version         4.12.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -33,7 +33,7 @@ class ContentTemplaterViewItem extends JViewLegacy
 	public function display($tpl = null)
 	{
 		require_once JPATH_PLUGINS . '/system/nnframework/helpers/parameters.php';
-		$this->parameters = NNParameters::getInstance();
+		$this->parameters = nnParameters::getInstance();
 
 		$this->form = $this->get('Form');
 		$this->item = $this->_models['item']->getItem(null, 1);

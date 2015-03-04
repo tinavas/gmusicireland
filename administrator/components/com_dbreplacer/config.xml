@@ -4,7 +4,7 @@
 		<field name="ignore_tables" type="text" default="" label="DBR_IGNORE_TABLES" description="DBR_IGNORE_TABLES_DESC" />
 		<field name="@notice_default_table" type="nn_plaintext" label="DBR_DEFAULT_TABLE" description="DBR_DEFAULT_TABLE_DESC" default="NN_ONLY_AVAILABLE_IN_PRO" />
 		<field name="@notice_default_columns" type="nn_plaintext" label="DBR_DEFAULT_COLUMNS" description="DBR_DEFAULT_COLUMNS_DESC" default="NN_ONLY_AVAILABLE_IN_PRO" />
-		<field name="maxrows" type="list" default="50" label="DBR_MAXIMUM_ROW_COUNT" description="DBR_MAXIMUM_ROW_COUNT">
+		<field name="maxrows" type="list" default="50" label="DBR_MAXIMUM_ROW_COUNT" description="DBR_MAXIMUM_ROW_COUNT_DESC">
 			<option value="50">50</option>
 			<option value="">* 100</option>
 			<option value="">* 200</option>

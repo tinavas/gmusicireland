@@ -55,20 +55,17 @@
 
 	<fieldset name="assignto_date">
 		<field name="@toggler_group_date_a" type="nn_toggler" param="show_assignments|assignto_date|assignto_seasons|assignto_months|assignto_days|assignto_time" value="1|1,2|1,2|1,2|1,2|1,2" />
-		<field name="@block_group_date_a" type="nn_block" start="1" label="NN_DATE_TIME" />
+		<field name="@block_group_date_a" type="nn_block" start="1" showclose="1" label="NN_DATE_TIME" />
 
-		<field name="@toggler_group_date_1a" type="nn_toggler" param="assignto_date|assignto_seasons|assignto_months|assignto_days|assignto_time" value="1,2|1,2|1,2|1,2|1,2" />
-		<field name="@text_group_date_1" type="nn_plaintext" label="NN_DATE_TIME_DESC" />
-		<field name="@text_group_date_2" type="nn_datetime" format="Y-m-d H:i" label="NN_CURRENT_DATE" />
-		<field name="@toggler_group_date_1b" type="nn_toggler" />
-
-		<field name="assignto_date" type="nn_assignmentselection" showclose="1" label="NN_DATE" />
+		<field name="assignto_date" type="nn_assignmentselection" label="NN_DATE" />
 		<field name="assignto_date_publish_up" type="calendar" filter="user_utc" format="%Y-%m-%d %H:%M" default="0000-00-00 00:00" label="NN_START_PUBLISHING" description="NN_START_PUBLISHING_DESC" />
 		<field name="assignto_date_publish_down" type="calendar" filter="user_utc" format="%Y-%m-%d %H:%M" default="0000-00-00 00:00" label="NN_FINISH_PUBLISHING" description="NN_FINISH_PUBLISHING_DESC" />
 		<field name="assignto_date_recurring" type="radio" class="btn-group btn-group-yesno" default="0" label="NN_DATE_RECURRING" description="NN_DATE_RECURRING_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		<field name="@text_assignto_date_1" type="nn_plaintext" label="NN_DATE_TIME_DESC" />
+		<field name="@text_assignto_date_2" type="nn_datetime" format="Y-m-d H:i" label="NN_CURRENT_DATE" />
 		<field name="@assignto_date" type="nn_assignmentselection" />
 
 
@@ -78,10 +75,10 @@
 
 	<fieldset name="assignto_groupusers">
 		<field name="@toggler_group_users_a" type="nn_toggler" param="show_assignments|assignto_usergrouplevels|assignto_users" value="1|1,2|1,2" />
-		<field name="@block_group_users_a" type="nn_block" start="1" label="NN_USERS" />
+		<field name="@block_group_users_a" type="nn_block" start="1" showclose="1" label="NN_USERS" />
 
 		<field name="@toggler_usergrouplevels_a" type="nn_toggler" param="show_usergrouplevels" value="1" />
-		<field name="assignto_usergrouplevels" type="nn_assignmentselection" showclose="1" label="NN_USER_GROUP_LEVELS" />
+		<field name="assignto_usergrouplevels" type="nn_assignmentselection" label="NN_USER_GROUP_LEVELS" />
 		<field name="assignto_usergrouplevels_selection" type="nn_grouplevel" multiple="true" notregistered="1" default="" label="NN_SELECTION" description="NN_USER_GROUPS_DESC" />
 		<field name="@assignto_usergrouplevels" type="nn_assignmentselection" />
 		<field name="@toggler_usergrouplevels_b" type="nn_toggler" />
@@ -148,10 +145,10 @@
 		<field name="@loadlanguage_content" type="nn_loadlanguage" extension="com_content.sys" />
 
 		<field name="@toggler_content_a" type="nn_toggler" param="show_assignments|assignto_contentpagetypes|assignto_cats|assignto_articles" value="1|1,2|1,2|1,2" />
-		<field name="@block_content_a" type="nn_block" start="1" label="NN_JCONTENT" />
+		<field name="@block_content_a" type="nn_block" start="1" showclose="1" label="NN_JCONTENT" />
 
-		<field name="assignto_contentpagetypes" type="nn_assignmentselection" showclose="1" label="NN_PAGE_TYPES" />
-		<field name="assignto_contentpagetypes_selection" type="list" multiple="true" default="" label="NN_SELECTION" description="NN_PAGE_TYPES_DESC">
+		<field name="assignto_contentpagetypes" type="nn_assignmentselection" label="NN_PAGE_TYPES" />
+		<field name="assignto_contentpagetypes_selection" type="nn_list" multiple="true" default="" label="NN_SELECTION" description="NN_PAGE_TYPES_DESC">
 			<option value="archive">COM_CONTENT_ARCHIVE_VIEW_DEFAULT_TITLE</option>
 			<option value="article">COM_CONTENT_ARTICLE_VIEW_DEFAULT_TITLE</option>
 			<option value="categories">COM_CONTENT_CATEGORIES_VIEW_DEFAULT_TITLE</option>
@@ -162,7 +159,7 @@
 		</field>
 		<field name="@assignto_contentpagetypes" type="nn_assignmentselection" />
 
-		<field name="assignto_cats" type="nn_assignmentselection" showclose="1" label="NN_CATEGORIES" />
+		<field name="assignto_cats" type="nn_assignmentselection" label="NN_CATEGORIES" />
 		<field name="assignto_cats_selection" type="nn_content" group="categories" multiple="true" default="" label="NN_SELECTION" description="NN_CATEGORIES_DESC" />
 		<field name="assignto_cats_inc_children" type="radio" class="btn-group btn-group-yesno" default="0" label="NN_ALSO_ON_CHILD_ITEMS" description="NN_ALSO_ON_CHILD_ITEMS_DESC">
 			<option value="0">JNO</option>
@@ -176,9 +173,10 @@
 		</field>
 		<field name="@assignto_cats" type="nn_assignmentselection" />
 
-		<field name="assignto_articles" type="nn_assignmentselection" showclose="1" label="NN_ARTICLES" />
+		<field name="assignto_articles" type="nn_assignmentselection" label="NN_ARTICLES" />
 		<field name="assignto_articles_selection" type="nn_content" group="items" multiple="true" default="" label="NN_SELECTION" description="NN_ARTICLES_DESC" />
 		<field name="assignto_articles_keywords" type="nn_textareaplus" texttype="regex" default="" label="NN_ARTICLE_KEYWORDS" description="NN_ARTICLE_KEYWORDS_DESC" />
+		<field name="assignto_articles_authors" type="nn_users" multiple="true" default="" label="NN_ARTICLE_AUTHORS" description="NN_ARTICLE_AUTHORS_DESC" />
 		<field name="@assignto_articles" type="nn_assignmentselection" />
 
 		<field name="@block_content_b" type="nn_block" end="1" />

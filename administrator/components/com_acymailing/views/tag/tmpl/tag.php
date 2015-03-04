@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -22,12 +22,16 @@ html{
 </style>
 <div id="acy_content">
 <div id="acymailing_edit" class="acytagpopup">
+<?php
+	if(empty($this->tagsfamilies)){
+		$errorPluginTxt = JText::_('ERROR_PLUGINS'). '<br /><a href="index.php?option=com_acymailing&amp;ctrl=update&amp;task=install">'. JText::_('ACY_ERROR_INSTALLAGAIN') .'</a>';
+		acymailing_display($errorPluginTxt,'warning');
+	}
+?>
 <table width="100%">
 	<tr>
 	<td width="660" class="familymenu" valign="top">
 	<?php
-		if(empty($this->tagsfamilies)) acymailing_display(JText::sprintf('ERROR_PLUGINS','href="index.php?option=com_acymailing&amp;ctrl=update&amp;task=install"'),'warning');
-
 		foreach ($this->tagsfamilies as $id => $oneFamily){
 			if(empty($oneFamily)) continue;
 			if($oneFamily->function == $this->fctplug){

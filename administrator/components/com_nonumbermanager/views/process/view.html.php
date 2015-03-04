@@ -1,11 +1,11 @@
 <?php
 /**
  * @package         NoNumber Extension Manager
- * @version         4.6.4
+ * @version         4.7.1
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -24,12 +24,16 @@ class NoNumberManagerViewProcess extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$action = JFactory::getApplication()->input->get('action');
-		if ($action) {
+		if ($action)
+		{
 			$model = $this->getModel();
-			if ($action == 'install') {
+			if ($action == 'install')
+			{
 				echo $model->install(JFactory::getApplication()->input->get('id'), JFactory::getApplication()->input->getString('url'));
 				die;
-			} else if ($action == 'uninstall') {
+			}
+			else if ($action == 'uninstall')
+			{
 				echo $model->uninstall(JFactory::getApplication()->input->get('id'));
 				die;
 			}
@@ -46,11 +50,13 @@ class NoNumberManagerViewProcess extends JViewLegacy
 	 */
 	protected function getConfig()
 	{
-		if (!isset($this->config)) {
+		if (!isset($this->config))
+		{
 			require_once JPATH_PLUGINS . '/system/nnframework/helpers/parameters.php';
 			$parameters = nnParameters::getInstance();
 			$this->config = $parameters->getComponentParams('nonumbermanager');
 		}
+
 		return $this->config;
 	}
 }

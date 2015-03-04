@@ -1,14 +1,9 @@
 <?php
 /**
- * @category  Joomla Component
- * @package   com_oscontent
- * @author    Johann Eriksen
- * @copyright 2007-2009 Johann Eriksen
- * @copyright 2011, 2014 Open Source Training, LLC. All rights reserved
- * @contact   www.ostraining.com, support@ostraining.com
- * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version   1.9.3
- * @link      http://www.ostraining.com/downloads/joomla-extensions/oscontent/
+ * @package   OSContent
+ * @contact   www.alledia.com, hello@alledia.com
+ * @copyright 2014 Alledia.com, All rights reserved
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
@@ -20,7 +15,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_oscontent/models/model.php';
  *
  * @since  1.0.0
  */
-class OSContentModelCategories extends OSModel
+class OSContentModelCategories extends OSModelAbstract
 {
     /**
      * @var    string  The prefix to use with controller messages.
@@ -92,7 +87,7 @@ class OSContentModelCategories extends OSModel
                 $query->join('LEFT', '`#__categories` AS p ON p.id = '.(int) $id);
                 $query->where('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
 
-                $rowQuery	= $db->getQuery(true);
+                $rowQuery   = $db->getQuery(true);
                 $rowQuery->select('a.id AS value, a.title AS text, a.level, a.parent_id');
                 $rowQuery->from('#__categories AS a');
                 $rowQuery->where('a.id = ' . (int) $id);
@@ -405,7 +400,7 @@ class OSContentModelCategories extends OSModel
             $table->alias = JFilterOutput::stringURLSafe($post["alias"][$i]);
 
             if (trim(str_replace('-', '', $table->alias)) == '') {
-                $table->alias = JFactory::getDate()->format('Y-m-d-H-i-s') . "-" . $i;
+                $table->alias = str_replace( ' ', '-', strtolower($post["title"][$i]) );
             }
 
             $table->extension = "com_content";
@@ -418,7 +413,7 @@ class OSContentModelCategories extends OSModel
                 return false;
             }
 
-            if (@$post["addMenu"] === 0 || @$post['addMenu'] === 'on') {
+            if (@$post["addMenu"] === 1 || @$post['addMenu'] === 'on') {
                 $this->menuLink(
                     $table->id,
                     $table->title,
@@ -481,16 +476,18 @@ class OSContentModelCategories extends OSModel
         $row->menutype  = $menu;
         $row->title     = $link;
         $row->alias     = $alias ? JFilterOutput::stringURLSafe($alias) : JFilterOutput::stringURLSafe($link);
+
+        if (trim(str_replace('-', '', $row->alias)) == '') {
+            $row->alias = JFactory::getDate()->format('Y-m-d-H-i-s');
+        }
+
         $row->parent_id = ($parent == -1) ? 1 : $parent;
         $row->type      = 'component';
         $row->link      = 'index.php?option=com_content&view=' . $taskLink . '&id=' . $id;
         $row->published = 1;
         $row->language  = "*";
 
-        // $row->componentid	= $id;
-        $row->component_id = 22;
-        // $row->ordering =    9999;
-
+        $row->component_id = $this->getExtensionId('com_content');
 
         $params                          = array();
         $params['display_num']           = 10;

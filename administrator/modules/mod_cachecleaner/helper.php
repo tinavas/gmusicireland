@@ -3,11 +3,11 @@
  * Module Helper File
  *
  * @package         Cache Cleaner
- * @version         3.4.3
+ * @version         3.6.0
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -19,7 +19,7 @@ class modCacheCleaner
 	{
 		// Load plugin parameters
 		require_once JPATH_PLUGINS . '/system/nnframework/helpers/parameters.php';
-		$parameters = NNParameters::getInstance();
+		$parameters = nnParameters::getInstance();
 		$this->params = $parameters->getPluginParams('cachecleaner');
 	}
 
@@ -32,7 +32,7 @@ class modCacheCleaner
 
 		// load the admin language file
 		require_once JPATH_PLUGINS . '/system/nnframework/helpers/functions.php';
-		NNFrameworkFunctions::loadLanguage('mod_cachecleaner');
+		nnFrameworkFunctions::loadLanguage('mod_cachecleaner');
 
 		JHtml::stylesheet('nnframework/style.min.css', false, true);
 		JFactory::getDocument()->addScriptVersion(JURI::root(true) . '/media/nnframework/js/script.min.js');
@@ -54,17 +54,11 @@ class modCacheCleaner
 			$text = JText::_($this->params->icon_text);
 		}
 
-		$hastip = $this->params->display_tooltip;
-		if ($hastip)
-		{
-			JHtml::_('bootstrap.tooltip');
-		}
-
 		if ($this->params->display_toolbar_button)
 		{
 			// Generate html for toolbar button
 			$html = array();
-			$html[] = '<a href="javascript://" onclick="return false;"  class="btn btn-small cachecleaner_link' . ($hastip ? ' hasTooltip" title="' . JText::_('CC_CLEAN_CACHE_DESC') . '"' : '"') . '>';
+			$html[] = '<a href="javascript://" onclick="return false;"  class="btn btn-small cachecleaner_link">';
 			$html[] = '<span class="icon-nonumber icon-cachecleaner"></span> ';
 			$html[] = $text;
 			$html[] = '</a>';
@@ -75,7 +69,7 @@ class modCacheCleaner
 		// Generate html for status link
 		$html = array();
 		$html[] = '<div class="btn-group cachecleaner">';
-		$html[] = '<a href="javascript://" onclick="return false;" class="cachecleaner_link' . ($hastip ? ' hasTooltip" title="' . JText::_('CC_CLEAN_CACHE_DESC') . '"' : '"') . '>';
+		$html[] = '<a href="javascript://" onclick="return false;" class="cachecleaner_link">';
 
 		if ($this->params->display_link != 'text')
 		{

@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -56,7 +56,7 @@ class FileViewFile extends acymailingView
 
 		$this->setLayout('default');
 
-		$code = JRequest::getString('code');
+		$code = JRequest::getCmd('code');
 		if(empty($code)){
 			acymailing_display('Code not specified','error');
 			return;
@@ -78,7 +78,7 @@ class FileViewFile extends acymailingView
 			}
 		}else{
 			$loadLatest = true;
-			acymailing_display(JText::_('LOAD_ENGLISH_1').'<br/>'.JText::_('LOAD_ENGLISH_2').'<br/>'.JText::_('LOAD_ENGLISH_3'),'info');
+			acymailing_display(JText::_('LOAD_ENGLISH_1').'<br />'.JText::_('LOAD_ENGLISH_2').'<br />'.JText::_('LOAD_ENGLISH_3'),'info');
 			$file->content = JFile::read(JLanguage::getLanguagePath(JPATH_ROOT).DS.'en-GB'.DS.'en-GB.com_acymailing.ini');
 		}
 
@@ -87,11 +87,11 @@ class FileViewFile extends acymailingView
 			$file->customcontent = JFile::read($custompath);
 		}
 
-		if($loadLatest OR JRequest::getString('task') == 'latest'){
+		if($loadLatest OR JRequest::getCmd('task') == 'latest'){
 			$doc = JFactory::getDocument();
-			$doc->addScript(ACYMAILING_UPDATEURL.'languageload&code='.JRequest::getString('code'));
+			$doc->addScript(ACYMAILING_UPDATEURL.'languageload&code='.JRequest::getCmd('code'));
 			$showLatest = false;
-		}elseif(JRequest::getString('task') == 'save') $showLatest = false;
+		}elseif(JRequest::getCmd('task') == 'save') $showLatest = false;
 
 		$this->assignRef('showLatest',$showLatest);
 		$this->assignRef('file',$file);
@@ -99,7 +99,7 @@ class FileViewFile extends acymailingView
 
 	function share(){
 		$file = new stdClass();
-		$file->name = JRequest::getString('code');
+		$file->name = JRequest::getCmd('code');
 		$this->assignRef('file',$file);
 
 	}

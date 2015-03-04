@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -68,7 +68,15 @@ class acypictHelper{
 
 			$newPicture = $this->generateThumbnail($imageUrl);
 
-			if(!$newPicture) continue;
+			if(!$newPicture){
+				$newDimension = 'max-width:'.$this->maxWidth.'px;max-height:'.$this->maxHeight.'px;';
+				if(strpos($onepicture, 'style="') !== false){
+					$replace[$onepicture] = preg_replace('#style="([^"]*)"#Uis', 'style="'.$newDimension.'$1"', $onepicture);
+				}else{
+					$replace[$onepicture] = ' style="'.$newDimension.'" '.$onepicture;
+				}
+				continue;
+			}
 
 			$newPicture['file'] = preg_replace('#^'.preg_quote(ACYMAILING_ROOT,'#').'#i',ACYMAILING_LIVE,$newPicture['file']);
 			$newPicture['file'] = str_replace(DS,'/',$newPicture['file']);
@@ -116,6 +124,7 @@ class acypictHelper{
 		}else{
 			$extension = strtolower(substr($filename,strrpos($filename,'.')+1));
 			$name = strtolower(substr($filename,0,strrpos($filename,'.')));
+			$name .= substr(@filemtime($picturePath),-4);
 		}
 
 		$newImage = $name.'thumb'.$this->maxWidth.'x'.$this->maxHeight.'.'.$extension;
@@ -175,5 +184,54 @@ class acypictHelper{
 		if(!$status) $newFile = $picturePath;
 
 		return array('file' => $newFile,'width' => $newWidth,'height' => $newHeight);
+	}
+
+	function uploadThumbnail(&$element){
+		$config =& acymailing_config();
+		$app = JFactory::getApplication();
+		$files = JRequest::getVar( 'pictures', array(), 'files', 'array' );
+		if(empty($files)) return;
+		jimport('joomla.filesystem.file');
+
+		$uploadFolder = JPath::clean(html_entity_decode($config->get('uploadfolder')));
+		$uploadFolder = trim($uploadFolder,DS.' ').DS;
+		$uploadPath = JPath::clean(ACYMAILING_ROOT.$uploadFolder);
+
+		acymailing_createDir($uploadPath,true);
+
+		if(!is_writable($uploadPath)){
+			@chmod($uploadPath,'0755');
+			if(!is_writable($uploadPath)){
+				$app->enqueueMessage(JText::sprintf( 'WRITABLE_FOLDER',$uploadPath), 'notice');
+			}
+		}
+
+		$allowedExtensions = array('jpg','gif','png','jpeg','ico','bmp');
+
+		foreach($files['name'] as $id => $filename){
+			if(empty($filename)) continue;
+			$extension = strtolower(substr($filename,strrpos($filename,'.')+1));
+			if(!in_array($extension,$allowedExtensions)){
+				$app->enqueueMessage(JText::sprintf('ACCEPTED_TYPE',$extension,implode(', ',$allowedExtensions)), 'notice');
+				continue;
+			}
+
+			$pictname = strtolower(substr(JFile::makeSafe($filename),0,strrpos($filename,'.')+1));
+			$pictname = preg_replace('#[^0-9a-z]#i','_',$pictname);
+			$pictfullname = $pictname.'.'.$extension;
+			if(file_exists($uploadPath.$pictfullname)){
+				$pictfullname = $pictname.time().'.'.$extension;
+			}
+
+			if(!JFile::upload($files['tmp_name'][$id], $uploadPath.$pictfullname)){
+				if(!move_uploaded_file($files['tmp_name'][$id], $uploadPath . $pictfullname)){
+					$app->enqueueMessage(JText::sprintf('FAIL_UPLOAD','<b><i>'.$files['tmp_name'][$id].'</i></b>','<b><i>'.$uploadPath . $pictfullname.'</i></b>'), 'error');
+					continue;
+				}
+			}
+
+			$thumbField = str_replace(DS,'/',$uploadFolder).$pictfullname;
+		}
+		if(!empty($thumbField)) $element->thumb = $thumbField;
 	}
 }

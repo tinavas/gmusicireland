@@ -35,19 +35,16 @@
 			hint="JFIELD_ALIAS_PLACEHOLDER" />
 		<field name="jform_catid" type="nn_content" group="categories" default="-1" multiple="0" show_ignore="1" label="JCATEGORY" description="JFIELD_CATEGORY_DESC" />
 		<field name="@toggler_cat_k2_a" type="nn_toggler" param="has_k2" value="1" />
-		<field
-			name="jform_categories_k2" type="nn_k2" group="categories" multiple="0" size="1" show_ignore="1" default="-1" form_default=""
-			label="NN_K2_CATEGORIES" description="" />
+		<field name="@notice_categories_k2" type="nn_plaintext" label="NN_K2_CATEGORIES" description="" default="NN_ONLY_AVAILABLE_IN_PRO" />
 		<field name="@toggler_cat_k2_b" type="nn_toggler" />
 		<field name="@toggler_cat_zoo_a" type="nn_toggler" param="has_zoo" value="1" />
-		<field
-			name="jform_categories_zoo" type="nn_zoo" group="categories" multiple="true" show_ignore="1" width="200" default="-1" form_default=""
-			label="NN_ZOO_CATEGORIES" description="" />
+		<field name="@notice_categories_zoo" type="nn_plaintext" label="NN_ZOO_CATEGORIES" description="" default="NN_ONLY_AVAILABLE_IN_PRO" />
 		<field name="@toggler_cat_zoo_b" type="nn_toggler" />
+		<field name="jform_tags" type="nn_tags" multiple="true" default="" label="JTAG" description="JTAG_DESC" />
 	</fieldset>
 	<fieldset name="-content-general-right">
 		<field
-			name="jform_state" type="list" default="-1" form_default="1" class="span12"
+			name="jform_state" type="nn_list" default="-1" form_default="1" class="span12"
 			label="JSTATUS" description="JFIELD_PUBLISHED_DESC">
 			<option value="-1">NN_IGNORE</option>
 			<option value="1">JPUBLISHED</option>
@@ -55,13 +52,16 @@
 			<option value="2">JARCHIVED</option>
 			<option value="-2">JTRASHED</option>
 		</field>
+		<field name="@toggler_published_a" type="nn_toggler" param="has_k2" value="1" />
+		<field name="@notice_published" type="nn_plaintext" label="JPUBLISHED" description="JFIELD_PUBLISHED_DESC" default="NN_ONLY_AVAILABLE_IN_PRO" />
+		<field name="@toggler_published_b" type="nn_toggler" />
 		<field
-			name="jform_access" type="accesslevel" size="1" default="-1" form_default="1" class="span12"
+			name="jform_access" type="accesslevel" default="-1" form_default="1" class="span12"
 			label="JFIELD_ACCESS_LABEL" description="JFIELD_ACCESS_DESC">
 			<option value="-1">NN_IGNORE</option>
 		</field>
 		<field
-			name="jform_featured" type="list" default="-1" form_default="0" class="span12"
+			name="jform_featured" type="nn_list" default="-1" form_default="0" class="span12"
 			label="JFEATURED" description="COM_CONTENT_FIELD_FEATURED_DESC">
 			<option value="-1">NN_IGNORE</option>
 			<option value="0">JNO</option>

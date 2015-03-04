@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -75,8 +75,8 @@ class TemplateController extends acymailingController{
 
 		JArrayHelper::toInteger($cids);
 
-		$query = 'INSERT IGNORE INTO `#__acymailing_template` (`name`, `description`, `body`, `altbody`, `created`, `published`, `premium`, `ordering`, `namekey`, `styles`, `subject`,`stylesheet`,`fromname`,`fromemail`,`replyname`,`replyemail`,`thumb`,`readmore`)';
-		$query .= " SELECT CONCAT('copy_',`name`), `description`, `body`, `altbody`, $time, `published`, 0, `ordering`, CONCAT('$time',`tempid`,`namekey`), `styles`, `subject`,`stylesheet`,`fromname`,`fromemail`,`replyname`,`replyemail`,`thumb`,`readmore` FROM `#__acymailing_template` WHERE `tempid` IN (".implode(',',$cids).')';
+		$query = 'INSERT IGNORE INTO `#__acymailing_template` (`name`, `description`, `body`, `altbody`, `created`, `published`, `premium`, `ordering`, `namekey`, `styles`, `subject`,`stylesheet`,`fromname`,`fromemail`,`replyname`,`replyemail`,`thumb`,`readmore`,`category`)';
+		$query .= " SELECT CONCAT('copy_',`name`), `description`, `body`, `altbody`, $time, `published`, 0, `ordering`, CONCAT('$time',`tempid`,`namekey`), `styles`, `subject`,`stylesheet`,`fromname`,`fromemail`,`replyname`,`replyemail`,`thumb`,`readmore`,`category` FROM `#__acymailing_template` WHERE `tempid` IN (".implode(',',$cids).')';
 		$db->setQuery($query);
 		$db->query();
 
@@ -162,8 +162,8 @@ class TemplateController extends acymailingController{
 		$this->store();
 
 		$tempid = acymailing_getCID('tempid');
-		$receiver_type = JRequest::getVar('receiver_type','','','string');
-		if(empty($tempid) OR empty($receiver_type)) return false;
+		$test_selection = JRequest::getVar('test_selection','','','string');
+		if(empty($tempid) OR empty($test_selection)) return;
 
 		$mailer = acymailing_get('helper.mailer');
 		$mailer->report = true;
@@ -175,21 +175,21 @@ class TemplateController extends acymailingController{
 		$app = JFactory::getApplication();
 
 		$receivers = array();
-		if($receiver_type == 'user'){
-			$user = JFactory::getUser();
-			$receivers[] = $user->email;
-		}elseif($receiver_type == 'other'){
-			$receiverEntry = JRequest::getVar('test_email','','','string');
-			if(substr_count($receiverEntry,'@')>1){
-				$receivers = explode(' ',trim(preg_replace('# +#',' ',str_replace(array(';',','),' ',$receiverEntry))));
-			}else{
-				$receivers[] = trim($receiverEntry);
+		if($test_selection == 'users'){
+			$receiverEntry = JRequest::getVar('test_emails','','','string');
+			if(!empty($receiverEntry)){
+				if(substr_count($receiverEntry,'@')>1){
+					$receivers = explode(',', trim(preg_replace('# +#', '', $receiverEntry)) );
+				}else{
+					$receivers[] = trim($receiverEntry);
+				}
 			}
 		}else{
-			$gid = substr($receiver_type,strpos($receiver_type,'_')+1);
-			if(empty($gid)) return false;
+			$gid = JRequest::getInt('test_group','-1');
+			if($gid == -1) return false;
 			$db = JFactory::getDBO();
-			$db->setQuery('SELECT email from '.acymailing_table('users',false).' WHERE gid = '.intval($gid));
+			if(!ACYMAILING_J16) $db->setQuery('SELECT email FROM '.acymailing_table('users',false).' WHERE gid = '.intval($gid));
+			else $db->setQuery('SELECT u.email FROM '.acymailing_table('users',false).' AS u JOIN '.acymailing_table('user_usergroup_map',false).' AS ugm ON u.id = ugm.user_id WHERE ugm.group_id = '.intval($gid));
 			$receivers = acymailing_loadResultArray($db);
 		}
 

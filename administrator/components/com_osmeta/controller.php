@@ -1,17 +1,13 @@
 <?php
 /**
- * @category   Joomla Component
- * @package    com_osmeta
- * @author     JoomBoss
- * @copyright  2012, JoomBoss. All rights reserved
- * @copyright  2013 Open Source Training, LLC. All rights reserved
- * @contact    www.ostraining.com, support@ostraining.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version    1.0.2
+ * @package   OSMeta
+ * @contact   www.alledia.com, support@alledia.com
+ * @copyright 2013-2014 Alledia.com, All rights reserved
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
 // No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 
 jimport('cms.view.legacy');
 
@@ -28,7 +24,7 @@ class OSMetaController extends JControllerLegacy
      * @param bool  $cachable  Cachable
      * @param array $urlparams URL Params
      *
-     * @access	public
+     * @access  public
      *
      * @return void
      */
@@ -40,7 +36,7 @@ class OSMetaController extends JControllerLegacy
     /**
      * Method to display the Meta Tags Manager's view
      *
-     * @access	public
+     * @access  public
      * @since  1.0
      *
      * @return void
@@ -53,21 +49,21 @@ class OSMetaController extends JControllerLegacy
     /**
      * Method to the Save action for Meta Tags Manager
      *
-     * @access	public
+     * @access  public
      * @since  1.0
      *
      * @return void
      */
     public function save()
     {
-        JFactory::getApplication()->enqueueMessage(JText::_('COM_OSMETA_SAVED_WITH_SUCCESS'), 'message');
+        JFactory::getApplication()->enqueueMessage(JText::_('COM_OSMETA_SUCCESSFULLY_SAVED'), 'message');
         $this->actionManager('save');
     }
 
     /**
      * Method to the Copy Item Title to Title action for Meta Tags Manager
      *
-     * @access	public
+     * @access  public
      * @since  1.0
      *
      * @return void
@@ -80,7 +76,7 @@ class OSMetaController extends JControllerLegacy
     /**
      * Method to the Generate Descriptions action for Meta Tags Manager
      *
-     * @access	public
+     * @access  public
      * @since  1.0
      *
      * @return void
@@ -95,7 +91,7 @@ class OSMetaController extends JControllerLegacy
      *
      * @param string $task Task name
      *
-     * @access	private
+     * @access  private
      * @since  1.0
      *
      * @return void
@@ -103,66 +99,55 @@ class OSMetaController extends JControllerLegacy
     private function actionManager($task)
     {
         $app = JFactory::getApplication();
-        require_once 'classes/OSMetatagsContainerFactory.php';
-        require_once 'classes/OSHomeMetatagsContainer.php';
 
         $itemType = $app->input->getString('type', null);
-
-        if (!$itemType) {
-            $itemType = key(OSMetatagsContainerFactory::getFeatures());
-
-            if (empty($itemType)) {
-                // Enable com_content
-                $component = 'com_content';
-
-                $db = JFactory::getDBO();
-                $db->setQuery(
-                    "UPDATE #__osmeta_meta_extensions " .
-                    "SET available = 1 " .
-                    "WHERE component LIKE '{$component}'"
-                );
-                $db->execute();
-
-                // Get the features again
-                $itemType = key(OSMetatagsContainerFactory::getFeatures());
-            }
+        if (empty($itemType)) {
+            $itemType = 'com_content:Article';
+            $app->input->set('type', $itemType);
         }
 
-        $metatagsContainer = OSMetatagsContainerFactory::getContainerById($itemType);
+        if (class_exists('Alledia\OSMeta\Pro\Container\Factory')) {
+            $factory = Alledia\OSMeta\Pro\Container\Factory::getInstance();
+        } else {
+            $factory = Alledia\OSMeta\Free\Container\Factory::getInstance();
+        }
+
+        if (!$itemType) {
+            $itemType = key($factory->getFeatures());
+        }
+
+        $metatagsContainer = $factory->getContainerById($itemType);
 
         if (!is_object($metatagsContainer)) {
             // TODO: throw error here.
         }
 
+        $cid = JRequest::getVar('cid', array(), '', 'array');
+
         // Execute the actions
         switch ($task) {
             case "save":
                 // Content
-                $ids = JRequest::getVar('ids', array(), '', 'array');
-                $metatitles = JRequest::getVar('metatitle', array(), '', 'array');
+                $ids              = JRequest::getVar('ids', array(), '', 'array');
+                $metatitles       = JRequest::getVar('metatitle', array(), '', 'array');
                 $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
-                $metakeys = JRequest::getVar('metakey', array(), '', 'array');
-                $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $metakeys);
+                $aliases          = JRequest::getVar('alias', array(), '', 'array');
+                $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $aliases);
 
-                // Home data
-                $homeSource = JRequest::getVar('home_metadata_source', 'default', '', 'string');
-                $homeMetaTitle = JRequest::getVar('home_metatitle', '', '', 'string');
-                $homeMetaDescription = JRequest::getVar('home_metadesc', '', '', 'string');
-                $homeMetaKey = JRequest::getVar('home_metakey', '', '', 'string');
-                OSHomeMetatagsContainer::saveMetatags(
-                    $homeSource,
-                    $homeMetaTitle,
-                    $homeMetaDescription,
-                    $homeMetaKey
-                );
                 break;
 
             case "copyItemTitleToSearchEngineTitle":
-                $metatagsContainer->copyItemTitleToSearchEngineTitle(JRequest::getVar('cid', array(), '', 'array'));
+                if ($metatagsContainer->supportGenerateTitle) {
+                    $metatagsContainer->copyItemTitleToSearchEngineTitle($cid);
+                }
+
                 break;
 
             case "generateDescriptions":
-                $metatagsContainer->GenerateDescriptions(JRequest::getVar('cid', array(), '', 'array'));
+                if ($metatagsContainer->supportGenerateDescription) {
+                    $metatagsContainer->GenerateDescriptions($cid);
+                }
+
                 break;
         }
 
@@ -170,16 +155,13 @@ class OSMetaController extends JControllerLegacy
         $limitstart = JRequest::getVar('limitstart', 0);
 
         $db = JFactory::getDBO();
-        $tags = $metatagsContainer->getMetatags($limitstart, $limit);
-
-        // No reloading the query! Just asking for total without limit
-        $db->setQuery('SELECT FOUND_ROWS();');
+        $result = $metatagsContainer->getMetatags($limitstart, $limit);
 
         jimport('joomla.html.pagination');
-        $pageNav = new JPagination($db->loadResult(), $limitstart, $limit);
+        $pageNav = new JPagination($result['total'], $limitstart, $limit);
 
         $filter = $metatagsContainer->getFilter();
-        $features = OSMetatagsContainerFactory::getFeatures();
+        $features = $factory->getFeatures();
         $order = JRequest::getCmd("filter_order", "title");
         $orderDir = JRequest::getCmd("filter_order_Dir", "ASC");
 
@@ -192,17 +174,13 @@ class OSMetaController extends JControllerLegacy
             $app->enqueueMessage(JText::_('COM_OSMETA_DISABLED_SYSTEM_PLUGIN'), 'warning');
         }
 
-        $itemTypeShort = $itemType === 'com_content:Article' ? 'articles' : 'categories';
+        $itemTypeShort = 'COM_OSMETA_TITLE_' . strtoupper(str_replace(':', '_', $itemType));
 
-        // Get Homepage data
-        $home = OSHomeMetatagsContainer::getMetatags();
-
-        $homeFieldsDisabledAttribute = $home->source === 'custom' ? '' : 'readonly';
+        $this->addSubmenu($features, $itemType);
 
         $view = $this->getView('OSMeta', 'html');
         $view->assignRef('itemType', $itemType);
-        $view->assignRef('metatagsData', $tags);
-        $view->assignRef('homeMetatagsData', $home);
+        $view->assignRef('metatagsData', $result['rows']);
         $view->assignRef('page', $page);
         $view->assignRef('itemsOnPage', $itemsOnPage);
         $view->assignRef('filter', $filter);
@@ -211,7 +189,35 @@ class OSMetaController extends JControllerLegacy
         $view->assignRef('order', $order);
         $view->assignRef('order_Dir', $orderDir);
         $view->assignRef('itemTypeShort', $itemTypeShort);
-        $view->assignRef('homeFieldsDisabledAttribute', $homeFieldsDisabledAttribute);
+        $view->assignRef('metatagsContainer', $metatagsContainer);
+
         $view->display();
+    }
+
+    /**
+     * Insert the submenu items
+     *
+     * @param array  $contentTypes An array of the available content types
+     * @param string $itemType     The current
+     */
+    protected function addSubmenu($contentTypes, $itemType)
+    {
+        if (version_compare(JVERSION, '3.0', 'lt')) {
+            foreach ($contentTypes as $type => $data) {
+                JSubMenuHelper::addEntry(
+                    $data['name'],
+                    'index.php?option=com_osmeta&type=' . urlencode($type),
+                    $itemType === $type
+                );
+            }
+        } else {
+            foreach ($contentTypes as $type => $data) {
+                JHtmlSidebar::addEntry(
+                    $data['name'],
+                    'index.php?option=com_osmeta&type=' . urlencode($type),
+                    $itemType === $type
+                );
+            }
+        }
     }
 }

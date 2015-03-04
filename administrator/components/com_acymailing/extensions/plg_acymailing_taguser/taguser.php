@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -18,7 +18,7 @@ class plgAcymailingTaguser extends JPlugin
 		parent::__construct($subject, $config);
 		if(!isset($this->params)){
 			$plugin = JPluginHelper::getPlugin('acymailing', 'taguser');
-			$this->params = new JParameter( $plugin->params );
+			$this->params = new acyParameter( $plugin->params );
 		}
 	}
 
@@ -58,6 +58,7 @@ class plgAcymailingTaguser extends JPlugin
 		$text = '<table class="adminlist table table-striped table-hover" cellpadding="1">';
 		$db = JFactory::getDBO();
 		$fields = acymailing_getColumns('#__users');
+		if(ACYMAILING_J30) $fields = array_merge($fields, array('usertype' => 'usertype'));
 
 	 	$descriptions['username'] = JText::_('TAGUSER_USERNAME');
 	 	$descriptions['usertype'] = JText::_('TAGUSER_GROUP');
@@ -144,6 +145,14 @@ class plgAcymailingTaguser extends JPlugin
 			if(!empty($this->sendervalues[$idused])) $values = $this->sendervalues[$idused];
 			elseif(!empty($receivervalues[$idused])) $values = $receivervalues[$idused];
 
+			if($mytag->id == 'usertype' && ACYMAILING_J16){
+				if(empty($this->acyuserHelper)) $this->acyuserHelper = acymailing_get('helper.acyuser');
+				$groups = $this->acyuserHelper->getUserGroups($idused);
+				$allGroups = array();
+				foreach($groups as $oneGroup) $allGroups[] = $oneGroup->title;
+				$values->usertype = implode(', ', $allGroups);
+			}
+
 			if(empty($mytag->type) || $mytag->type != 'extra'){
 				$replaceme = isset($values->{$mytag->id}) ? $values->{$mytag->id} : $mytag->default;
 			} else{
@@ -155,7 +164,7 @@ class plgAcymailingTaguser extends JPlugin
 		}
 
 		$pluginsHelper->replaceTags($email, $tags);
-	 }//endfct
+	}//endfct
 
  	function onAcyDisplayFilters(&$type,$context="massactions"){
 
@@ -197,7 +206,7 @@ class plgAcymailingTaguser extends JPlugin
 			$groups = $acl->get_group_children_tree( null, 'USERS', false );
 		}else{
 			$db = JFactory::getDBO();
-			$db->setQuery('SELECT a.*, a.title as text, a.id as value  FROM #__usergroups AS a ORDER BY a.lft ASC');
+			$db->setQuery('SELECT a.*, a.title as text, a.id as value FROM #__usergroups AS a ORDER BY a.lft ASC');
 			$groups = $db->loadObjectList('id');
 			foreach($groups as $id => $group){
 				if(isset($groups[$group->parent_id])){
@@ -210,12 +219,15 @@ class plgAcymailingTaguser extends JPlugin
 		$inoperator = acymailing_get('type.operatorsin');
 		$inoperator->js = 'onchange="countresults(__num__)"';
 
-		$return .= '<div id="filter__num__joomlagroup">'.$inoperator->display("filter[__num__][joomlagroup][type]").' '.JHTML::_('select.genericlist',   $groups, "filter[__num__][joomlagroup][group]", 'class="inputbox" size="1" onchange="countresults(__num__)"', 'value', 'text').'</div>';
+		$return .= '<div id="filter__num__joomlagroup">'.$inoperator->display("filter[__num__][joomlagroup][type]").' ' .
+				JHTML::_('select.genericlist', $groups, "filter[__num__][joomlagroup][group]", 'class="inputbox" size="1" onchange="countresults(__num__)"', 'value', 'text') .
+				'<input type="checkbox" value="1" id="filter__num__joomlagroupsubgroups" name="filter[__num__][joomlagroup][subgroups]" onchange="countresults(__num__)"/>' .
+				'<label for="filter__num__joomlagroupsubgroups">'.JText::_('ACY_SUB_GROUPS').'</label></div>';
 
 	 	return $return;
-	 }
+	}
 
-	 function onAcyTriggerFct_displayUserValues(){
+	function onAcyTriggerFct_displayUserValues(){
  		$num = JRequest::getInt('num');
 		$map = JRequest::getCmd('map');
 		$cond = JRequest::getVar('cond','','','string',JREQUEST_ALLOWHTML);
@@ -240,11 +252,11 @@ class plgAcymailingTaguser extends JPlugin
 	function onAcyProcessFilterCount_joomlafield(&$query,$filter,$num){
 	 	$this->onAcyProcessFilter_joomlafield($query,$filter,$num);
 		return JText::sprintf('SELECTED_USERS',$query->count());
-	 }
+	}
 
-	 function onAcyDisplayFilter_joomlafield($filter){
+	function onAcyDisplayFilter_joomlafield($filter){
 		return JText::_('JOOMLA_FIELD').' : '.$filter['map'].' '.$filter['operator'].' '.$filter['value'];
-	 }
+	}
 
 
 	function onAcyProcessFilter_joomlafield(&$query,$filter,$num){
@@ -271,7 +283,7 @@ class plgAcymailingTaguser extends JPlugin
 			}
 		 	$query->where[] = $query->convertQuery('joomlauser',$filter['map'],$filter['operator'],$filter['value'], $type);
 		}
-	 }
+	}
 
 	function onAcyProcessFilterCount_joomlagroup(&$query,$filter,$num){
 		$this->onAcyProcessFilter_joomlagroup($query,$filter,$num);
@@ -280,13 +292,27 @@ class plgAcymailingTaguser extends JPlugin
 
 	function onAcyProcessFilter_joomlagroup(&$query,$filter,$num){
 		$operator = (empty($filter['type']) || $filter['type'] == 'IN') ? 'IS NOT NULL' : "IS NULL";
-		if(!ACYMAILING_J16){
-			$query->leftjoin['joomlauser'.$num] = "#__users AS joomlauser$num ON joomlauser$num.id = sub.userid AND joomlauser$num.gid = ".intval($filter['group']);
-	 		$query->where[] = "joomlauser$num.id ".$operator;
+		$filter['group'] = intval($filter['group']);
+
+		if(!empty($filter['subgroups'])){
+			$db = JFactory::getDBO();
+			$groupTable = ACYMAILING_J16 ? 'usergroups' : 'core_acl_aro_groups';
+			$db->setQuery('SELECT lft, rgt FROM #__'.$groupTable.' WHERE id = '.$filter['group']);
+			$lftrgt = $db->loadObject();
+			$db->setQuery('SELECT id FROM #__'.$groupTable.' WHERE lft > '.$lftrgt->lft.' AND rgt < '.$lftrgt->rgt);
+			$allGroups = acymailing_loadResultArray($db);
+			array_unshift($allGroups, $filter['group']);
+			$value = ' IN ('.implode(', ', $allGroups).')';
 		}else{
-			$query->leftjoin['joomlauser'.$num] = "#__user_usergroup_map AS joomlauser$num ON joomlauser$num.user_id = sub.userid AND joomlauser$num.group_id = ".intval($filter['group']);
-	 		$query->where[] = "joomlauser$num.user_id ".$operator;
+			$value = ' = '.$filter['group'];
 		}
 
-	 }
+		if(!ACYMAILING_J16){
+			$query->leftjoin['joomlauser'.$num] = "#__users AS joomlauser$num ON joomlauser$num.id = sub.userid AND joomlauser$num.gid".$value;
+	 		$query->where[] = "joomlauser$num.id ".$operator;
+		}else{
+			$query->leftjoin['joomlauser'.$num] = "#__user_usergroup_map AS joomlauser$num ON joomlauser$num.user_id = sub.userid AND joomlauser$num.group_id".$value;
+	 		$query->where[] = "joomlauser$num.user_id ".$operator;
+		}
+	}
 }//endclass

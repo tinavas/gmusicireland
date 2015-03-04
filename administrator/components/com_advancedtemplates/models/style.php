@@ -1,11 +1,11 @@
 <?php
 /**
  * @package         Advanced Template Manager
- * @version         1.1.7
+ * @version         1.3.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -19,8 +19,6 @@ defined('_JEXEC') or die;
 /**
  * Template style model.
  *
- * @package     Joomla.Administrator
- * @subpackage  com_templates
  * @since       1.6
  */
 class AdvancedTemplatesModelStyle extends JModelAdmin
@@ -318,9 +316,7 @@ class AdvancedTemplatesModelStyle extends JModelAdmin
 			$this->_cache[$pk] = JArrayHelper::toObject($properties, 'JObject');
 
 			// Convert the params field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($table->params);
-			$this->_cache[$pk]->params = $registry->toArray();
+			$this->_cache[$pk]->params = json_decode($table->params, true);
 
 			// Advanced parameters
 			$table_adv = JTable::getInstance('AdvancedTemplates', 'AdvancedTemplatesTable');
@@ -329,9 +325,8 @@ class AdvancedTemplatesModelStyle extends JModelAdmin
 			$this->_cache[$pk]->asset_id = $table_adv->asset_id;
 
 			// Convert the params field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($table_adv->params);
-			$this->_cache[$pk]->advancedparams = $registry->toArray();
+			$this->_cache[$pk]->advancedparams = json_decode($table_adv->params, true);
+
 			$this->_cache[$pk]->advancedparams = $this->initAssignments($pk, $this->_cache[$pk]);
 
 			// Get the template XML.
@@ -482,35 +477,17 @@ class AdvancedTemplatesModelStyle extends JModelAdmin
 			$data['assigned'] = '';
 		}
 
+		require_once JPATH_PLUGINS . '/system/nnframework/helpers/text.php';
+
 		// correct the publish date details
 		if (isset($advancedparams['assignto_date_publish_up']))
 		{
-			$date = $advancedparams['assignto_date_publish_up'];
-			if ($date <= 0)
-			{
-				$advancedparams['assignto_date_publish_up'] = 0;
-			}
-			else
-			{
-				$date = JFactory::getDate($date, $user->getParam('timezone', $config->get('offset')));
-				$date->setTimezone(new DateTimeZone('UTC'));
-				$advancedparams['assignto_date_publish_up'] = $date->format('Y-m-d H:i:s', true, false);
-			}
+			nnText::fixDateOffset($advancedparams['assignto_date_publish_up']);
 		}
 
 		if (isset($advancedparams['assignto_date_publish_down']))
 		{
-			$date = $advancedparams['assignto_date_publish_down'];
-			if ($date <= 0)
-			{
-				$advancedparams['assignto_date_publish_down'] = 0;
-			}
-			else
-			{
-				$date = JFactory::getDate($date, $user->getParam('timezone', $config->get('offset')));
-				$date->setTimezone(new DateTimeZone('UTC'));
-				$advancedparams['assignto_date_publish_down'] = $date->format('Y-m-d H:i:s', true, false);
-			}
+			nnText::fixDateOffset($advancedparams['assignto_date_publish_down']);
 		}
 
 		// Bind the data.
@@ -559,9 +536,8 @@ class AdvancedTemplatesModelStyle extends JModelAdmin
 			$db->insertObject($table_adv->getTableName(), $table_adv, $table_adv->getKeyName());
 		}
 
-		$registry = new JRegistry;
-		$registry->loadArray($advancedparams);
-		$table_adv->params = (string) $registry;
+		$table_adv->params = json_encode($advancedparams);
+
 		// Check the row
 		$table_adv->check();
 
@@ -807,9 +783,7 @@ class AdvancedTemplatesModelStyle extends JModelAdmin
 			$table_adv->setRules($data['rules']);
 		}
 
-		$registry = new JRegistry;
-		$registry->loadArray($data);
-		$table_adv->params = (string) $registry;
+		$table_adv->params = json_encode($data);
 
 		// Check the row
 		$table_adv->check();
@@ -897,15 +871,11 @@ class AdvancedTemplatesModelStyle extends JModelAdmin
 
 				if ($table_adv->load($pk, true))
 				{
-					$registry = new JRegistry;
-					$registry->loadString($table_adv->params);
-					$params = $registry->toArray();
+					$params = json_decode($table_adv->params);
 
-					$params['color'] = strtolower($color);
+					$params->color = strtolower($color);
 
-					$registry = new JRegistry;
-					$registry->loadArray($params);
-					$table_adv->params = (string) $registry;
+					$table_adv->params = json_encode($params);
 
 					if (!$table_adv->check() || !$table_adv->store())
 					{

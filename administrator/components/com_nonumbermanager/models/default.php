@@ -1,11 +1,11 @@
 <?php
 /**
  * @package         NoNumber Extension Manager
- * @version         4.6.4
+ * @version         4.7.1
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -66,6 +66,41 @@ class NoNumberManagerModelDefault extends JModelList
 		}
 
 		return $items;
+	}
+
+	function storeKey()
+	{
+		$data = JComponentHelper::getComponent('com_nonumbermanager');
+		$data = json_decode(json_encode($data), true);
+
+		$data['params']['key'] = JFactory::getApplication()->input->get('key');
+
+		$table = JTable::getInstance('extension');
+		// Load the previous Data
+		if (!$table->load($data['id']))
+		{
+			throw new RuntimeException($table->getError());
+		}
+
+		unset($data['id']);
+
+		// Bind the data.
+		if (!$table->bind($data))
+		{
+			throw new RuntimeException($table->getError());
+		}
+
+		// Check the data.
+		if (!$table->check())
+		{
+			throw new RuntimeException($table->getError());
+		}
+
+		// Store the data.
+		if (!$table->store())
+		{
+			throw new RuntimeException($table->getError());
+		}
 	}
 
 	/**

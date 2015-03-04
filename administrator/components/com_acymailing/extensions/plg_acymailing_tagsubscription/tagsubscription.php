@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -20,7 +20,7 @@ class plgAcymailingTagsubscription extends JPlugin
 		parent::__construct($subject, $config);
 		if(!isset($this->params)){
 			$plugin = JPluginHelper::getPlugin('acymailing', 'tagsubscription');
-			$this->params = new JParameter( $plugin->params );
+			$this->params = new acyParameter( $plugin->params );
 		}
 	}
 
@@ -49,23 +49,34 @@ class plgAcymailingTagsubscription extends JPlugin
 			$db = JFactory::getDBO();
 			$db->setQuery('SELECT b.listid, b.name FROM #__acymailing_listcampaign as a JOIN #__acymailing_list as b on a.listid = b.listid GROUP BY b.listid ORDER BY b.ordering ASC');
 			$otherlists = $db->loadObjectList('listid');
-			$onChange = 'onchange="if(document.getElementById(\'subliststatus__num__\').value == 1 && document.getElementById(\'sublistvalue__num__\').value.indexOf(\'_campaign\') > 0){document.getElementById(\'campaigndelay__num__\').style.display = \'inline\'; }else{document.getElementById(\'campaigndelay__num__\').style.display = \'none\';}"';
+			$onChange = 'onchange="onAcyDisplayAction_list(__num__);"';
+
+			$js = "function onAcyDisplayAction_list(num){
+				if(!document.getElementById('campaigndelay'+num)) return;
+				if(document.getElementById('subliststatus'+num).value == 1 && document.getElementById('sublistvalue'+num).value.indexOf('_campaign') > 0){
+					document.getElementById('campaigndelay'+num).style.display = 'inline';
+				}else{
+					document.getElementById('campaigndelay'+num).style.display = 'none';
+				}
+			}";
+			$doc = JFactory::getDocument();
+			$doc->addScriptDeclaration($js);
 		}
 
 		$listsdrop = array();
 		foreach($lists as $oneList){
-			$listsdrop[] = JHTML::_('select.option',$oneList->listid,$oneList->name);
 			if(!empty($otherlists[$oneList->listid])) $listsdrop[] = JHTML::_('select.option',$oneList->listid.'_campaign',$otherlists[$oneList->listid]->name.' + '.JText::_('CAMPAIGN'));
+			$listsdrop[] = JHTML::_('select.option',$oneList->listid,$oneList->name);
 		}
 
 	 	$return = '<div id="action__num__list">'.JHTML::_('select.genericlist', $status, "action[__num__][list][status]", 'class="inputbox" size="1" '.$onChange, 'value', 'text','','subliststatus__num__').' '.JHTML::_('select.genericlist',   $listsdrop, "action[__num__][list][selectedlist]", 'class="inputbox" size="1" '.$onChange, 'value', 'text','','sublistvalue__num__');
-	 	if(acymailing_level(3)){
+	 	if(!empty($otherlists)){
 	 		$delay = array();
 	 		$delay[] = JHTML::_('select.option', 'day',JText::_('DAYS'));
 			$delay[] = JHTML::_('select.option', 'week',JText::_('WEEKS'));
 			$delay[] = JHTML::_('select.option', 'month',JText::_('MONTHS'));
 
-	 		$return .= '<br/><span id="campaigndelay__num__">'.JText::sprintf('TRIGGER_CAMPAIGN','<input type="text" name="action[__num__][list][delaynum]" value="0" style="width:50px" />',JHTML::_('select.genericlist', $delay, "action[__num__][list][delaytype]", 'class="inputbox" size="1"', 'value', 'text')).'</span>';	
+	 		$return .= '<br /><span id="campaigndelay__num__">'.JText::sprintf('TRIGGER_CAMPAIGN','<input type="text" name="action[__num__][list][delaynum]" value="0" style="width:50px" />',JHTML::_('select.genericlist', $delay, "action[__num__][list][delaytype]", 'class="inputbox" size="1" style="width:120px;"', 'value', 'text')).'</span>';	
 	 	}
 	 	$return .= '</div>';
 
@@ -91,7 +102,7 @@ class plgAcymailingTagsubscription extends JPlugin
 
 	 	$type['list'] = JText::_('ACYMAILING_LIST');
 	 	$status = acymailing_get('type.statusfilterlist');
-	 	$status->extra = 'onchange="countresults(__num__)"';
+	 	$status->extra = 'onchange="countresults(__num__);"';
 
 		$lists = $this->_getLists();
 		$listsdrop = array();
@@ -99,22 +110,28 @@ class plgAcymailingTagsubscription extends JPlugin
 			$listsdrop[] = JHTML::_('select.option',$oneList->listid,$oneList->name);
 		}
 
+		$dates = array();
+		$dates[] = JHTML::_('select.option',0,JText::_('SUBSCRIPTION_DATE'));
+		$dates[] = JHTML::_('select.option',1,JText::_('UNSUBSCRIPTION_DATE'));
+
 	 	$filter = '<div id="filter__num__list">'.$status->display("filter[__num__][list][status]",1,false).' '.JHTML::_('select.genericlist',   $listsdrop, "filter[__num__][list][selectedlist]", 'class="inputbox" style="max-width:200px" size="1" onchange="countresults(__num__)"', 'value', 'text');
-	 	$filter .= '<br /><input type="text" name="filter[__num__][list][subdateinf]" onclick="displayDatePicker(this,event)" onchange="countresults(__num__)" style="width:60px;" /> < '.JText::_('SUBSCRIPTION_DATE').' < <input type="text" name="filter[__num__][list][subdatesup]" onclick="displayDatePicker(this,event)" onchange="countresults(__num__)" style="width:60px;" /></div>';
+	 	$filter .= '<br /><input type="text" name="filter[__num__][list][subdateinf]" onclick="displayDatePicker(this,event)" onchange="countresults(__num__)" style="width:60px;" /> < '.JHTML::_('select.genericlist', $dates, "filter[__num__][list][dates]", 'class="inputbox" style="max-width:200px" size="1" onchange="countresults(__num__)"', 'value', 'text').' < <input type="text" name="filter[__num__][list][subdatesup]" onclick="displayDatePicker(this,event)" onchange="countresults(__num__)" style="width:60px;" /></div>';
 	 	return $filter;
 	 }
 
 	 function onAcyProcessFilter_list(&$query,$filter,$num){
 	 	$otherconditions = '';
+	 	$field = empty($filter['dates']) ? 'subdate' : 'unsubdate';
 	 	if(!empty($filter['subdateinf'])){
-				$filter['subdateinf'] = acymailing_replaceDate($filter['subdateinf']);
+			$filter['subdateinf'] = acymailing_replaceDate($filter['subdateinf']);
 			if(!is_numeric($filter['subdateinf'])) $filter['subdateinf'] = strtotime($filter['subdateinf']);
-			if(!empty($filter['subdateinf'])) $otherconditions .= ' AND list'.$num.'.subdate > '.$filter['subdateinf'];
+			if(!empty($filter['subdateinf'])) $otherconditions .= ' AND list'.$num.'.'.$field.' > '.$filter['subdateinf'];
 	 	}
+
 	 	if(!empty($filter['subdatesup'])){
 	 		$filter['subdatesup'] = acymailing_replaceDate($filter['subdatesup']);
 			if(!is_numeric($filter['subdatesup'])) $filter['subdatesup'] = strtotime($filter['subdatesup']);
-			if(!empty($filter['subdatesup'])) $otherconditions .= ' AND list'.$num.'.subdate < '.$filter['subdatesup'];
+			if(!empty($filter['subdatesup'])) $otherconditions .= ' AND list'.$num.'.'.$field.' < '.$filter['subdatesup'];
 	 	}
 
 	 	$query->leftjoin['list'.$num] = '#__acymailing_listsub AS list'.$num.' ON sub.subid = list'.$num.'.subid AND list'.$num.'.listid = '.intval($filter['selectedlist']).$otherconditions;
@@ -248,9 +265,9 @@ class plgAcymailingTagsubscription extends JPlugin
 		$doc = JFactory::getDocument();
 		$doc->addScriptDeclaration("window.addEvent('domready', function(){ changeTag('unsubscribe'); });");
 
-		$text = JText::_('FIELD_TEXT').' : <input type="text" name="tagtext" size="100px" onchange="setSubscriptionTag();"><br/><br/>';
+		$text = JText::_('FIELD_TEXT').' : <input type="text" name="tagtext" size="100px" onchange="setSubscriptionTag();"><br /><br />';
 
-		$text .= JText::_('SUBSCRIPTION').'<br/><table class="adminlist table table-striped table-hover" cellpadding="1">';
+		$text .= JText::_('SUBSCRIPTION').'<br /><table class="adminlist table table-striped table-hover" cellpadding="1">';
 
 		$k = 0;
 		foreach($others as $tagname => $tag){
@@ -265,7 +282,7 @@ class plgAcymailingTagsubscription extends JPlugin
 		$others['count|listid:0'] = trim(JText::_('GEOLOC_NB_USERS',true),':').' ('.JText::_('ALL_LISTS').')';
 		$others['id'] = JText::_('ACY_ID',true);
 
-		$text .= '<br/><br/>'.JText::_('LIST').'<br/><table class="adminlist table table-striped table-hover" cellpadding="1">';
+		$text .= '<br /><br />'.JText::_('LIST').'<br /><table class="adminlist table table-striped table-hover" cellpadding="1">';
 
 		$k = 0;
 		foreach($others as $tagname => $tag)
@@ -276,7 +293,7 @@ class plgAcymailingTagsubscription extends JPlugin
 
 		$text .= '</table>';
 
-		$text .= '<br/><br/>'.JText::_('NEWSLETTER').'<br/><table class="adminlist table table-striped table-hover" cellpadding="1">';
+		$text .= '<br /><br />'.JText::_('NEWSLETTER').'<br /><table class="adminlist table table-striped table-hover" cellpadding="1">';
 		$othersMail = array('mailid', 'subject', 'alias', 'key', 'altbody');
 		$k = 0;
 		foreach($othersMail as $tag)
@@ -523,14 +540,19 @@ class plgAcymailingTagsubscription extends JPlugin
 
 	private function _listsubscription(&$email,&$user,&$parameter){
 		if(empty($user->subid)) return "";
-		$listSubClass= acymailing_get('class.listsub');
+		$listSubClass = acymailing_get('class.listsub');
 		return $listSubClass->getSubscriptionString($user->subid);
 	}
 
 	private function _listnames(&$email,&$user,&$parameter){
 		if(empty($user->subid)) return "";
-		$listSubClass= acymailing_get('class.listsub');
+		$listSubClass = acymailing_get('class.listsub');
 		$usersubscription = $listSubClass->getSubscription($user->subid);
+		if(empty($usersubscription)){
+			$subscribedLists = $this->_getFormListNames();
+			if(empty($subscribedLists)) return '';
+			return implode(isset($parameter->separator) ? $parameter->separator : ', ',$subscribedLists);
+		}
 		$lists = array();
 		if(!empty($usersubscription)){
 			foreach($usersubscription as $onesub){
@@ -538,8 +560,30 @@ class plgAcymailingTagsubscription extends JPlugin
 				$lists[] = $onesub->name;
 			}
 		}
-
 		return implode(isset($parameter->separator) ? $parameter->separator : ', ',$lists);
+	}
+
+
+	private function _getFormListNames(){
+		$allLists = array_merge(JRequest::getVar('subscription','','','array'),explode(',',JRequest::getVar('hiddenlists','','','string')));
+		$data = JRequest::getVar('data','','','array');
+		if(!empty($data['listsub'])){
+			foreach($data['listsub'] as $i => $oneList){
+				if($oneList['status'] != 1) unset($data['listsub'][$i]);
+			}
+			$allLists = array_merge($allLists,array_keys($data['listsub']));
+		}
+		if(empty($allLists)) return array();
+
+		JArrayHelper::toInteger($allLists);
+		foreach($allLists as $i => $oneList){
+			if(empty($oneList)) unset($allLists[$i]);
+		}
+		if(empty($allLists)) return array();
+
+		$db = JFactory::getDBO();
+		$db->setQuery('SELECT name FROM #__acymailing_list WHERE listid IN ('.implode(',', $allLists).')');
+		return acymailing_loadResultArray($db);
 	}
 
 	private function _listowner(&$email,&$user,&$parameter){

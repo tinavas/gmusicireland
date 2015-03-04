@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -22,17 +22,18 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="acymailing_fulldiv" id="acymailing_fulldiv_<?php echo $formName; ?>" <?php echo $styleString; ?> >
 		<form id="<?php echo $formName; ?>" action="<?php echo JRoute::_('index.php'); ?>" onsubmit="return submitacymailingform('optin','<?php echo $formName;?>')" method="post" name="<?php echo $formName ?>" <?php if(!empty($fieldsClass->formoption)) echo $fieldsClass->formoption; ?> >
 		<div class="acymailing_module_form" >
-			<?php if(!empty($introText)) echo '<div class="acymailing_introtext">'.$introText.'</div>';?>
-			<?php if(!empty($visibleListsArray) && $listPosition == 'before'){
-				if($params->get('dropdown',0)){?>
-					<select name="subscription[1]">
-						<?php foreach($visibleListsArray as $myListId){?>
-						<option value="<?php echo $myListId ?>"><?php echo $allLists[$myListId]->name; ?></option>
-						<?php } ?>
-					</select>
-				<?php }else{?>
-			<div class="acymailing_lists">
-				<?php foreach($visibleListsArray as $myListId){
+			<?php if(!empty($introText)) echo '<div class="acymailing_introtext">'.$introText.'</div>';
+
+			$listContent = '';
+			if($params->get('dropdown',0)){
+				$listContent .= '<select name="subscription[1]">';
+				foreach($visibleListsArray as $myListId){
+					$listContent .= '<option value="'.$myListId.'">'.$allLists[$myListId]->name.'</option>';
+				}
+				$listContent .= '</select>';
+			} else{
+				$listContent .= '<div class="acymailing_lists">';
+				foreach($visibleListsArray as $myListId){
 					$check = in_array($myListId,$checkedListsArray) ? 'checked="checked"' : '';
 
 					if($params->get('checkmode',0) == '0' AND !empty($identifiedUser->email)){
@@ -41,37 +42,40 @@ defined('_JEXEC') or die('Restricted access');
 							$check = $allLists[$myListId]->status == '-1' ? '' : 'checked="checked"';
 						}
 					}
-					?>
+					$listContent .= '
 					<p class="onelist">
-						<label for="acylist_<?php echo $myListId; ?>"><?php echo ' '; ?>
-						<input type="checkbox" class="acymailing_checkbox" name="subscription[]" id="acylist_<?php echo $myListId; ?>" <?php echo $check; ?> value="<?php echo $myListId; ?>"/>
-						<?php
+						<label for="acylist_'.$myListId.'">
+						<input type="checkbox" class="acymailing_checkbox" name="subscription[]" id="acylist_'.$myListId.'" '.$check.' value="'.$myListId.'"/>';
 						$joomItem = $params->get('itemid',0);
 						if(empty($joomItem)) $joomItem = $config->get('itemid',0);
 						$addItem = empty($joomItem) ? '' : '&Itemid='.$joomItem;
 						$archivelink = acymailing_completeLink('archive&listid='.$allLists[$myListId]->listid.'-'.$allLists[$myListId]->alias.$addItem);
 						if($params->get('overlay',0)){
 							if(!$params->get('link',1) OR !$allLists[$myListId]->visible) $archivelink = '';
-							echo acymailing_tooltip($allLists[$myListId]->description,$allLists[$myListId]->name,'',$allLists[$myListId]->name,$archivelink);
+							$listContent .= acymailing_tooltip($allLists[$myListId]->description,$allLists[$myListId]->name,'',$allLists[$myListId]->name,$archivelink);
 						}else{
 							if($params->get('link',1) AND $allLists[$myListId]->visible){
-								echo '<a href="'.$archivelink.'" alt="'.$allLists[$myListId]->alias.'"'.((JRequest::getCmd('tmpl') == 'component') ? 'target="_blank"' : '').' >';
+								$listContent .= '<a href="'.$archivelink.'" alt="'.$allLists[$myListId]->alias.'"'.((JRequest::getCmd('tmpl') == 'component') ? 'target="_blank"' : '').' >';
 							}
-							echo $allLists[$myListId]->name;
+							$listContent .= $allLists[$myListId]->name;
 							if($params->get('link',1) AND $allLists[$myListId]->visible){
-								echo '</a>';
+								$listContent .= '</a>';
 							}
 						}
-						?>
+						$listContent .= '
 						</label>
-					</p>
-				<?php }?>
-			</div>
-			<?php }//endif dropdown
-				}//endif visiblelists ?>
+					</p>';
+				 }
+				$listContent .= '</div>';
+			}
+
+			if(!empty($visibleListsArray) && $listPosition == 'before') echo $listContent; ?>
 			<div class="acymailing_form">
-					<?php foreach($fieldsToDisplay as $oneField){
-						echo '<p class="onefield fieldacy'.$oneField.'" id="field_'.$oneField.'_'.$formName.'">';
+					<?php
+					$tmpCatId = array();
+					$tmpCatTag = array();
+					foreach($fieldsToDisplay as $oneField){
+						if(empty($extraFields[$oneField])) echo '<p class="onefield fieldacy'.$oneField.'" id="field_'.$oneField.'_'.$formName.'">';
 						if($oneField == 'name' AND empty($extraFields[$oneField])){
 							if($displayOutside) echo '<label for="user_name_'.$formName.'" class="acy_requiredField">'.$nameCaption.'</label>'; ?>
 							<span class="acyfield_<?php echo $oneField. (!$displayOutside? ' acy_requiredField':''); ?>"><input id="user_name_<?php echo $formName; ?>" <?php if(!empty($identifiedUser->userid)) echo 'disabled="disabled" '; if(!$displayOutside){ ?> onfocus="if(this.value == '<?php echo $nameCaption;?>') this.value = '';" onblur="if(this.value=='') this.value='<?php echo $nameCaption?>';"<?php } ?> class="inputbox" type="text" name="user[name]" style="width:<?php echo $fieldsize; ?>" value="<?php if(!empty($identifiedUser->userid)) echo $identifiedUser->name; elseif(!$displayOutside) echo $nameCaption; ?>" title="<?php echo $nameCaption;?>"/></span>
@@ -84,27 +88,60 @@ defined('_JEXEC') or die('Restricted access');
 							echo '<label>'.JText::_('RECEIVE').'</label>';
 							echo '<span class="acyfield_'.$oneField.'">'.JHTML::_('select.booleanlist', "user[html]" ,'title="'.JText::_('RECEIVE').'"',isset($identifiedUser->html) ? $identifiedUser->html : 1,JText::_('HTML'),JText::_('JOOMEXT_TEXT'),'user_html_'.$formName).'</span>';
 						}elseif(!empty($extraFields[$oneField])){
-							if($displayOutside){
-								if(!empty($extraFields[$oneField]->required)) $requireClass = 'class="acy_requiredField"';
+							if($extraFields[$oneField]->type == 'category'){
+								if(empty($extraFields[$oneField]->fieldcat) && !empty($tmpCatId)){
+									while(!empty($tmpCatId)){
+										echo '</'.end($tmpCatTag).'>';
+										array_pop($tmpCatId);
+										array_pop($tmpCatTag);
+									}
+								}
+								$tmpCatId[] = $extraFields[$oneField]->fieldid;
+								$tmpCatTag[] = $extraFields[$oneField]->options['fieldcattag'];
+								echo '<'.end($tmpCatTag).' class="fieldCategory fieldacy'.$extraFields[$oneField]->namekey.' '.$extraFields[$oneField]->options['fieldcatclass'].'">';
+								if(end($tmpCatTag) == 'fieldset') echo '<legend>'.$extraFields[$oneField]->fieldname.'</legend>';
+							}else{
+								if(in_array($extraFields[$oneField]->fieldcat, $tmpCatId) || empty($extraFields[$oneField]->fieldcat)){
+									while(!empty($tmpCatId) && $extraFields[$oneField]->fieldcat != end($tmpCatId)){
+										echo '</'.end($tmpCatTag).'>';
+										array_pop($tmpCatId);
+										array_pop($tmpCatTag);
+									}
+								}
+								echo '<p class="onefield fieldacy'.$oneField.'" id="field_'.$oneField.'_'.$formName.'">';
+								if($displayOutside){
+									if(!empty($extraFields[$oneField]->required)) $requireClass = 'class="acy_requiredField"';
+									else $requireClass = "";
+									 echo '<label '.((strpos($extraFields[$oneField]->type,'text') !== false) ? 'for="user_'.$oneField.'_'.$formName.'"' : '' ).' '.$requireClass.'>'.$fieldsClass->trans($extraFields[$oneField]->fieldname).'</label>';
+								}
+								$sizestyle = '';
+								if(!empty($extraFields[$oneField]->options['size'])){
+									$sizestyle = 'style="width:'.(is_numeric($extraFields[$oneField]->options['size']) ? ($extraFields[$oneField]->options['size'].'px') : $extraFields[$oneField]->options['size']).'"';
+								}
+								if(!empty($extraFields[$oneField]->required) && !$displayOutside) $requireClass = ' acy_requiredField';
 								else $requireClass = "";
-								 echo '<label '.((strpos($extraFields[$oneField]->type,'text') !== false) ? 'for="user_'.$oneField.'_'.$formName.'"' : '' ).' '.$requireClass.'>'.$fieldsClass->trans($extraFields[$oneField]->fieldname).'</label>';
+								?>
+								<span class="acyfield_<?php echo $oneField.$requireClass; ?>">
+								<?php if(!empty($identifiedUser->userid) AND in_array($oneField,array('name','email'))){ ?>
+										<input id="user_<?php echo $oneField; ?>_<?php echo $formName; ?>" disabled="disabled" class="inputbox" type="text" name="user[<?php echo $oneField;?>]" <?php echo $sizestyle; ?> value="<?php echo @$identifiedUser->$oneField; ?>" title="<?php echo $oneField;?>"/>
+								<?php }else{
+										echo $fieldsClass->display($extraFields[$oneField],@$identifiedUser->$oneField,'user['.$oneField.']',!$displayOutside);
+								}?>
+								</span>
+								</p>
+								<?php
 							}
-							$sizestyle = '';
-							if(!empty($extraFields[$oneField]->options['size'])){
-								$sizestyle = 'style="width:'.(is_numeric($extraFields[$oneField]->options['size']) ? ($extraFields[$oneField]->options['size'].'px') : $extraFields[$oneField]->options['size']).'"';
-							}
-							if(!empty($extraFields[$oneField]->required) && !$displayOutside) $requireClass = ' acy_requiredField';
-							else $requireClass = "";
-							?>
-							<span class="acyfield_<?php echo $oneField.$requireClass; ?>">
-							<?php if(!empty($identifiedUser->userid) AND in_array($oneField,array('name','email'))){ ?>
-									<input id="user_<?php echo $oneField; ?>_<?php echo $formName; ?>" disabled="disabled" class="inputbox" type="text" name="user[<?php echo $oneField;?>]" <?php echo $sizestyle; ?> value="<?php echo @$identifiedUser->$oneField; ?>" title="<?php echo $oneField;?>"/>
-							<?php }else{
-									echo $fieldsClass->display($extraFields[$oneField],@$identifiedUser->$oneField,'user['.$oneField.']',!$displayOutside);
-							}?>
-							</span>
-						<?php }
-						echo '</p>';
+						}
+						if(empty($extraFields[$oneField])) echo '</p>';
+					}
+					if(!empty($extraFields)){
+						$lastVal = end($tmpCatId);
+						while(!empty($lastVal)){
+							echo '</'.end($tmpCatTag).'>';
+							array_pop($tmpCatId);
+							array_pop($tmpCatTag);
+							$lastVal = end($tmpCatId);
+						}
 					}
 
 				if(empty($identifiedUser->userid) AND $config->get('captcha_enabled') AND acymailing_level(1)){ ?>
@@ -127,52 +164,7 @@ defined('_JEXEC') or die('Restricted access');
 					</p>
 					<?php } ?>
 
-					<?php if(!empty($visibleListsArray) && $listPosition == 'after'){
-						if($params->get('dropdown',0)){?>
-							<select name="subscription[1]">
-								<?php foreach($visibleListsArray as $myListId){?>
-								<option value="<?php echo $myListId ?>"><?php echo $allLists[$myListId]->name; ?></option>
-								<?php } ?>
-							</select>
-						<?php }else{?>
-					<div class="acymailing_lists">
-						<?php foreach($visibleListsArray as $myListId){
-							$check = in_array($myListId,$checkedListsArray) ? 'checked="checked"' : '';
-
-							if($params->get('checkmode',0) == '0' AND !empty($identifiedUser->email)){
-								if(empty($allLists[$myListId]->status)){$check = '';}
-								else{
-									$check = $allLists[$myListId]->status == '-1' ? '' : 'checked="checked"';
-								}
-							}
-							?>
-							<p class="onelist">
-								<input type="checkbox" class="acymailing_checkbox" name="subscription[]" id="acylist_<?php echo $myListId; ?>" <?php echo $check; ?> value="<?php echo $myListId; ?>"/>
-								<label for="acylist_<?php echo $myListId; ?>">
-								<?php
-								$joomItem = $params->get('itemid',0);
-								if(empty($joomItem)) $joomItem = $config->get('itemid',0);
-								$addItem = empty($joomItem) ? '' : '&Itemid='.$joomItem;
-								$archivelink = acymailing_completeLink('archive&listid='.$allLists[$myListId]->listid.'-'.$allLists[$myListId]->alias.$addItem);
-								if($params->get('overlay',0)){
-									if(!$params->get('link',1) OR !$allLists[$myListId]->visible) $archivelink = '';
-									echo acymailing_tooltip($allLists[$myListId]->description,$allLists[$myListId]->name,'',$allLists[$myListId]->name,$archivelink);
-								}else{
-									if($params->get('link',1) AND $allLists[$myListId]->visible){
-										echo '<a href="'.$archivelink.'" alt="'.$allLists[$myListId]->alias.'"'.((JRequest::getCmd('tmpl') == 'component') ? 'target="_blank"' : '').' >';
-									}
-									echo $allLists[$myListId]->name;
-									if($params->get('link',1) AND $allLists[$myListId]->visible){
-										echo '</a>';
-									}
-								}
-								?>
-								</label>
-							</p>
-						<?php }?>
-					</div>
-					<?php }//endif dropdown
-						}//endif visiblelists ?>
+					<?php if(!empty($visibleListsArray) && $listPosition == 'after')  echo $listContent; ?>
 
 					<p class="acysubbuttons">
 						<?php if($params->get('showsubscribe',true)){?>
@@ -203,6 +195,7 @@ defined('_JEXEC') or die('Restricted access');
 			if(!empty($postText)) echo '<div class="acymailing_finaltext">'.$postText.'</div>';
 			$ajax = ($params->get('redirectmode') == '3') ? 1 : 0;?>
 			<input type="hidden" name="ajax" value="<?php echo $ajax; ?>"/>
+			<input type="hidden" name="acy_source" value="<?php echo 'module_'.$module->id ?>" />
 			<input type="hidden" name="ctrl" value="sub"/>
 			<input type="hidden" name="task" value="notask"/>
 			<input type="hidden" name="redirect" value="<?php echo urlencode($redirectUrl); ?>"/>

@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -90,17 +90,26 @@ html{
 
 </style>
 <form action="index.php?tmpl=component&amp;option=<?php echo ACYMAILING_COMPONENT ?>" method="post" name="adminForm" id="adminForm" >
-<?php if($this->pageInfo->elements->total > $this->pageInfo->elements->page || !empty($this->pageInfo->search)){ ?>
-	<table class="adminlist table table-striped table-hover" cellpadding="1">
+<?php if($this->pageInfo->elements->total > $this->pageInfo->elements->page || !empty($this->pageInfo->search) || !empty($this->pageInfo->category)){ ?>
+	<table class="adminlist table table-striped table-hover" cellpadding="1" style="width:100%;">
 		<thead>
 			<tr>
-				<td style="text-align:center;">
+				<td>
 					<?php acymailing_listingsearch($this->pageInfo->search); ?>
+				</td>
+				<td style="float:right;">
+					<?php
+						if(acymailing_level(3)){
+							$listcategoryType = acymailing_get('type.categoryfield');
+							echo $listcategoryType->getFilter('template', 'category', $this->pageInfo->category, ' onchange="document.adminForm.limitstart.value=0;this.form.submit();" style="width:150px;"');
+						}
+					?>
 				</td>
 			</tr>
 			<tr>
-				<td style="text-align:center;">
-					<?php echo $this->pagination->getListFooter(); ?>
+				<td style="text-align:center;" colspan="2">
+					<?php echo $this->pagination->getListFooter();
+					echo $this->pagination->getResultsCounter(); ?>
 				</td>
 			</tr>
 		</thead>
@@ -113,7 +122,7 @@ if(empty($this->pageInfo->limit->start)){
 			<div class="templatearea emptytemplate" onclick="applyTemplate(0);">
 					<div class="templatetitle"><?php echo JText::_('ACY_NONE'); ?></div>
 					<div style="display:none" id="stylesheet_0"></div>
-					<div style="display:none" id="htmlcontent_0"><br/></div>
+					<div style="display:none" id="htmlcontent_0"><br /></div>
 					<div style="display:none" id="textcontent_0"></div>
 					<div style="display:none" id="subject_0"></div>
 					<div style="display:none" id="replyname_0"></div>
@@ -152,6 +161,7 @@ if(empty($this->pageInfo->limit->start)){
 			?>
 	<input type="hidden" name="option" value="<?php echo ACYMAILING_COMPONENT; ?>" />
 	<input type="hidden" name="task" value="theme" />
+	<input type="hidden" name="defaulttask" value="theme" />
 	<input type="hidden" name="ctrl" value="<?php echo JRequest::getCmd('ctrl'); ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->pageInfo->filter->order->value; ?>" />

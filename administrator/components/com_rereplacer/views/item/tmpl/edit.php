@@ -3,11 +3,11 @@
  * Item View Template: Edit
  *
  * @package         ReReplacer
- * @version         5.12.2
+ * @version         5.13.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -51,7 +51,6 @@ JFactory::getDocument()->addScriptVersion(JURI::root(true) . '/media/nnframework
 					<div class="row-fluid">
 						<div class="span8">
 							<fieldset>
-								<?php echo $this->render($this->item->form, 'regex'); ?>
 								<?php echo $this->render($this->item->form, 'search'); ?>
 								<?php echo $this->render($this->item->form, 'replace'); ?>
 								<?php echo $this->render($this->item->form, 'xml'); ?>

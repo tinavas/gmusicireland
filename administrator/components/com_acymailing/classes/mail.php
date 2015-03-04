@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -14,7 +14,7 @@ class mailClass extends acymailingClass{
 	var $tables = array('queue','listmail','stats','userstats','urlclick','mail');
 	var $pkey = 'mailid';
 	var $namekey = 'alias';
-	var $allowedFields = array('subject','published','fromname','fromemail','replyname', 'replyemail', 'type','visible','alias','html','tempid','altbody','filter','metakey','metadesc','language');
+	var $allowedFields = array('subject','published','fromname','fromemail','replyname', 'replyemail', 'type','visible','alias','html','tempid','altbody','filter','metakey','metadesc','language','summary','thumb','params');
 
 	function get($id,$default = null){
 
@@ -69,7 +69,8 @@ class mailClass extends acymailingClass{
 			}
 		}
 
-		$mail->body = JRequest::getVar('editor_body','','','string',JREQUEST_ALLOWHTML);
+		$mail->body = JRequest::getVar('editor_body','','','string',JREQUEST_ALLOWRAW);
+		if(ACYMAILING_J25) $mail->body = JComponentHelper::filterText($mail->body);
 
 		$acypluginsHelper = acymailing_get('helper.acyplugins');
 		$acypluginsHelper->cleanHtml($mail->body);
@@ -141,8 +142,11 @@ class mailClass extends acymailingClass{
 		}
 
 		if(preg_match('#<a[^>]*subid=[0-9].*</a>#Uis',$mail->body,$pregResult)){
-			$app->enqueueMessage('There is a personal link in your Newsletter ( '.$pregResult[0].' ) instead of a tag...<br/>Please make sure to not copy/paste the link you received in your e-mail as it may break your unsubscribe or confirmation links.<br/>Use our tags instead!','notice');
+			$app->enqueueMessage('There is a personal link in your Newsletter ( '.$pregResult[0].' ) instead of a tag...<br />Please make sure to not copy/paste the link you received in your e-mail as it may break your unsubscribe or confirmation links.<br />Use our tags instead!','notice');
 		}
+
+		$acypictHelper = acymailing_get('helper.acypict');
+		$acypictHelper->uploadThumbnail($mail);
 
 		$mailid = $this->save($mail);
 		if(!$mailid) return false;
@@ -324,7 +328,7 @@ class mailClass extends acymailingClass{
 		$time = time();
 		$nbReceiversTest = floor($nbTotalReceivers * $abTestDetail['prct'] / 100);
 		$queueClass->limit = $nbReceiversTest;
-		$queueClass->orderBy = 'rand';
+		$queueClass->orderBy = 'RAND()';
 		$queueClass->queue($mailsArray[0],$time);
 		$nbReceiversPerMail = floor($nbReceiversTest / count($mailsArray));
 		foreach($mailsArray as $oneMail){
@@ -394,8 +398,8 @@ class mailClass extends acymailingClass{
 		if($dataForCopy['abTestDetail']['action'] == 'open') $newMailid = $this->copyOneNewsletter($idOpen);
 		elseif($dataForCopy['abTestDetail']['action'] == 'click') $newMailid = $this->copyOneNewsletter($idClick);
 		elseif($dataForCopy['abTestDetail']['action'] == 'mix'){
-			$db->setQuery("SELECT subject FROM #__acymailing_mail WHERE mailid=".$idOpen);
-			$newSubject = acymailing_loadResultArray($db);
+			$db->setQuery("SELECT subject, fromname, fromemail, replyname, replyemail FROM #__acymailing_mail WHERE mailid=".$idOpen);
+			$newSubject = $db->loadObjectList();
 			$newMailid = $this->copyOneNewsletter($idClick, $newSubject[0]);
 		}
 		return $newMailid;
@@ -404,10 +408,10 @@ class mailClass extends acymailingClass{
 	function copyOneNewsletter($mailid, $subject=''){
 		$db = JFactory::getDBO();
 		$time = time();
-		$query = 'INSERT INTO `#__acymailing_mail` (`subject`, `body`, `altbody`, `published`, `created`, `fromname`, `fromemail`, `replyname`, `replyemail`, `type`, `visible`, `userid`, `alias`, `attach`, `html`, `tempid`, `key`, `frequency`, `params`,`filter`,`metakey`,`metadesc`)';
-		if(empty($subject)) $query .= " SELECT `subject`";
-		else $query .= " SELECT ".$db->Quote($subject);
-		$query .= ", `body`, `altbody`, `published`, '.$time.', `fromname`, `fromemail`, `replyname`, `replyemail`, `type`, `visible`, `userid`, `alias`, `attach`, `html`, `tempid`, ".$db->Quote(md5(rand(1000,999999))).', `frequency`, `params`,`filter`,`metakey`,`metadesc` FROM `#__acymailing_mail` WHERE `mailid` = '.(int) $mailid;
+		$query = 'INSERT INTO `#__acymailing_mail` (`subject`, `fromname`, `fromemail`, `replyname`, `replyemail`, `body`, `altbody`, `published`, `created`, `type`, `visible`, `userid`, `alias`, `attach`, `html`, `tempid`, `key`, `frequency`, `params`,`filter`,`metakey`,`metadesc`,`summary`,`thumb`)';
+		if(empty($subject)) $query .= " SELECT `subject`, `fromname`, `fromemail`, `replyname`, `replyemail`";
+		else $query .= " SELECT ".$db->Quote($subject->subject).", ".$db->Quote($subject->fromname).", ".$db->Quote($subject->fromemail).", ".$db->Quote($subject->replyname).", ".$db->Quote($subject->replyemail);
+		$query .= ", `body`, `altbody`, `published`, '.$time.', `type`, `visible`, `userid`, `alias`, `attach`, `html`, `tempid`, ".$db->Quote(md5(rand(1000,999999))).', `frequency`, `params`,`filter`,`metakey`,`metadesc`,`summary`,`thumb` FROM `#__acymailing_mail` WHERE `mailid` = '.(int) $mailid;
 		$db->setQuery($query);
 		$db->query();
 		$newMailid = $db->insertid();

@@ -2,7 +2,7 @@
 /**
  * Akeeba Engine
  * The modular PHP5 site backup engine
- * @copyright Copyright (c)2009-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2006-2015 Nicholas K. Dionysopoulos
  * @license   GNU GPL version 3 or, at your option, any later version
  * @package   akeebaengine
  *
@@ -83,6 +83,11 @@ class Smart extends Base
 		/** @var \DirectoryIterator $file */
 		foreach ($di as $file)
 		{
+			if ($file->isDot())
+			{
+				continue;
+			}
+
 			if ($breakflag)
 			{
 				break;
@@ -162,12 +167,12 @@ class Smart extends Base
 				break;
 			}
 
-			if (!$file->isDir())
+			if ($file->isDot())
 			{
 				continue;
 			}
 
-			if ($file->isDot())
+			if (!$file->isDir())
 			{
 				continue;
 			}

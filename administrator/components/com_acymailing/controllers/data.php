@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -126,6 +126,7 @@ class DataController extends acymailingController{
 		$fieldsToExport = JRequest::getVar('exportdata');
 		$fieldsToExportList = JRequest::getVar('exportdatalist');
 		$fieldsToExportOthers = JRequest::getVar('exportdataother');
+		$fieldsToExportGeoloc = JRequest::getVar('exportdatageoloc');
 		$inseparator = JRequest::getString('exportseparator');
 		$inseparator = str_replace(array('semicolon','colon','comma'),array(';',',',','),$inseparator);
 		$exportFormat = JRequest::getString('exportformat');
@@ -150,6 +151,7 @@ class DataController extends acymailingController{
 		$exportFields = array();
 		$exportFieldsList = array();
 		$exportFieldsOthers = array();
+		$exportFieldsGeoloc = array();
 		$selectOthers = '';
 		foreach($fieldsToExport as $fieldName => $checked){
 			if(!empty($checked)) $exportFields[] = acymailing_secureField($fieldName);
@@ -162,12 +164,17 @@ class DataController extends acymailingController{
 				if(!empty($checked)) $exportFieldsOthers[] = acymailing_secureField($fieldName);
 			}
 		}
+		if(!empty($fieldsToExportGeoloc)){
+			foreach($fieldsToExportGeoloc as $fieldName => $checked){
+				if(!empty($checked)) $exportFieldsGeoloc[] = acymailing_secureField($fieldName);
+			}
+		}
 
 		$selectFields = 's.`'.implode('`, s.`',$exportFields).'`';
 
 		$config = acymailing_config();
 		$newConfig = new stdClass();
-		$newConfig->export_fields = implode(',',array_merge($exportFields,$exportFieldsOthers,$exportFieldsList));
+		$newConfig->export_fields = implode(',',array_merge($exportFields,$exportFieldsOthers,$exportFieldsList,$exportFieldsGeoloc));
 		$newConfig->export_lists = implode(',',$exportLists);
 		$newConfig->export_separator = JRequest::getString('exportseparator');
 		$newConfig->export_format = $exportFormat;
@@ -238,6 +245,9 @@ class DataController extends acymailingController{
 			$selectFields = 'l.`'.implode('`, l.`',$exportFieldsList).'`';
 			$selectFields = str_replace('listname', 'name', $selectFields);
 		}
+		if(!empty($exportFieldsGeoloc)){
+			$allFields = array_merge($allFields,$exportFieldsGeoloc);
+		}
 
 		$titleLine = $before.implode($separator,$allFields).$after.$eol;
 		$titleLine = str_replace('listid', 'listids', $titleLine);
@@ -283,6 +293,20 @@ class DataController extends acymailingController{
 				}
 				unset($resList);
 			}
+
+			if(!empty($exportFieldsGeoloc) && !empty($allData)){
+				$orderGeoloc = JRequest::getString('exportgeolocorder');
+				$db->setQuery('SELECT geolocation_subid,'.implode(', ',$exportFieldsGeoloc).' FROM (SELECT * FROM #__acymailing_geolocation WHERE geolocation_subid IN ('.implode(',',array_keys($allData)).') ORDER BY geolocation_id '.$orderGeoloc.') as geoloc GROUP BY geolocation_subid');
+				$resGeol = $db->loadObjectList();
+				foreach($resGeol as $geolData){
+					foreach($exportFieldsGeoloc as $geolField){
+						$allData[$geolData->geolocation_subid][$geolField] = ($geolField=='geolocation_created'? acymailing_getDate($geolData->$geolField,'%Y-%m-%d %H:%M:%S'):$geolData->$geolField);
+					}
+				}
+				unset($resGeol);
+			}
+
+
 			foreach($allData as $subid => &$oneUser){
 				$dataexport = implode($separator,$oneUser);
 				echo $before.$encodingClass->change($dataexport,'UTF-8',$exportFormat).$after.$eol;

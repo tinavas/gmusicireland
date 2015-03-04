@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -80,11 +80,11 @@ class ToggleController extends acymailingController{
 		foreach($tests as $port => $server){
 			$fp = @fsockopen($server,$port,$errno,$errstr,5);
 			if($fp){
-				echo '<br/><span style="color:green" >Port <b>'.$port.'</b> OK</span>';
+				echo '<br /><span style="color:green" >Port <b>'.$port.'</b> OK</span>';
 				fclose($fp);
 				$total++;
 			}else{
-				echo '<br/><span style="color:red" >Port <b>'.$port.'</b> not opened on your server ';
+				echo '<br /><span style="color:red" >Port <b>'.$port.'</b> not opened on your server ';
 				echo " errornum: ".$errno.' : '.$errstr;
 				echo '</span>';
 			}
@@ -98,7 +98,7 @@ class ToggleController extends acymailingController{
 	function testApiKey(){
 		$apiKey = JRequest::getString('value', '');
 		if(empty($apiKey)){
-			echo '<span style="color:red">No API key</span><br/>';
+			echo '<span style="color:red">No API key</span><br />';
 			exit;
 		}
 
@@ -108,12 +108,12 @@ class ToggleController extends acymailingController{
 		if(!empty($test) && $test->statusCode == 'OK'){ // Works fine
 			echo '<span style="color:green" >API key OK : ' . $test->countryName . ' - ' . $test->cityName . '</span>';
 		}else if(!empty($test) && $test->statusCode == 'noReturn'){ // No return from the API, displaying the IP used for test and errors if there are any
-			echo '<span style="color:red" >Error calling IPInfoDB API with IP : ' . $test->ip . '</span><br/>';
+			echo '<span style="color:red" >Error calling IPInfoDB API with IP : ' . $test->ip . '</span><br />';
 			if(!empty($test->errorAPI)) echo '<span style="color:red" >Details : ' . $test->errorAPI . '</span>';
 		} else{ // There is a return from the API but with an error status: display the content received to identify the pb
-			echo '<span style="color:red" >Error returned from the API:<br/><br/>';
+			echo '<span style="color:red" >Error returned from the API:<br /><br />';
 			foreach($test as $key=>$value){
-				echo $key .' : ' . $value . '<br/>';
+				echo $key .' : ' . $value . '<br />';
 			}
 			echo '</span>';
 		}
@@ -163,8 +163,14 @@ class ToggleController extends acymailingController{
 		echo '<span style="color:purple">| ';
 		foreach($queries[$table] as $oneQuery){
 			$db->setQuery($oneQuery);
-			if(!$db->query()){
-				echo $db->getErrorMsg().' | ';
+
+			try{
+				$isError = $db->query();
+			}catch(Exception $e){
+				$isError = null;
+			}
+			if($isError == null){
+				echo isset($e) ? $e->getMessage() : substr(strip_tags($db->getErrorMsg()),0,200).'...';
 			}else{
 				$indexOk++;
 			}

@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -32,6 +32,7 @@ class acyzohoHelper {
 	function sendInfo($userList){
 		if (!$this->connect())	return false;
 		$res = '';
+		$config = acymailing_config();
 		if(empty($this->customView)){
 			$apiMethod = "getRecords";
 			$cvName = "";
@@ -39,11 +40,15 @@ class acyzohoHelper {
 			$apiMethod = "getCVRecords";
 			$cvName = "&cvName=" . urlencode($this->customView);
 		}
+		$importNew = $config->get("zoho_importnew", 0);
+		$importdate = $config->get('zoho_importdate',0);
+		$lastModifiedTime = (!empty($importNew) && !empty($importdate))?"&lastModifiedTime=".urlencode($importdate):"";
+
 		$indexSelect = "";
 		if(!empty($this->fromIndex)) $indexSelect = "&fromIndex=".$this->fromIndex;
 		if(!empty($this->toIndex)) $indexSelect .= "&toIndex=".$this->toIndex;
 
-		$header = "GET /crm/private/xml/". urlencode($userList) ."/". $apiMethod ."?newFormat=1&authtoken=". urlencode($this->authtoken) . $cvName ."&scope=crmapi". $indexSelect ." HTTP/1.0\r\n";
+		$header = "GET /crm/private/xml/". urlencode($userList) ."/". $apiMethod ."?newFormat=1&authtoken=". urlencode($this->authtoken) . $cvName ."&scope=crmapi".$lastModifiedTime.$indexSelect ." HTTP/1.0\r\n";
 		$header .= "Host: crm.zoho.com\r\n";
 		$header .= "Content-Type: text/xml\r\n";
 		$header .= "Connection: close\r\n\r\n";
@@ -69,6 +74,13 @@ class acyzohoHelper {
 			return false;
 		}
 		$emailArray= array();
+
+		$config = acymailing_config();
+		$importNew = $config->get("zoho_importnew", 0);
+		if(!empty($importNew) && !empty($xml->nodata->code) && $xml->nodata->code == 4422){
+			$this->error .= 'There is no new or modified email Address in the '.$userList.' list';
+			return $emailArray;
+		}
 
 		if(empty($xml->result->$userList->row)){
 			$this->error .= 'There is no email Address in the '.$userList.' list';

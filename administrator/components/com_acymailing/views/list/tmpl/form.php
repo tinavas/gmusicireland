@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -49,6 +49,14 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td>
+				<label for="datalistcategory">
+					<?php echo JText::_('ACY_CATEGORY'); ?>
+				</label>
+			</td>
+			<td>
+				<?php $catType = acymailing_get('type.categoryfield'); echo $catType->display('list', 'data[list][category]', $this->list->category); ?>
+			</td>
+			<td>
 				<label for="creator">
 					<?php echo JText::_( 'CREATOR' ); ?>
 				</label>
@@ -58,6 +66,15 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo '<span id="creatorname">'.@$this->list->creatorname.'</span>';
 				echo ' <a class="modal" title="'.JText::_('ACY_EDIT',true).'"  href="index.php?option=com_acymailing&amp;tmpl=component&amp;ctrl=subscriber&amp;task=choose&amp;onlyreg=1" rel="{handler: \'iframe\', size: {x: 800, y: 500}}"><img class="icon16" src="'.ACYMAILING_IMAGES.'icons/icon-16-edit.png" alt="'.JText::_('ACY_EDIT',true).'"/></a>';
 				?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<?php echo JText::_( 'MSG_WELCOME' ); ?>
+			</td>
+			<td>
+				<?php if(acymailing_level(1)) echo $this->welcomeMsg->display(@$this->list->welmailid);
+				else{ echo acymailing_getUpgradeLink('essential'); } ?>
 			</td>
 			<td>
 				<?php echo JText::_('COLOUR'); ?>
@@ -70,15 +87,8 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php echo JText::_('MSG_UNSUB'); ?>
 			</td>
-			<td>
+			<td colspan="3">
 				<?php echo $this->unsubMsg->display(@$this->list->unsubmailid); ?>
-			</td>
-			<td>
-				<?php echo JText::_( 'MSG_WELCOME' ); ?>
-			</td>
-			<td>
-				<?php if(acymailing_level(1)) echo $this->welcomeMsg->display(@$this->list->welmailid);
-				else{ echo acymailing_getUpgradeLink('essential'); } ?>
 			</td>
 		</tr>
 	</table>

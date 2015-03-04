@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -52,17 +52,31 @@ defined('_JEXEC') or die('Restricted access');
 				</td>
 				<td>
 					<?php
-					echo JText::sprintf('ACY_TIMEOUT_SERVER',ini_get('max_execution_time')).'<br/>';
+					echo JText::sprintf('ACY_TIMEOUT_SERVER',ini_get('max_execution_time')).'<br />';
 					$maxexecutiontime = intval($this->config->get('max_execution_time'));
 					if(intval($this->config->get('last_maxexec_check')) > (time()-20)){
 						echo JText::sprintf('ACY_TIMEOUT_CURRENT',$maxexecutiontime);
 					}else{
 						if(!empty($maxexecutiontime)){
-							echo JText::sprintf('ACY_MAX_RUN',$maxexecutiontime).'<br/>';
+							echo JText::sprintf('ACY_MAX_RUN',$maxexecutiontime).'<br />';
 						}
 						echo '<span id="timeoutcheck" ><a href="javascript:void(0);" onclick="detectTimeout(\'timeoutcheck\')">'.JText::_('ACY_TIMEOUT_AGAIN').'</a></span>';
 					}
-					 ?>
+					?>
+				</td>
+			</tr>
+			<tr>
+				<td class="key">
+					<?php echo JText::_('ACY_ORDER_SEND_QUEUE'); ?>
+				</td>
+				<td>
+					<?php
+						$ordering = array();
+						$ordering[] = JHTML::_('select.option', "subid,ASC", 'subid ASC');
+						$ordering[] = JHTML::_('select.option', "subid,DESC", 'subid DESC');
+						$ordering[] = JHTML::_('select.option', "rand", JText::_('ACY_RANDOM'));
+					 	echo JHTML::_('select.genericlist', $ordering, 'config[sendorder]' , 'size="1" style="width:150px;" onchange="if(this.value == \'rand\'){alert(\''.JText::_('ACY_NO_RAND_FOR_MULTQUEUE').'\')}"', 'value', 'text', $this->config->get('sendorder', 'subid,ASC'));
+					?>
 				</td>
 			</tr>
 		</table>

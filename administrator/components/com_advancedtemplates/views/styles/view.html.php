@@ -1,11 +1,11 @@
 <?php
 /**
  * @package         Advanced Template Manager
- * @version         1.1.7
+ * @version         1.3.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -19,8 +19,6 @@ defined('_JEXEC') or die;
 /**
  * View class for a list of template styles.
  *
- * @package     Joomla.Administrator
- * @subpackage  com_templates
  * @since       1.6
  */
 class AdvancedTemplatesViewStyles extends JViewLegacy
@@ -43,9 +41,7 @@ class AdvancedTemplatesViewStyles extends JViewLegacy
 		$this->items      = $this->get('Items');
 		foreach ($this->items as $i => $item)
 		{
-			$registry = new JRegistry;
-			$registry->loadString($item->advancedparams);
-			$this->items[$i]->params = $registry->toObject();
+			$this->items[$i]->params = json_decode($item->advancedparams);
 		}
 		$this->pagination = $this->get('Pagination');
 		$this->state      = $this->get('State');
@@ -85,7 +81,7 @@ class AdvancedTemplatesViewStyles extends JViewLegacy
 		if (!isset($this->config))
 		{
 			require_once JPATH_PLUGINS . '/system/nnframework/helpers/parameters.php';
-			$parameters = NNParameters::getInstance();
+			$parameters = nnParameters::getInstance();
 			$this->config = $parameters->getComponentParams('advancedtemplates');
 		}
 		return $this->config;

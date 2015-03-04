@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -39,8 +39,10 @@ class TemplateViewTemplate extends acymailingView
 		$paramBase = ACYMAILING_COMPONENT.'.'.$this->getName().$this->getLayout();
 		$pageInfo->filter->order->value = $app->getUserStateFromRequest( $paramBase.".filter_order", 'filter_order',	'a.ordering','cmd' );
 		$pageInfo->filter->order->dir	= $app->getUserStateFromRequest( $paramBase.".filter_order_Dir", 'filter_order_Dir',	'asc',	'word' );
+		if(strtolower($pageInfo->filter->order->dir) !== 'desc') $pageInfo->filter->order->dir = 'asc';
 		$pageInfo->search = $app->getUserStateFromRequest( $paramBase.".search", 'search', '', 'string' );
 		$pageInfo->search = JString::strtolower(trim($pageInfo->search));
+		$pageInfo->category = $app->getUserStateFromRequest( $paramBase.".category", 'category', '0', 'string' );
 
 		$pageInfo->limit->value = $app->getUserStateFromRequest( $paramBase.'.list_limit', 'limit', $app->getCfg('list_limit'), 'int' );
 		$pageInfo->limit->start = $app->getUserStateFromRequest( $paramBase.'.limitstart', 'limitstart', 0, 'int' );
@@ -52,12 +54,15 @@ class TemplateViewTemplate extends acymailingView
 			$this->filters[] = "a.name LIKE $searchVal OR a.description LIKE $searchVal OR a.tempid LIKE $searchVal";
 		}
 
+		if(!empty($pageInfo->category)){
+			$this->filters[] = 'a.category LIKE '.$database->Quote($pageInfo->category);
+		}
+
 		$query = 'SELECT '.implode(',',$this->selection).' FROM '.acymailing_table('template').' as a';
 		if(!empty($this->filters)){$query .= ' WHERE ('.implode(') AND (',$this->filters).')';}
 		if(!empty($pageInfo->filter->order->value)){
 			$query .= ' ORDER BY '.$pageInfo->filter->order->value.' '.$pageInfo->filter->order->dir;
 		}
-
 		$database->setQuery($query,$pageInfo->limit->start,$pageInfo->limit->value);
 
 		try{
@@ -155,6 +160,9 @@ class TemplateViewTemplate extends acymailingView
 			$template->tempid = 0;
 			$template->published = 1;
 			$template->access = 'all';
+			$template->category = '';
+			$template->thumb = '';
+			$template->readmore = '';
 		}
 
 		$editor = acymailing_get('helper.editor');
@@ -176,7 +184,17 @@ class TemplateViewTemplate extends acymailingView
 							return;
 						}';
 		}
-
+		$script .= 'if(pressbutton == \'save\' || pressbutton == \'test\' || pressbutton == \'apply\'){
+						var emailVars = ["fromemail","replyemail"];
+						var val = "";
+						for(var key in emailVars){
+							if(isNaN(key)) continue;
+							val = document.getElementById(emailVars[key]).value;
+							if(!validateEmail(val, emailVars[key])){
+								return;
+							}
+						}
+					}';
 		$script .= 'if(window.document.getElementById("name").value.length < 2){alert(\''.JText::_('ENTER_TITLE',true).'\'); return false;}';
 		$script .= "if(pressbutton == 'test' && window.document.getElementById('sendtest') && window.document.getElementById('sendtest').style.display == 'none'){ window.document.getElementById('sendtest').style.display = 'block'; return false;}";
 		$script .= $editor->jsCode();
@@ -337,8 +355,9 @@ class TemplateViewTemplate extends acymailingView
 
 		$paramBase = ACYMAILING_COMPONENT.'.'.$this->getName();
 		$infos = new stdClass();
-		$infos->receiver_type = $app->getUserStateFromRequest( $paramBase.".receiver_type", 'receiver_type', '','string' );
-		$infos->test_email = $app->getUserStateFromRequest( $paramBase.".test_email", 'test_email', '','string' );
+		$infos->test_selection = $app->getUserStateFromRequest( $paramBase.".test_selection", 'test_selection', '','string' );
+		$infos->test_group = $app->getUserStateFromRequest( $paramBase.".test_group", 'test_group', '','string' );
+		$infos->test_emails = $app->getUserStateFromRequest( $paramBase.".test_emails", 'test_emails', '','string' );
 
 
 		acymailing_setTitle(JText::_('ACY_TEMPLATE'),'acytemplate','template&task=edit&tempid='.$tempid);
@@ -356,8 +375,8 @@ class TemplateViewTemplate extends acymailingView
 		$bar->appendButton( 'Pophelp','template-form');
 
 		$this->assignRef('editor',$editor);
-		$receiverClass = acymailing_get('type.testreceiver');
-		$this->assignRef('receiverClass',$receiverClass);
+		$testreceiverType = acymailing_get('type.testreceiver');
+		$this->assignRef('testreceiverType',$testreceiverType);
 		$this->assignRef('template',$template);
 		$colorBox = acymailing_get('type.color');
 		$this->assignRef('colorBox',$colorBox);

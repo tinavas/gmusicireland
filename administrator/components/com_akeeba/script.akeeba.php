@@ -153,7 +153,6 @@ class Com_AkeebaInstallerScript extends F0FUtilsInstallscript
 			'administrator/components/com_akeeba/controllers/restore.php',
 			'administrator/components/com_akeeba/controllers/s3import.php',
 			'administrator/components/com_akeeba/controllers/srprestore.php',
-			'administrator/components/com_akeeba/controllers/stw.php',
 			'administrator/components/com_akeeba/controllers/upload.php',
 			'administrator/components/com_akeeba/models/alices.php',
 			'administrator/components/com_akeeba/models/discovers.php',
@@ -167,7 +166,6 @@ class Com_AkeebaInstallerScript extends F0FUtilsInstallscript
 			'administrator/components/com_akeeba/models/restores.php',
 			'administrator/components/com_akeeba/models/s3imports.php',
 			'administrator/components/com_akeeba/models/srprestores.php',
-			'administrator/components/com_akeeba/models/stws.php',
 			'administrator/components/com_akeeba/models/uploads.php',
 			'administrator/components/com_akeeba/platform/joomla25/Filter/Components.php',
 			'administrator/components/com_akeeba/platform/joomla25/Filter/Extensiondirs.php',
@@ -217,7 +215,6 @@ class Com_AkeebaInstallerScript extends F0FUtilsInstallscript
 			'administrator/components/com_akeeba/views/restore',
 			'administrator/components/com_akeeba/views/s3import',
 			'administrator/components/com_akeeba/views/srprestore',
-			'administrator/components/com_akeeba/views/stw',
 			'administrator/components/com_akeeba/views/upload',
 			'administrator/components/com_akeeba/engine/Dump/Reverse',
 			'administrator/components/com_akeeba/engine/Postproc/Connector',
@@ -236,14 +233,10 @@ class Com_AkeebaInstallerScript extends F0FUtilsInstallscript
 			'cache/com_akeeba.updates.ini',
 			'administrator/cache/com_akeeba.updates.php',
 			'administrator/cache/com_akeeba.updates.ini',
-			'administrator/components/com_akeeba/views/buadmin/restorepoint.php',
+			'administrator/components/com_akeeba/controllers/acl.php',
 			'administrator/components/com_akeeba/controllers/installer.php',
-			'administrator/components/com_akeeba/controllers/srprestore.php',
-			'administrator/components/com_akeeba/controllers/stw.php',
-			'administrator/components/com_akeeba/controllers/upload.php',
 			'administrator/components/com_akeeba/models/srprestore.php',
 			'administrator/components/com_akeeba/models/stw.php',
-			'administrator/components/com_akeeba/controllers/acl.php',
 			'administrator/components/com_akeeba/models/acl.php',
 			'administrator/components/com_akeeba/tables/acl.php',
 			// Files renamed after using FOF
@@ -301,9 +294,6 @@ class Com_AkeebaInstallerScript extends F0FUtilsInstallscript
 
 			// Obsolete views
 			'administrator/components/com_akeeba/views/installer',
-			'administrator/components/com_akeeba/views/srprestore',
-			'administrator/components/com_akeeba/views/stw',
-			'administrator/components/com_akeeba/views/upload',
 			'administrator/components/com_akeeba/views/acl',
 			'administrator/components/com_akeeba/assets/images',
 
@@ -378,19 +368,6 @@ class Com_AkeebaInstallerScript extends F0FUtilsInstallscript
 			'action_file'			=> 'admin://components/com_akeeba/helpers/postinstall.php',
 			'action'				=> 'com_akeeba_postinstall_confwiz_action',
 		),
-		'angieupgrade' => array(
-			'type'					=> 'action',
-			'title_key'				=> 'AKEEBA_POSTSETUP_LBL_ANGIEUPGRADE',
-			'description_key'		=> 'AKEEBA_POSTSETUP_DESC_ANGIEUPGRADE',
-			'action_key'			=> 'AKEEBA_POSTSETUP_BTN_ANGIEUPGRADE',
-			'language_extension'	=> 'com_akeeba',
-			'language_client_id'	=> '1',
-			'version_introduced'	=> '4.0.0',
-			'condition_file'		=> 'admin://components/com_akeeba/helpers/postinstall.php',
-			'condition_method'		=> 'com_akeeba_postinstall_angie_condition',
-			'action_file'			=> 'admin://components/com_akeeba/helpers/postinstall.php',
-			'action'				=> 'com_akeeba_postinstall_angie_action',
-		),
 
 		'accept_license' => array(
 			'type'					=> 'message',
@@ -422,6 +399,13 @@ class Com_AkeebaInstallerScript extends F0FUtilsInstallscript
 	);
 
 	/**
+	 * The minimum PHP version required to install this extension
+	 *
+	 * @var   string
+	 */
+	protected $minimumPHPVersion = '5.3.4';
+
+	/**
 	 * Joomla! pre-flight event. This runs before Joomla! installs or updates the component. This is our last chance to
 	 * tell Joomla! if it should abort the installation.
 	 *
@@ -432,6 +416,42 @@ class Com_AkeebaInstallerScript extends F0FUtilsInstallscript
 	 */
 	public function preflight($type, $parent)
 	{
+		// Check the minimum PHP version. Issue a very stern warning if it's not met.
+		if (!empty($this->minimumPHPVersion))
+		{
+			if (defined('PHP_VERSION'))
+			{
+				$version = PHP_VERSION;
+			}
+			elseif (function_exists('phpversion'))
+			{
+				$version = phpversion();
+			}
+			else
+			{
+				$version = '5.0.0'; // all bets are off!
+			}
+
+			if (!version_compare($version, $this->minimumPHPVersion, 'ge'))
+			{
+				$msg = "<h1>Your PHP version is too old</h1>";
+				$msg .= "<p>You need PHP $this->minimumPHPVersion or later to install this component. Support for PHP 5.3.3 and earlier versions has been discontinued by our company as we publicly announced in February 2013.</p>";
+				$msg .= "<p>You are using PHP $version which is an extremely old version, released more than four years ago. This version contains known functional and security issues. The functional issues do not allow you to run Akeeba Backup and cannot be worked around. The security issues mean that your site <b>can be easily hacked</b> since that these security issues are well known for over four years.</p>";
+				$msg .= "<p>You have to ask your host to immediately update your site to PHP $this->minimumPHPVersion or later, ideally the latest available version of PHP 5.4. If your host won't do that you are advised to switch to a better host to ensure the security of your site. If you have to stay with your current host for reasons beyond your control you can use Akeeba Backup 4.0.5 or earlier, available from our downloads page.</p>";
+
+				if (version_compare(JVERSION, '3.0', 'gt'))
+				{
+					JLog::add($msg, JLog::WARNING, 'jerror');
+				}
+				else
+				{
+					JError::raiseWarning(100, $msg);
+				}
+
+				return false;
+			}
+		}
+
 		$result = parent::preflight($type, $parent);
 
 		// Move the serverkey.php file from /akeeba to /engine to preserve the settings
@@ -494,6 +514,11 @@ class Com_AkeebaInstallerScript extends F0FUtilsInstallscript
 
 		parent::postflight($type, $parent);
 
+		if (version_compare(JVERSION, '3.2.0', 'ge'))
+		{
+			$this->uninstallObsoletePostinstallMessages();
+		}
+
 		// Make sure the two plugins folders exist in Core release and are empty
 		if (!$this->isPaid)
 		{
@@ -514,6 +539,8 @@ class Com_AkeebaInstallerScript extends F0FUtilsInstallscript
 	 */
 	protected function renderPostInstallation($status, $fofInstallationStatus, $strapperInstallationStatus, $parent)
 	{
+		$this->warnAboutJSNPowerAdmin();
+
 		?>
 		<img src="../media/com_akeeba/icons/logo-48.png" width="48" height="48" alt="Akeeba Backup" align="right"/>
 
@@ -600,5 +627,61 @@ class Com_AkeebaInstallerScript extends F0FUtilsInstallscript
 		<h2>Akeeba Backup Uninstallation Status</h2>
 		<?php
 		parent::renderPostUninstallation($status, $parent);
+	}
+
+	private function uninstallObsoletePostinstallMessages()
+	{
+		$db = JFactory::getDbo();
+
+		// Remove the "Upgrade profiles to ANGIE" post-installation message
+		$query = $db->getQuery(true)
+			->delete($db->qn('#__postinstall_messages'))
+			->where($db->qn('title_key') . ' = ' . $db->q('AKEEBA_POSTSETUP_LBL_ANGIEUPGRADE'));
+		try
+		{
+			$db->setQuery($query)->execute();
+		}
+		catch (Exception $e)
+		{
+			// Do nothing
+		}
+	}
+
+	/**
+	 * The PowerAdmin extension makes menu items disappear. People assume it's our fault. JSN PowerAdmin authors don't
+	 * own up to their software's issue. I have no choice but to warn our users about the faulty third party software.
+	 */
+	private function warnAboutJSNPowerAdmin()
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('COUNT(*)')
+			->from($db->qn('#__extensions'))
+			->where($db->qn('type') . ' = ' . $db->q('component'))
+			->where($db->qn('element') . ' = ' . $db->q('com_poweradmin'))
+			->where($db->qn('enabled') . ' = ' . $db->q('1'));
+		$hasPowerAdmin = $db->setQuery($query)->loadResult();
+
+		if (!$hasPowerAdmin)
+		{
+			return;
+		}
+
+		echo <<< HTML
+<div class="well" style="margin: 2em 0;">
+<h1 style="font-size: 32pt; line-height: 120%; color: red; margin-bottom: 1em">WARNING: Menu items for {$this->componentName} might not be displayed on your site.</h1>
+<p style="font-size: 18pt; line-height: 150%; margin-bottom: 1.5em">
+	We have detected that you are using JSN PowerAdmin on your site. This software ignores Joomla! standards and
+	<b>hides</b> the Component menu items to {$this->componentName} in the administrator backend of your site. Unfortunately we
+	can't provide support for third party software. Please contact the developers of JSN PowerAdmin for support
+	regarding this issue.
+</p>
+<p style="font-size: 18pt; line-height: 120%; color: green;">
+	Tip: You can disable JSN PowerAdmin to see the menu items to Akeeba Backup.
+</p>
+</div>
+
+HTML;
+
 	}
 }

@@ -3,11 +3,11 @@
  * List View Template: Default
  *
  * @package         Snippets
- * @version         3.5.2
+ * @version         3.5.6
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -46,7 +46,7 @@ $cols = 7;
 require_once JPATH_PLUGINS . '/system/nnframework/helpers/versions.php';
 if ($this->config->show_update_notification)
 {
-	echo NNVersions::getInstance()->getMessage('snippets', '', '', 'component');
+	echo nnVersions::getInstance()->getMessage('snippets', '', '', 'component');
 }
 ?>
 	<form action="<?php echo JRoute::_('index.php?option=com_snippets&view=list'); ?>" method="post" name="adminForm" id="adminForm">
@@ -167,10 +167,10 @@ if ($this->config->show_update_notification)
 <?php
 // PRO Check
 require_once JPATH_PLUGINS . '/system/nnframework/helpers/licenses.php';
-echo NNLicenses::getInstance()->getMessage('SNIPPETS', 0);
+echo nnLicenses::getInstance()->getMessage('SNIPPETS', 0);
 
 // Copyright
-echo NNVersions::getInstance()->getCopyright('SNIPPETS', '', 13003, 'snippets', 'component');
+echo nnVersions::getInstance()->getCopyright('SNIPPETS', '', 0, 'snippets', 'component');
 
 function makeTooltipSafe($str)
 {

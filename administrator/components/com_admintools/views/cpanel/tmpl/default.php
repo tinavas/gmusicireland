@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AdminTools
- * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  * @version   $Id$
  */
@@ -83,25 +83,19 @@ $mysql5 = $this->isMySQL && (strpos($db->getVersion(), '5') === 0);
 		<?php echo JText::_('COM_ADMINTOOLS_CPANEL_ERR_CORRUPT_INFO') ?>
 	</p>
 	<p>
+		<?php echo JText::_('COM_ADMINTOOLS_CPANEL_ERR_CORRUPT_DONTPANIC') ?>
+	</p>
+	<p>
 		<?php echo JText::_('COM_ADMINTOOLS_CPANEL_ERR_CORRUPT_MOREINFO') ?>
 	</p>
 	<p>
 		<a href="index.php?option=com_admintools&view=checkfiles" class="btn btn-large btn-primary">
 			<?php echo JText::_('COM_ADMINTOOLS_CPANEL_CORRUPT_RUNFILES') ?>
 		</a>
-		<a href="#" onclick="ignoreCorrupt();" class="btn btn-danger">
-			<?php echo JText::_('COM_ADMINTOOLS_CPANEL_CORRUPT_IGNORE') ?>
-		</a>
 	</p>
 </div>
 
 <div id="restOfCPanel">
-<div id="fastcheckNotice2" class="alert alert-danger" style="display: none">
-	<h3><?php echo JText::_('COM_ADMINTOOLS_CPANEL_ERR_CORRUPT_HEAD') ?></h3>
-	<p>
-		<?php echo JText::_('COM_ADMINTOOLS_CPANEL_ERR_CORRUPT_IGNORED') ?>
-	</p>
-</div>
 <?php if (ADMINTOOLS_PRO && (version_compare(JVERSION, '2.5.19', 'lt') || (version_compare(JVERSION, '3.0.0', 'gt') && version_compare(JVERSION, '3.2.1', 'lt')))): ?>
 	<div class="alert alert-error">
 		<?php echo JText::_('COM_ADMINTOOLS_CPANEL_ERR_OLDJOOMLANOUPDATES'); ?>
@@ -171,6 +165,19 @@ $mysql5 = $this->isMySQL && (strpos($db->getVersion(), '5') === 0);
 		<a href="index.php?option=com_postinstall&eid=<?php echo $this->extension_id?>"
 		   class="btn btn-primary btn-large">
 			<?php echo JText::_('AKEEBA_CPANEL_PIM_BUTTON'); ?>
+		</a>
+	</div>
+<?php elseif(is_null($this->hasPostInstallationMessages)): ?>
+	<div class="alert alert-error">
+		<h3>
+			<?php echo JText::_('COM_ADMINTOOLS_CPANEL_PIM_ERROR_TITLE'); ?>
+		</h3>
+		<p>
+			<?php echo JText::_('COM_ADMINTOOLS_CPANEL_PIM_ERROR_DESC'); ?>
+		</p>
+		<a href="https://www.akeebabackup.com/documentation/troubleshooter/abpimerror.html"
+		   class="btn btn-primary btn-large">
+			<?php echo JText::_('COM_ADMINTOOLS_CPANEL_PIM_ERROR_BUTTON'); ?>
 		</a>
 	</div>
 <?php endif; ?>
@@ -607,18 +614,9 @@ if($this->statsIframe)
 					if (data == 'false')
 					{
 						$('#fastcheckNotice').show('fast');
-						$('#fastcheckNotice2').show('fast');
-						$('#restOfCPanel').hide('fast');
 					}
 				}
 			});
 		});
 	})(akeeba.jQuery);
-
-	function ignoreCorrupt()
-	{
-		akeeba.jQuery('#fastcheckNotice').hide('fast');
-		akeeba.jQuery('#fastcheckNotice2').show('fast');
-		akeeba.jQuery('#restOfCPanel').show('fast');
-	}
 </script>

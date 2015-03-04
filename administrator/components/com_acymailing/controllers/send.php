@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -63,6 +63,14 @@ class SendController extends acymailingController{
 
 	function continuesend(){
 		$config = acymailing_config();
+
+		if(acymailing_level(1) && $config->get('queue_type') == 'onlyauto'){
+			JRequest::setVar('tmpl','component');
+			acymailing_display(JText::_('ACY_ONLYAUTOPROCESS'),'warning');
+			return;
+		}
+
+
 		$newcrontime = time() + 120;
 		if($config->get('cron_next') < $newcrontime){
 			$newValue = new stdClass();
@@ -89,4 +97,11 @@ class SendController extends acymailingController{
 
 	}
 
+
+	function spamtest(){
+		if(!acymailing_level(1)){
+			echo JText::_('ACY_STARTER_SPAMTEST').' <a target="_blank" href="https://www.acyba.com/index.php?option=com_updateme&ctrl=redirect&page=acymailing-features">'.JText::_('ACY_FEATURES').'</a>';
+			return;
+		}
+	}
 }

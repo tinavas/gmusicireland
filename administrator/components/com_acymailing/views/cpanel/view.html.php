@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -189,7 +189,9 @@ class CpanelViewCpanel extends acymailingView
 		$delayTypeManual = acymailing_get('type.delay');
 		$elements->queue_pause = $delayTypeManual->display('config[queue_pause]',$config->get('queue_pause'),0);
 		$delayTypeAuto = acymailing_get('type.delay');
-		$elements->cron_frequency = $delayTypeAuto->display('config[cron_frequency]',$config->get('cron_frequency'),2);
+		$delayTypeAuto->onChange = "window.document.getElementById('autoFrequencyWarning').style.display='inline';";
+		$onChangeMsg = '<span style="display:none;color:red;" id="autoFrequencyWarning">'.JText::_('ACY_CRON_CHANGE_FREQUENCY_WARNING').'</span>';
+		$elements->cron_frequency = $delayTypeAuto->display('config[cron_frequency]',$config->get('cron_frequency'),2).$onChangeMsg;
 
 		$js = "function detectTimeout(id){
 				try{
@@ -288,7 +290,7 @@ class CpanelViewCpanel extends acymailingView
 				$geolocation .= 'The AcyMailing geolocation plugin needs the CURL library installed but it seems that it is not available on your server. Please contact your web hosting to set it up.';
 			}
 			if(!function_exists('json_decode')){
-				if(!$geolocAvailable) $geolocation .= '<br/>';
+				if(!$geolocAvailable) $geolocation .= '<br />';
 				$geolocAvailable = false;
 				$geolocation .= 'The AcyMailing geolocation plugin can only work with PHP 5.2 at least. Please ask your web hosting to update your PHP version.';
 			}
@@ -373,6 +375,8 @@ class CpanelViewCpanel extends acymailingView
 		$elements->edit_notification_unsub = '<a class="modal" href="'.$link.'" rel="{handler: \'iframe\', size:{x:800, y:500}}"><button class="btn" onclick="return false">'.JText::_('EDIT_NOTIFICATION_MAIL').'</button></a>';
 		$link = 'index.php?option=com_acymailing&amp;tmpl=component&amp;ctrl=email&amp;task=edit&amp;mailid=notification_contact';
 		$elements->edit_notification_contact = '<a class="modal" href="'.$link.'" rel="{handler: \'iframe\', size:{x:800, y:500}}"><button class="btn" onclick="return false">'.JText::_('EDIT_NOTIFICATION_MAIL').'</button></a>';
+		$link = 'index.php?option=com_acymailing&amp;tmpl=component&amp;ctrl=email&amp;task=edit&amp;mailid=notification_contact_menu';
+		$elements->edit_notification_contact_menu = '<a class="modal" href="'.$link.'" rel="{handler: \'iframe\', size:{x:800, y:500}}"><button class="btn" onclick="return false">'.JText::_('EDIT_NOTIFICATION_MAIL').'</button></a>';
 		$link = 'index.php?option=com_acymailing&amp;tmpl=component&amp;ctrl=email&amp;task=edit&amp;mailid=notification_confirm';
 		$elements->edit_notification_confirm = '<a class="modal" href="'.$link.'" rel="{handler: \'iframe\', size:{x:800, y:500}}"><button class="btn" onclick="return false">'.JText::_('EDIT_NOTIFICATION_MAIL').'</button></a>';
 
@@ -453,14 +457,14 @@ class CpanelViewCpanel extends acymailingView
 		if(!ACYMAILING_J16){
 			$db->setQuery("SELECT name,published,id FROM `#__plugins` WHERE `folder` = 'acymailing' AND `element` NOT LIKE 'plg%' ORDER BY published DESC, ordering ASC");
 		}else{
-			$db->setQuery("SELECT name,enabled as published,extension_id as id FROM `#__extensions` WHERE `folder` = 'acymailing' AND `type`= 'plugin' AND `element` NOT LIKE 'plg%' ORDER BY enabled DESC, ordering ASC");
+			$db->setQuery("SELECT name,enabled as published,extension_id as id FROM `#__extensions` WHERE `state` <> -1 AND `folder` = 'acymailing' AND `type`= 'plugin' AND `element` NOT LIKE 'plg%' ORDER BY enabled DESC, ordering ASC");
 		}
 		$plugins = $db->loadObjectList();
 
 		if(!ACYMAILING_J16){
 			$db->setQuery("SELECT name,published,id FROM `#__plugins` WHERE (`folder` != 'acymailing' OR `element` LIKE 'plg%') AND (`name` LIKE '%acymailing%' OR `element` LIKE '%acymailing%') ORDER BY published DESC, ordering ASC");
 		}else{
-			$db->setQuery("SELECT name,enabled as published ,extension_id as id FROM `#__extensions` WHERE (`folder` != 'acymailing' OR `element` LIKE 'plg%') AND `type` = 'plugin' AND (`name` LIKE '%acymailing%' OR `element` LIKE '%acymailing%') ORDER BY enabled DESC, ordering ASC");
+			$db->setQuery("SELECT name,enabled as published ,extension_id as id FROM `#__extensions` WHERE `state` <> -1 AND (`folder` != 'acymailing' OR `element` LIKE 'plg%') AND `type` = 'plugin' AND (`name` LIKE '%acymailing%' OR `element` LIKE '%acymailing%') ORDER BY enabled DESC, ordering ASC");
 		}
 
 		$integrationplugins = $db->loadObjectList();
@@ -481,7 +485,8 @@ class CpanelViewCpanel extends acymailingView
 		$this->assignRef('toggleClass',$toggleClass);
 
 		if((!ACYMAILING_J16 AND !file_exists(rtrim(JPATH_SITE,DS).DS.'plugins'.DS.'acymailing'.DS.'tagsubscriber.php')) OR (ACYMAILING_J16 AND !file_exists(rtrim(JPATH_SITE,DS).DS.'plugins'.DS.'acymailing'.DS.'tagsubscriber'.DS.'tagsubscriber.php'))){
-			acymailing_display(JText::sprintf('ERROR_PLUGINS','href="index.php?option=com_acymailing&amp;ctrl=update&amp;task=install"'),'warning');
+			$errorPluginTxt = JText::_('ERROR_PLUGINS'). '<br /><a href="index.php?option=com_acymailing&amp;ctrl=update&amp;task=install">'. JText::_('ACY_ERROR_INSTALLAGAIN') .'</a>';
+			acymailing_display($errorPluginTxt,'warning');
 		}
 
 		return parent::display($tpl);

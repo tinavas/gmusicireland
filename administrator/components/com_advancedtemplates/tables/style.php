@@ -1,11 +1,11 @@
 <?php
 /**
  * @package         Advanced Template Manager
- * @version         1.1.7
+ * @version         1.3.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -19,8 +19,6 @@ defined('_JEXEC') or die;
 /**
  * Template style table class.
  *
- * @package     Joomla.Administrator
- * @subpackage  com_templates
  * @since       1.6
  */
 class AdvancedTemplatesTableStyle extends JTable
@@ -51,9 +49,7 @@ class AdvancedTemplatesTableStyle extends JTable
 	{
 		if (isset($array['params']) && is_array($array['params']))
 		{
-			$registry = new JRegistry;
-			$registry->loadArray($array['params']);
-			$array['params'] = (string) $registry;
+			$array['params'] = json_encode($array['params']);
 		}
 
 		// Verify that the default style is not unset

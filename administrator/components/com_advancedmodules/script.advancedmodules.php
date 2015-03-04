@@ -4,11 +4,11 @@
  * Performs some extra tasks when uninstalling the component
  *
  * @package         Advanced Module Manager
- * @version         4.18.3
+ * @version         4.20.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -46,5 +46,13 @@ class com_AdvancedModulesInstallerScript
 				JFile::delete($file);
 			}
 		}
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->delete('#__extensions')
+			->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
+			->where($db->quoteName('element') . ' = ' . $db->quote($this->_ext));
+		$db->setQuery($query);
+		$db->execute();
 	}
 }

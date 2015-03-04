@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="admintable" cellspacing="1">
 			<tr>
 				<td class="key" >
-				<?php echo acymailing_tooltip(JText::_('DISPLAY_MSG_SUBSCRIPTION_DESC').'<br/><br/><i>'.($this->config->get('require_confirmation',0) ? JText::_('CONFIRMATION_SENT') : JText::_('SUBSCRIPTION_OK')).'</i>', JText::_('DISPLAY_MSG_SUBSCRIPTION'), '', JText::_('DISPLAY_MSG_SUBSCRIPTION')); ?>
+				<?php echo acymailing_tooltip(JText::_('DISPLAY_MSG_SUBSCRIPTION_DESC').'<br /><br /><i>'.($this->config->get('require_confirmation',0) ? JText::_('CONFIRMATION_SENT') : JText::_('SUBSCRIPTION_OK')).'</i>', JText::_('DISPLAY_MSG_SUBSCRIPTION'), '', JText::_('DISPLAY_MSG_SUBSCRIPTION')); ?>
 				</td>
 				<td>
 					<?php echo $this->elements->subscription_message; ?>
@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 				<td class="key" >
-				<?php echo acymailing_tooltip(JText::_('DISPLAY_MSG_CONFIRM_DESC').'<br/><br/><i>'.JText::_('SUBSCRIPTION_CONFIRMED').'</i>', JText::_('DISPLAY_MSG_CONFIRM'), '', JText::_('DISPLAY_MSG_CONFIRM')); ?>
+				<?php echo acymailing_tooltip(JText::_('DISPLAY_MSG_CONFIRM_DESC').'<br /><br /><i>'.JText::_('SUBSCRIPTION_CONFIRMED').'</i>', JText::_('DISPLAY_MSG_CONFIRM'), '', JText::_('DISPLAY_MSG_CONFIRM')); ?>
 				</td>
 				<td>
 					<?php echo $this->elements->confirmation_message; ?>
@@ -265,26 +265,10 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td class="key" >
-			<?php echo acymailing_tooltip(JText::_('SHOW_HEADINGS_DESC'), JText::_('SHOW_HEADINGS'), '', JText::_('SHOW_HEADINGS')); ?>
-			</td>
-			<td>
-				<?php echo JHTML::_('acyselect.booleanlist', "config[show_headings]" , '',$this->config->get('show_headings',1) ); ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key" >
 			<?php echo acymailing_tooltip(JText::_('SHOW_SENDDATE_DESC'), JText::_('SHOW_SENDDATE'), '', JText::_('SHOW_SENDDATE')); ?>
 			</td>
 			<td>
 				<?php echo JHTML::_('acyselect.booleanlist', "config[show_senddate]" , '',$this->config->get('show_senddate',1) ); ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key" >
-			<?php echo JText::_('SHOW_COLNUMBER'); ?>
-			</td>
-			<td>
-				<?php echo JHTML::_('acyselect.booleanlist', "config[show_colnumber]" , '',$this->config->get('show_colnumber',1) ); ?>
 			</td>
 		</tr>
 		<?php if(acymailing_level(1)){ ?>
@@ -352,7 +336,7 @@ defined('_JEXEC') or die('Restricted access');
 									}else{
 										$trans = $oneReason;
 									}
-									echo '<span style="font-size:8px">'.$trans.'</span><br/><input type="text" style="width:300px" value="'.$this->escape($oneReason).'" name="unsub_reasons[]" /><br/>';
+									echo '<span style="font-size:8px">'.$trans.'</span><br /><input type="text" style="width:300px" value="'.$this->escape($oneReason).'" name="unsub_reasons[]" /><br />';
 								} ?>
 						</div>
 						<a class="btn" onclick="addUnsubReason();return false;" href='#' title="<?php echo $this->escape(JText::_('FIELD_ADDVALUE')); ?>"><?php echo JText::_('FIELD_ADDVALUE'); ?></a>

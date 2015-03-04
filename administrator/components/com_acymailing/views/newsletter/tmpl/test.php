@@ -1,34 +1,26 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
-?><form action="<?php echo JRoute::_('index.php?option=com_acymailing&ctrl='.$this->ctrl); ?>" method="post" name="adminForm"  id="adminForm" autocomplete="off">
+?><form action="<?php echo JRoute::_('index.php?option=com_acymailing&ctrl='.$this->ctrl); ?>" method="post" name="adminForm"  id="adminForm" autocomplete="off" onsubmit="var val = document.getElementById('message_receivers').value; if(val != '') addNewTestAddress(val+' ');">
 <fieldset class="adminform">
 	<legend><?php echo JText::_( 'SEND_TEST' ); ?></legend>
 	<table width="100%">
 		<tr>
-			<td valign="top">
+			<td valign="top" width="100px;" nowrap="nowrap">
 				<?php echo JText::_( 'SEND_TEST_TO' ); ?>
 			</td>
 			<td>
-				<?php echo $this->receiverClass->display('receiver_type',$this->infos->receiver_type); ?>
-				<div id="emailfield" style="display:none" ><?php echo JText::_('EMAIL_ADDRESS')?> <input class="inputbox" type="text" id="test_email" name="test_email" style="width:200px" value="<?php echo $this->infos->test_email;?>" />
-				<?php
-					$app = JFactory::getApplication();
-					if($app->isAdmin()){
-						echo ' <a class="modal" title="'.JText::_('ACY_SELECTUSER',true).'"  href="index.php?option=com_acymailing&amp;tmpl=component&amp;ctrl=subscriber&amp;task=choose" rel="{handler: \'iframe\', size: {x: 800, y: 500}}"><img class="icon16" src="'.ACYMAILING_IMAGES.'icons/icon-16-edit.png" alt="'.JText::_('ACY_SELECTUSER',true).'"/></a>';
-					}
-				?>
-				</div>
+				<?php echo $this->testreceiverType->display($this->infos->test_selection, $this->infos->test_group, $this->infos->test_emails); ?>
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td nowrap="nowrap">
 				<?php echo JText::_( 'SEND_VERSION' ); ?>
 			</td>
 			<td>

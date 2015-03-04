@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -35,6 +35,7 @@ define('ACYMAILING_INC',ACYMAILING_FRONT.'inc'.DS);
 
 $jversion = preg_replace('#[^0-9\.]#i','',JVERSION);
 define('ACYMAILING_J16',version_compare($jversion,'1.6.0','>=') ? true : false);
+define('ACYMAILING_J25',version_compare($jversion,'2.5.0','>=') ? true : false);
 define('ACYMAILING_J30',version_compare($jversion,'3.0.0','>=') ? true : false);
 
 $compatPath = ACYMAILING_BACK.'compat'.DS.'compat';
@@ -49,7 +50,6 @@ if (is_callable("date_default_timezone_set")) date_default_timezone_set(@date_de
 		if(empty($time)) return '';
 
 		if(is_numeric($format)) $format = JText::_('DATE_FORMAT_LC'.$format);
-
 		if(ACYMAILING_J16){
 			$format = str_replace(array('%A','%d','%B','%m','%Y','%y','%H','%M','%S','%a','%I','%p'),array('l','d','F','m','Y','y','H','i','s','D','h','a'),$format);
 			try{return JHTML::_('date',$time,$format,false);} catch (Exception $e) {return date($format,$time);}
@@ -85,6 +85,45 @@ if (is_callable("date_default_timezone_set")) date_default_timezone_set(@date_de
 		}else{
 			return in_array($groups,$allowedGroups);
 		}
+	}
+
+	function acymailing_getFunctionsEmailCheck($controllButtons = array(), $bounce = false){
+		$return = '<script language="javascript" type="text/javascript">
+				<!--
+				function validateEmail(emailAddress, fieldName){
+					if(emailAddress.length > 0 && emailAddress.indexOf("{") == -1 && !emailAddress.match(/^([a-z0-9_\'&\.\-\+=])+\@(([a-z0-9\-])+\.)+([a-z0-9]{2,10})+$/i)){
+						alert(\'Wrong email address supplied for the \' + fieldName + \' field: \' + emailAddress);
+						return false;
+					}
+					return true;
+				}';
+
+		if(!empty($controllButtons)){
+			foreach($controllButtons as &$oneField){
+				$oneField = 'pressbutton == \''.$oneField.'\'';
+			}
+
+			$return .= (ACYMAILING_J16 ? 'Joomla.submitbutton = function(pressbutton){' : 'function submitbutton(pressbutton){').'
+						if('.implode(' || ', $controllButtons).'){
+							var emailVars = ["fromemail","replyemail"'.($bounce ? ',"bounceemail"' : '').'];
+							var val = "";
+							for(var key in emailVars){
+								if(isNaN(key)) continue;
+								val = document.getElementById(emailVars[key]).value;
+								if(!validateEmail(val, emailVars[key])){
+									return;
+								}
+							}
+						}
+'.(ACYMAILING_J16 ? 'Joomla.submitform(pressbutton,document.adminForm);' : 'submitform(pressbutton);').'
+					}';
+		}
+
+		$return .= '
+				-->
+				</script>';
+
+		return $return;
 	}
 
 	function acymailing_getTime($date){
@@ -154,7 +193,7 @@ if (is_callable("date_default_timezone_set")) date_default_timezone_set(@date_de
 			}
 		}
 
-		return true;
+		return $status;
 	}
 
 	function acymailing_getUpgradeLink($tolevel){
@@ -236,7 +275,7 @@ if (is_callable("date_default_timezone_set")) date_default_timezone_set(@date_de
 			}
 		}
 
-		$text = str_replace(array('href="../undefined/','href="../../undefined/','href="../../../undefined//','href="undefined/'),array('href="'.$mainurl,'href="'.$mainurl,'href="'.$mainurl,'href="'.ACYMAILING_LIVE),$text);
+		$text = str_replace(array('href="../undefined/','href="../../undefined/','href="../../../undefined//','href="undefined/',ACYMAILING_LIVE.'http://',ACYMAILING_LIVE.'https://'),array('href="'.$mainurl,'href="'.$mainurl,'href="'.$mainurl,'href="'.ACYMAILING_LIVE,'http://','https://'),$text);
 		$text = preg_replace('#href="(/?administrator)?/({|%7B)#Ui','href="$2',$text);
 
 		$text = preg_replace('#href="http:/([^/])#Ui','href="http://$1',$text);
@@ -411,7 +450,7 @@ if (is_callable("date_default_timezone_set")) date_default_timezone_set(@date_de
 					<label for="search" class="element-invisible"><?php echo JText::_('ACY_SEARCH');?></label>
 					<input type="text" name="search" id="search" value="<?php echo htmlspecialchars($search, ENT_COMPAT, 'UTF-8');?>" class="text_area" placeholder="<?php echo JText::_('ACY_SEARCH'); ?>" title="<?php echo JText::_('ACY_SEARCH'); ?>" />
 				</div>
-				<div class="btn-group pull-left hidden-phone">
+				<div class="btn-group pull-left">
 					<button onclick="document.adminForm.limitstart.value=0;this.form.submit();" class="btn tip hasTooltip" type="submit" title="<?php echo JText::_('ACY_SEARCH'); ?>" ><i class="icon-search"></i></button>
 					<button onclick="document.adminForm.limitstart.value=0;document.getElementById('search').value='';this.form.submit();" class="btn tip hasTooltip" type="button" title="<?php echo JText::_( 'JOOMEXT_RESET' ); ?>" ><i class="icon-remove"></i></button>
 				</div>
@@ -464,7 +503,7 @@ if (is_callable("date_default_timezone_set")) date_default_timezone_set(@date_de
 
 	function acymailing_footer(){
 		$config = acymailing_config();
-		$description = $config->get('description_'.strtolower($config->get('level')),'Joomla!™ Mailing System');
+		$description = $config->get('description_'.strtolower($config->get('level')),'Joomla!® Mailing System');
 		$text = '<!--  AcyMailing Component powered by http://www.acyba.com -->
 		<!-- version '.$config->get('level').' : '.$config->get('version').' -->';
 		if(!$config->get('show_footer',true)) return $text;
@@ -551,10 +590,18 @@ if (is_callable("date_default_timezone_set")) date_default_timezone_set(@date_de
 	}
 
 	function acymailing_tooltip($desc, $title=' ', $image='tooltip.png', $name = '', $href='', $link=1){
-		$class = ACYMAILING_J30 ? 'hasTooltip' : 'hasTip';
+		$app = JFactory::getApplication();
+		$config = acymailing_config();
+		$bootstrap = $config->get('bootstrap_frontend');
+		if(ACYMAILING_J30 && ($app->isAdmin() || !empty($bootstrap)) ){
+			$class = 'hasTooltip';
+			JHtml::_('bootstrap.tooltip');
+		}else{
+			$class = 'hasTip';
+		}
+
 		return JHTML::_('tooltip', str_replace(array("'","::"),array("&#039;",": : "),$desc.' '),str_replace(array("'",'::'),array("&#039;",': : '),$title), $image, str_replace(array("'",'"','::'),array("&#039;","&quot;",': : '),$name.' '),$href, $link, $class);
 	}
-
 	function acymailing_checkRobots(){
 		if(preg_match('#(libwww-perl|python|googlebot)#i',@$_SERVER['HTTP_USER_AGENT'])) die('Not allowed for robots. Please contact us if you are not a robot');
 	}

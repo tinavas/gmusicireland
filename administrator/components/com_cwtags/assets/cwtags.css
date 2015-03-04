@@ -1,0 +1,12 @@
+div.icon-48-cwtags {
+    background: url("images/icon-48-cwtag.png") no-repeat scroll left center transparent;
+}
+
+#status.active { background: url(images/tick.png) no-repeat; }
+.inactive { background: url(images/publish_x.png) no-repeat; }
+.update_status { display: block; width: 16px; height: 16px; cursor: pointer; }
+
+table.items {width: 50%;}
+table.items tr td { border: 1px solid #d5d5d5 !important; }
+table .detail { display: none; margin-top: 10px; }
+.showitems { display: block; border: 1px solid #d5d5d5; padding: 2px 5px; float: right; cursor: pointer; }

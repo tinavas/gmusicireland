@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AdminTools
- * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -76,6 +76,7 @@ class AdmintoolsDispatcher extends F0FDispatcher
 			}
 
 			// ========== Master PW check ==========
+			/** @var AdmintoolsModelMasterpw $model */
 			$model = F0FModel::getAnInstance('Masterpw', 'AdmintoolsModel');
 			if (!$model->accessAllowed($view))
 			{

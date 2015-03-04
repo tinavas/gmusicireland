@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -16,6 +16,11 @@ if(!include_once(rtrim(JPATH_ADMINISTRATOR,DIRECTORY_SEPARATOR).DIRECTORY_SEPARA
 
 $doc = JFactory::getDocument();
 $config = acymailing_config();
+$overridedesign = preg_replace('#[^a-z0-9_]#i','',JRequest::getCmd('design'));
+if(!empty($overridedesign)){
+	if($overridedesign == 'popup') $overridedesign = '';
+	$params->set('effect','mootools-box');
+}
 
 switch($params->get('redirectmode','0')){
 	case 1 :
@@ -61,7 +66,6 @@ if($regex != 'all'){
 }
 
 $formName = acymailing_getModuleFormName();
-$overridedesign = preg_replace('#[^a-z0-9_]#i','',JRequest::getCmd('design'));
 if(!empty($overridedesign)){
 	$params->set('includejs','module');
 }
@@ -184,7 +188,7 @@ $displayedFields = $params->get('customfields','name,email');
 $fieldsToDisplay = explode(',',$displayedFields);
 $extraFields = array();
 
-$fieldsize = $params->get('fieldsize');
+$fieldsize = $params->get('fieldsize', '80%');
 if(is_numeric($fieldsize)) $fieldsize .= 'px';
 
 

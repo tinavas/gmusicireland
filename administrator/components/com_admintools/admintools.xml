@@ -1,12 +1,12 @@
 <extension type="component" version="2.5.0" method="upgrade">
 	<name>Admintools</name>
-	<creationDate>2014-10-17</creationDate>
+	<creationDate>2015-02-16</creationDate>
 	<author>Nicholas K. Dionysopoulos</author>
 	<authorEmail>nicholas@akeebabackup.com</authorEmail>
 	<authorUrl>http://www.akeebabackup.com</authorUrl>
-	<copyright>Copyright (c)2010 Nicholas K. Dionysopoulos</copyright>
+	<copyright>Copyright (c)2010-2015 Nicholas K. Dionysopoulos</copyright>
 	<license>This component in released under the GNU/GPL v3 or later license</license>
-	<version>3.3.1</version>
+	<version>3.4.4</version>
 	<description>Security and utilitarian tools for Joomla! site administrators</description>
 
 	<!-- Public front end files -->
@@ -76,7 +76,6 @@
 	<!-- Akeeba Backup System Restore Points integration -->
 	<restorepoint>
 		<customdirs>
-			<dir>administrator/modules/mod_atjupgrade</dir>
 			<dir>plugins/system/admintools</dir>
 			<dir>plugins/system/atoolsjupdatecheck</dir>
 			<dir>plugins/system/atoolsupdatecheck</dir>
@@ -93,7 +92,6 @@
 			<file>plugins/system/oneclickaction.xml</file>
 		</customfiles>
 		<langfiles>
-			<lang>mod_atjupgrade</lang>
 			<lang>plg_system_admintools</lang>
 			<lang>plg_system_atoolsjupdatecheck</lang>
 			<lang>plg_system_atoolsupdatecheck</lang>

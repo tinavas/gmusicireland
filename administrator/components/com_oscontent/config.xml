@@ -21,14 +21,6 @@
                 description="COM_OSCONTENT_PARAM_NBMASSCATEGORIES_DESC"/>
 
         <field
-                name="nbMassSections"
-                type="text"
-                size="5"
-                default="10"
-                label="COM_OSCONTENT_PARAM_NBMASSSECTIONS_LABEL"
-                description="COM_OSCONTENT_PARAM_NBMASSSECTIONS_DESC"/>
-
-        <field
                 name="displayWysiwyg"
                 type="list"
                 default="0"
@@ -52,7 +44,7 @@
         <field
                 name="displayIntroText"
                 type="list"
-                default="1"
+                default="0"
                 label="COM_OSCONTENT_PARAM_DISPLAYINTROTEXT_LABEL"
                 description="COM_OSCONTENT_PARAM_DISPLAYINTROTEXT_DESC">
             <option value="0">COM_OSCONTENT_OPTION_HIDE</option>
@@ -65,46 +57,6 @@
                 default="1"
                 label="COM_OSCONTENT_PARAM_DISPLAYFULLTEXT_LABEL"
                 description="COM_OSCONTENT_PARAM_DISPLAYFULLTEXT_DESC">
-            <option value="0">COM_OSCONTENT_OPTION_HIDE</option>
-            <option value="1">COM_OSCONTENT_OPTION_SHOW</option>
-        </field>
-
-        <field
-                name="displayMetaDescription"
-                type="list"
-                default="0"
-                label="COM_OSCONTENT_PARAM_DISPLAYMETADESCRIPTION_LABEL"
-                description="COM_OSCONTENT_PARAM_DISPLAYMETADESCRIPTION_DESC">
-            <option value="0">COM_OSCONTENT_OPTION_HIDE</option>
-            <option value="1">COM_OSCONTENT_OPTION_SHOW</option>
-        </field>
-
-        <field
-                name="displayMetaKeywords"
-                type="list"
-                default="0"
-                label="COM_OSCONTENT_PARAM_DISPLAYMETAKEYWORDS_LABEL"
-                description="COM_OSCONTENT_PARAM_DISPLAYMETAKEYWORDS_DESC">
-            <option value="0">COM_OSCONTENT_OPTION_HIDE</option>
-            <option value="1">COM_OSCONTENT_OPTION_SHOW</option>
-        </field>
-
-        <field
-                name="displayMetaRobots"
-                type="list"
-                default="0"
-                label="COM_OSCONTENT_PARAM_DISPLAYMETAROBOTS_LABEL"
-                description="COM_OSCONTENT_PARAM_DISPLAYMETAROBOTS_DESC">
-            <option value="0">COM_OSCONTENT_OPTION_HIDE</option>
-            <option value="1">COM_OSCONTENT_OPTION_SHOW</option>
-        </field>
-
-        <field
-                name="displayMetaAuthor"
-                type="list"
-                default="0"
-                label="COM_OSCONTENT_PARAM_DISPLAYMETAAUTHOR_LABEL"
-                description="COM_OSCONTENT_PARAM_DISPLAYMETAAUTHOR_DESC">
             <option value="0">COM_OSCONTENT_OPTION_HIDE</option>
             <option value="1">COM_OSCONTENT_OPTION_SHOW</option>
         </field>

@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -204,6 +204,7 @@ class plgSystemRegacymailing extends JPlugin
 		}
 
 		$fieldsClass = acymailing_get('class.fields');
+		$fieldsClass->origin = 'joomla';
 		$user = new stdClass();
 		$extraFields = $fieldsClass->getFields($area,$user);
 
@@ -280,6 +281,7 @@ class plgSystemRegacymailing extends JPlugin
 			}else{
 				$currentUserIdArray = JRequest::getVar('cid', array());
 				if(is_array($currentUserIdArray) && !empty($currentUserIdArray)) $currentUserId = array_shift($currentUserIdArray);
+				else $currentUserId = 0;
 			}
 		}else{
 			$user = JFactory::getUser();
@@ -289,11 +291,12 @@ class plgSystemRegacymailing extends JPlugin
 		if(!empty($this->components[$option]['edittasks']) && in_array($this->view,$this->components[$option]['edittasks']) && $currentUserId != 0){
 			$userClass = acymailing_get('class.subscriber');
 			$acyUserData = $userClass->get($userClass->subid($currentUserId));
+			if(!empty($acyUserData->email)) $fieldsClass->currentUser = $acyUserData;
 		}
 
 		foreach($newOrdering as $fieldName){
 			if(!empty($allFormats[$currentFormat]['tagfield'])) $text .= '<'.$allFormats[$currentFormat]['tagfield'].' id="acy'.$fieldName.'" class="acyregfield">';
-			if(!empty($allFormats[$currentFormat]['tagfieldname'])) $text .= '<'.$allFormats[$currentFormat]['tagfieldname'].' class="acyregfieldname'.(!empty($this->components[$option]['tdfieldlabelclass'])?' '.$this->components[$option]['tdfieldlabelclass']:'').'">';
+			if(!empty($allFormats[$currentFormat]['tagfieldname'])) $text .= '<'.$allFormats[$currentFormat]['tagfieldname'].' class="key acyregfieldname'.(!empty($this->components[$option]['tdfieldlabelclass'])?' '.$this->components[$option]['tdfieldlabelclass']:'').'">';
 			$text .= $fieldsClass->getFieldName($extraFields[$fieldName]);
 			if(!empty($allFormats[$currentFormat]['tagfieldname'])) $text .= '</'.$allFormats[$currentFormat]['tagfieldname'].'>';
 			if(!empty($allFormats[$currentFormat]['tagfieldvalue'])) $text .= '<'.$allFormats[$currentFormat]['tagfieldvalue'].' class="acyregfieldvalue'.(empty($this->components[$option]['fieldclass']) ? '' : ' '.$this->components[$option]['fieldclass']).'" >';
@@ -360,7 +363,7 @@ class plgSystemRegacymailing extends JPlugin
 				$currentSubscription = $userClass->getSubscriptionStatus($currentSubid,$visibleListsArray);
 				$checkedLists = '';
 				foreach($currentSubscription as $listid => $oneSubsciption){
-					if($oneSubsciption->status == '1') $checkedLists .= $listid.',';
+					if($oneSubsciption->status == '1' || $oneSubsciption->status == '2') $checkedLists .= $listid.',';
 				}
 			}
 		}
@@ -648,8 +651,6 @@ class plgSystemRegacymailing extends JPlugin
 			$visiblelistschecked = array_merge($visiblelistschecked,explode(',',$acySubHidden));
 		}
 
-
-
 		$allvisiblelists = JRequest::getString('allVisibleLists');
 		$allvisiblelistsArray = explode(',',$allvisiblelists);
 
@@ -672,42 +673,58 @@ class plgSystemRegacymailing extends JPlugin
 				if($oneList->published && in_array($oneList->listid,$visiblelistschecked)){$listsArray[] = $oneList->listid;}
 			}
 		}
-
 		$statusAdd = (empty($joomUser->enabled) || (empty($joomUser->confirmed) && $config->get('require_confirmation',false))) ? 2 : 1;
 		$addlists = array();
 		if(!empty($listsArray)){
 			foreach($listsArray as $idOneList){
-				if(!isset($currentSubscription[$idOneList])){
-					$addlists[$statusAdd][] = $idOneList;
+				if(!isset($currentSubscription[$idOneList]) || $currentSubscription[$idOneList]->status == -1){
+					$addlists[$statusAdd][$idOneList] = $idOneList;
 				}
 			}
 		}
 
 		$listsubClass = acymailing_get('class.listsub');
+		$userSubscriptions = $listsubClass->getSubscription($subid);
 
-		if(!$isnew && !empty($allvisiblelistsArray))
-		{
-			$subscribedLists = array_keys($listsubClass->getSubscription($subid));
+		if(!$isnew && !empty($allvisiblelistsArray)){
+			$subscribedLists = array_keys($userSubscriptions);
 			$unsubscribeLists = array_intersect($subscribedLists, array_diff($allvisiblelistsArray, $visiblelistschecked));
-			if(!empty($unsubscribeLists))
-				$listsubClass->removeSubscription($subid, $unsubscribeLists);
+			if(!empty($unsubscribeLists)) $listsubClass->updateSubscription($subid, array(-1 => $unsubscribeLists));
 		}
 
-		if(!empty($addlists)) {
+		if(!empty($addlists)){
 			if(!empty($user['gid'])) $listsubClass->gid = $user['gid'];
 			if(!empty($user['groups'])) $listsubClass->gid = $user['groups'];
-			$listsubClass->addSubscription($subid,$addlists);
+			$listsToUpdate = array_intersect(array_keys($userSubscriptions), $addlists[$statusAdd]);
+			$updateLists = array();
+
+			if(!empty($listsToUpdate)){
+				foreach($listsToUpdate as $key => $oneListToUpdate){
+					if($userSubscriptions[$oneListToUpdate]->status == -1 && !in_array($oneListToUpdate, $allvisiblelistsArray)) continue;
+					$updateLists[] = $oneListToUpdate;
+				}
+
+				if(!empty($updateLists)) $listsubClass->updateSubscription($subid, array($statusAdd => $updateLists));
+				$addlists[$statusAdd] = array_diff($addlists[$statusAdd], $listsToUpdate);
+			}
+
+			if(!empty($addlists[$statusAdd])) $listsubClass->addSubscription($subid,$addlists);
 		}
 
 		if($isnew && $this->params->get('sendnotif',false)){
 			$userClass->sendNotification();
 		}
 
+		$listssub = $listsubClass->getSubscription($subid);
+
+		if($isnew && $this->params->get('forceconf',0) && empty($user['block'])){
+			$userClass->sendConf($subid);
+			return true;
+		}
+
 		if($isnew || empty($this->oldUser['block']) || !empty($user['block'])) return true;
 
 		if($this->params->get('forceconf',0)){
-			$listsubClass = acymailing_get('class.listsub');
-			$listssub = $listsubClass->getSubscription($subid);
 			if(!empty($listssub)) $userClass->sendConf($subid);
 		}else{
 			$userClass->confirmSubscription($subid);

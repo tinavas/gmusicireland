@@ -3,7 +3,7 @@
  * Akeeba Engine
  * The modular PHP5 site backup engine
  *
- * @copyright Copyright (c)2009-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2006-2015 Nicholas K. Dionysopoulos
  * @license   GNU GPL version 3 or, at your option, any later version
  * @package   akeebaengine
  *
@@ -80,7 +80,9 @@ class Filters extends Object
 					continue;
 				}
 
-				if ($file->getExtension() != 'php')
+				// PHP 5.3.5 and earlier do not support getExtension
+				//if ($file->getExtension() != 'php')
+				if (substr($file->getBasename(), -4) != '.php')
 				{
 					continue;
 				}
@@ -164,7 +166,9 @@ class Filters extends Object
 					continue;
 				}
 
-				if ($file->getExtension() != 'php')
+				// PHP 5.3.5 and earlier do not support getExtension
+				// if ($file->getExtension() != 'php')
+				if (substr($file->getBasename(), -4) != '.php')
 				{
 					continue;
 				}
@@ -179,7 +183,12 @@ class Filters extends Object
 				}
 
 				// Extract filter base name
-				$filter_name = 'Stack' . ucfirst($bare_name);
+				if (substr($bare_name, 0, 5) == 'stack')
+				{
+					$bare_name = substr($bare_name, 5);
+				}
+
+				$filter_name = 'Stack\\Stack' . ucfirst($bare_name);
 
 				// Skip already loaded filters
 				if (array_key_exists($filter_name, $this->filters))

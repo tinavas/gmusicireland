@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 			</label>
 		</td>
 		<td id="aliasinput">
-			<input class="inputbox" type="text" name="data[mail][alias]" id="alias" style="width:60%" value="<?php echo @$this->mail->alias; ?>" <?php echo ($this->type == 'joomlanotification'?'readonly':''); ?>/>
+			<input class="inputbox" type="text" name="data[mail][alias]" id="alias" style="width:80%" value="<?php echo @$this->mail->alias; ?>" <?php echo ($this->type == 'joomlanotification'?'readonly':''); ?>/>
 		</td>
 	<?php if($this->type != 'joomlanotification'){ ?>
 		<td class="key" id="visiblekey">
@@ -45,30 +45,12 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo JHTML::_('acyselect.booleanlist', "data[mail][visible]" , '',$this->mail->visible,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO')); ?>
 		</td>
 	</tr>
-	<?php
-		$jflanguages = acymailing_get('type.jflanguages');
-		if($jflanguages->multilingue){ ?>
-		<tr>
-			<td>
-				<label for="language">
-					<?php echo JText::_('ACY_LANGUAGE'); ?>
-				</label>
-			</td>
-			<td>
-				<?php
-					$jflanguages->sef = true;
-					echo $jflanguages->displayJLanguages('data[mail][language]', empty($this->mail->language) ? '' : $this->mail->language);
-				?>
-			</td>
-			<td colspan="2"/>
-		</tr>
-	<?php } ?>
 	<tr>
-		<td class="key" id="createdkey">
-			<?php echo JText::_( 'CREATED_DATE' ); ?>
+		<td class="key" id="picturekey" valign="top">
+			<?php echo JText::_('ACY_THUMBNAIL'); ?>
 		</td>
-		<td id="createdinput">
-			<?php echo acymailing_getDate(@$this->mail->created);?>
+		<td id="pictureinput" valign="top">
+			<?php $uploadpictType = acymailing_get('type.uploadpict'); echo $uploadpictType->display('data[mail][thumb]', 'thumb', $this->mail->thumb); ?>
 		</td>
 	<?php } ?>
 		<td class="key" id="sendhtmlkey">
@@ -78,46 +60,55 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo JHTML::_('acyselect.booleanlist', "data[mail][html]" , 'onclick="updateAcyEditor(this.value); initTagZone(this.value);"',$this->mail->html,JText::_('JOOMEXT_YES'),JText::_('JOOMEXT_NO')); ?>
 		</td>
 	</tr>
-	<?php
-		if($this->type == 'joomlanotification')
-		{
-			$jflanguages = acymailing_get('type.jflanguages');
-			if($jflanguages->multilingue)
-			{
-	?>
+	<?php if($this->type != 'joomlanotification'){ ?>
+			<tr>
+				<td class="key" id="summarykey" valign="top">
+					<label for="summaryfield">
+						<?php echo JText::_('ACY_SUMMARY'); ?>
+					</label>
+				</td>
+				<td id="summaryinput">
+					<textarea placeholder="<?php echo JText::_('ACY_SUMMARY_PLACEHOLDER') ?>" style="width:80%;height:60px;" id="summaryfield" name="data[mail][summary]"><?php echo $this->escape(@$this->mail->summary); ?></textarea>
+				</td>
+				<td class="key" id="createdkey" valign="top">
+					<?php echo JText::_( 'CREATED_DATE' ); ?>
+				</td>
+				<td id="createdinput" valign="top">
+					<?php echo acymailing_getDate(@$this->mail->created);?>
+				</td>
+			</tr>
+		<?php if(!empty($this->mail->senddate)){ ?>
 				<tr>
-					<td>
-						<label for="language">
-							<?php echo JText::_('ACY_LANGUAGE'); ?>
-						</label>
+					<td class="key" id="senddatekey">
+						<?php echo JText::_( 'SEND_DATE' ); ?>
 					</td>
-					<td>
-						<?php
-							$jflanguages->sef = true;
-							echo $jflanguages->displayJLanguages('data[mail][language]', empty($this->mail->language) ? '' : $this->mail->language);
-						?>
+					<td id="senddateinput">
+						<?php echo acymailing_getDate(@$this->mail->senddate);?>
 					</td>
-					<td colspan="2"/>
+					<td class="key" id="sentbykey">
+						<?php if(!empty($this->mail->sentby)) echo JText::_( 'SENT_BY' ); ?>
+					</td>
+					<td id="sentbyinput">
+						<?php echo @$this->sentbyname; ?>
+					</td>
 				</tr>
-	<?php
-			}
-		}
-		if($this->type != 'joomlanotification'){
-		if(!empty($this->mail->senddate)){?>
-	<tr>
-		<td class="key" id="senddatekey">
-			<?php echo JText::_( 'SEND_DATE' ); ?>
-		</td>
-		<td id="senddateinput">
-			<?php echo acymailing_getDate(@$this->mail->senddate);?>
-		</td>
-		<td class="key" id="sentbykey">
-			<?php if(!empty($this->mail->sentby)) echo JText::_( 'SENT_BY' ); ?>
-		</td>
-		<td id="sentbyinput">
-			<?php echo @$this->sentbyname; ?>
-		</td>
-	</tr>
 		<?php }
-	 } ?>
+		}
+		$jflanguages = acymailing_get('type.jflanguages');
+		if($jflanguages->multilingue){
+	?>
+		<tr>
+			<td class="key" id="languagekey">
+				<label for="jlang">
+					<?php echo JText::_('ACY_LANGUAGE'); ?>
+				</label>
+			</td>
+			<td id="languageinput" colspan="3">
+				<?php
+					$jflanguages->sef = true;
+					echo $jflanguages->displayJLanguages('data[mail][language]', empty($this->mail->language) ? '' : $this->mail->language);
+				?>
+			</td>
+		</tr>
+	<?php } ?>
 </table>

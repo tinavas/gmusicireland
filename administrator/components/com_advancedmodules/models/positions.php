@@ -1,16 +1,16 @@
 <?php
 /**
  * @package         Advanced Module Manager
- * @version         4.18.3
+ * @version         4.20.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
 /**
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -26,7 +26,7 @@ class AdvancedModulesModelPositions extends JModelList
 	/**
 	 * Constructor.
 	 *
-	 * @param   array  An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @see     JController
 	 * @since   1.6
@@ -48,6 +48,9 @@ class AdvancedModulesModelPositions extends JModelList
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
 	 * @since   1.6
 	 */
@@ -146,10 +149,12 @@ class AdvancedModulesModelPositions extends JModelList
 				if (file_exists($path))
 				{
 					$xml = simplexml_load_file($path);
+
 					if (isset($xml->positions[0]))
 					{
 						$lang->load('tpl_' . $template->element . '.sys', $client->path, null, false, true)
 						|| $lang->load('tpl_' . $template->element . '.sys', $client->path . '/templates/' . $template->element, null, false, true);
+
 						foreach ($xml->positions[0] as $position)
 						{
 							$value = (string) $position['value'];
@@ -166,6 +171,7 @@ class AdvancedModulesModelPositions extends JModelList
 									$label = $altlabel;
 								}
 							}
+
 							if ($type == 'user' || ($state != '' && $state != $template->enabled))
 							{
 								unset($positions[$value]);
@@ -176,12 +182,14 @@ class AdvancedModulesModelPositions extends JModelList
 								{
 									$positions[$value] = array();
 								}
+
 								$positions[$value][$template->name] = $label;
 							}
 						}
 					}
 				}
 			}
+
 			$this->total = count($positions);
 
 			if ($limitstart >= $this->total)
@@ -212,6 +220,7 @@ class AdvancedModulesModelPositions extends JModelList
 					arsort($positions);
 				}
 			}
+
 			$this->items = array_slice($positions, $limitstart, $limit ? $limit : null);
 		}
 

@@ -2,12 +2,12 @@
 <extension version="2.5" type="module" method="upgrade">
 	<name>MOD_ADDTOMENU</name>
 	<description>MOD_ADDTOMENU_DESC</description>
-	<version>3.2.0FREE</version>
-	<creationDate>November 2014</creationDate>
+	<version>3.2.3FREE</version>
+	<creationDate>January 2015</creationDate>
 	<author>NoNumber (Peter van Westen)</author>
 	<authorEmail>peter@nonumber.nl</authorEmail>
 	<authorUrl>http://www.nonumber.nl</authorUrl>
-	<copyright>Copyright © 2014 NoNumber All Rights Reserved</copyright>
+	<copyright>Copyright © 2015 NoNumber All Rights Reserved</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 
 	<files>

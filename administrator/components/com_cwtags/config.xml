@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset
+		name="tags"
+		label="COM_CWTAGS_CONFIG_TAGS"
+		description="COM_CWTAGS_CONFIG_TAGS_DESC">
+ 		<field
+			name="tag_position"
+			type="radio"
+			default="0"
+			label="COM_CWTAGS_CONFIG_TAG_POSITION_LABEL"
+			description="COM_CWTAGS_CONFIG_TAG_POSITION_DESC">
+			<option
+				value="0">COM_CWTAGS_CONFIG_TAG_POSITION_BEFORE_LABEL</option>
+			<option
+				value="1">COM_CWTAGS_CONFIG_TAG_POSITION_AFTER_LABEL</option>
+			<option
+				value="-1">COM_CWTAGS_CONFIG_TAG_POSITION_NONE_LABEL</option>
+		</field>
+ 		<field
+			name="show_in_blog"
+			type="radio"
+			default="0"
+			label="COM_CWTAGS_CONFIG_SHOWINBLOG_LABEL"
+			description="COM_CWTAGS_CONFIG_SHOWINBLOG_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>    
+		<field
+			name="enable_images"
+			type="radio"
+			default="1"
+			label="COM_CWTAGS_CONFIG_ENABLE_IMAGES_LABEL"
+			description="COM_CWTAGS_CONFIG_ENABLE_IMAGES_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
+ 		<field
+			name="show_content"
+			type="radio"
+			default="0"
+			label="COM_CWTAGS_CONFIG_SHOW_CONTENT_LABEL"
+			description="COM_CWTAGS_CONFIG_SHOW_CONTENT_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
+		<field name="show_related" type="list" default="1" label="COM_CWTAGS_SHOW_RELATED_LABEL" description="COM_CWTAGS_SHOW_RELATED_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    
+
+		<field name="related_count" type="text" class="inputbox"
+			label="COM_CWTAGS_FIELD_RELATED_COUNT_LABEL" description="COM_CWTAGS_FIELD_RELATED_COUNT_DESC"
+			/>
+                 
+	</fieldset>
+	<fieldset
+		name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC"
+		>
+
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			filter="rules"
+			validate="rules"
+			component="com_cwtags"
+			section="component" />
+	</fieldset>
+</config>

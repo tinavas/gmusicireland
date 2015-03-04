@@ -123,7 +123,7 @@
 		</type>
 		<type name="cfg_allowModeratorsUserEdit" base="list" valuetype="string">
 			<option value="0">No</option>
-			<option value="1">Moderators and Levels Above</option>
+			<option value="1">Moderators and Super Administrators Only</option>
 			<option value="7">Administrators and Super Administrators Only</option>
 			<option value="8">Super Administrators Only</option>
 		</type>

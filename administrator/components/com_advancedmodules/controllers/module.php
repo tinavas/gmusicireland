@@ -1,16 +1,16 @@
 <?php
 /**
  * @package         Advanced Module Manager
- * @version         4.18.3
+ * @version         4.20.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
 /**
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -36,6 +36,7 @@ class AdvancedModulesControllerModule extends JControllerForm
 
 		// Get the result of the parent method. If an error, just return it.
 		$result = parent::add();
+
 		if ($result instanceof Exception)
 		{
 			return $result;
@@ -43,9 +44,13 @@ class AdvancedModulesControllerModule extends JControllerForm
 
 		// Look for the Extension ID.
 		$extensionId = $app->input->get('eid', 0, 'int');
+
 		if (empty($extensionId))
 		{
-			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.'&layout=edit', false));
+			$redirectUrl = 'index.php?option=' . $this->option . '&view=' . $this->view_item . '&layout=edit';
+
+			$this->setRedirect(JRoute::_($redirectUrl, false));
+
 			return JError::raiseWarning(500, JText::_('COM_MODULES_ERROR_INVALID_EXTENSION'));
 		}
 
@@ -90,7 +95,7 @@ class AdvancedModulesControllerModule extends JControllerForm
 	 */
 	protected function allowSave($data, $key = 'id')
 	{
-		// use custom position if selected
+		// Use custom position if selected
 		if (isset($data['custom_position']))
 		{
 			if (empty($data['position']))
@@ -148,7 +153,9 @@ class AdvancedModulesControllerModule extends JControllerForm
 		$model	= $this->getModel('Module', '', array());
 
 		// Preset the redirect
-		$this->setRedirect(JRoute::_('index.php?option=com_advancedmodules&view=modules'.$this->getRedirectToListAppend(), false));
+		$redirectUrl = 'index.php?option=com_advancedmodules&view=modules' . $this->getRedirectToListAppend();
+
+		$this->setRedirect(JRoute::_($redirectUrl, false));
 
 		return parent::batch($model);
 	}
@@ -181,4 +188,39 @@ class AdvancedModulesControllerModule extends JControllerForm
 
 		$app->setUserState('com_advancedmodules.add.module.params', null);
 	}
+
+	/**
+	 * Save fuction for com_modules
+	 *
+	 * @see JControllerForm::save()
+	 */
+	public function save($key = null, $urlVar = null)
+	{
+		if (!JSession::checkToken())
+		{
+			JFactory::getApplication()->redirect('index.php', JText::_('JINVALID_TOKEN'));
+		}
+
+		if (JFactory::getDocument()->getType() == 'json')
+		{
+			$model = $this->getModel();
+			$data  = $this->input->post->get('jform', array(), 'array');
+			$item = $model->getItem($this->input->get('id'));
+			$properties = $item->getProperties();
+
+			// Replace changed properties
+			$data = array_replace_recursive($properties, $data);
+
+			// Add new data to input before process by parent save()
+			$this->input->post->set('jform', $data);
+
+			// Add path of forms directory
+			JForm::addFormPath(JPATH_ADMINISTRATOR . '/components/com_advancedmodules/models/forms');
+
+		}
+
+		parent::save($key, $urlVar);
+
+	}
+
 }

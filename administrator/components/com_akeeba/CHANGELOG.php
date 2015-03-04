@@ -1,12 +1,54 @@
 <?php die();?>
-<<<<<<< HEAD
-=======
+Akeeba Backup 4.1.2
+================================================================================
++ Added "Apply to all" button in Files and Directories Exclusion page
++ ANGIE for Wordpress: Db collation set to "utf8_general_ci" by default
+# [HIGH] Missing interface options on bad hosts which disable the innocent parse_ini_file PHP function
+# [HIGH] ANGIE (restoration): Some bad hosts disable the innocent parse_ini_file PHP function resulting in translation and functional issues during the restoration
+# [MEDIUM] ANGIE for Wordpress: Site url was not replaced when moving to a different server
+# [LOW] On some hosts you wouldn't get the correct installer included in the backup
+# [LOW] ANGIE for Wordpress: fixed changing Admin access details while restoring
+# [LOW] Configuration Wizard: detected minimum execution time was ignored; default value of 2 seconds always applied
+
+Akeeba Backup 4.1.1
+================================================================================
+- Removed the obsolete "Upgrade profiles to ANGIE" post-installation message
+# [LOW] Tooltips for backup comments not shown in Manage Backup page on Joomla! 3.x
+# [HIGH] Control Panel icons not shown on some extremely low quality hosts which disable the innocuous parse_ini_file function. If you were affected SWITCH HOSTS, IMMEDIATELY!
+# [HIGH] gh-523 Fatal error on Joomla! 2.5 when logging in as Administrator (NOT Super User!) and you have published our Quick Icon plugin
+# [HIGH] Old PHP 5.3 versions have a bug regarding Interface implementation, causing a PHP fatal error
+
+Akeeba Backup 4.1.0
+================================================================================
++ Brand new icon set in the Control Panel page by Helvecio da Silva (http://hlvcdesign.com.br)
++ Warning added when Joomla!'s com_postinstall component is broken (with instructions to fix it)
+~ Less intrusive display of the file integrity check results
+# [HIGH] System Restore Points didn't really work
+# [HIGH] The Quick Icon - Akeeba Backup Notification plugin was broken since 4.1.0.rc1 (thanks Camden!)
+# [HIGH] Stack filters wouldn't load. As a result, voluminous and unwanted data of Joomla!'s Finder tables would always be included.
+# [MEDIUM] The backup ID was not returned to JSON API requests, making download after backup with Akeeba Remote CLI impossible (thanks Mikkel)
+# [LOW] Work around Joomla!'s bug causing it to not load its library translation strings while showing the installation status messages when System Restore Points are enabled
+# [LOW] Piecon could throw Javascript errors on some sites
+# [LOW] Upload to Dropbox may not work on servers without a global cacert.pem file
+
+Akeeba Backup 4.1.0.rc3
+================================================================================
+! DirectoryIterator::getExtension is not compatible with PHP 5.3.4 and 5.3.5
+! As we announced 18 months ago, we require PHP 5.3.4 or later. If your site doesn't meet this requirement a very stern warning will be issued.
+- Removed the (broken) multipart upload from the legacy S3 post-processing engine. Please use the new "Upload to Amazon S3" option for multipart uploads.
+~ Removing references to JParameter (it was removed in Joomla! 3.4 alpha)
+# [HIGH] Some Pro features (restore SRPs, site transfer wizard) not working because their files are deleted on installation
+# [HIGH] Bug in third party Guzzle library causes Amazon S3 multipart uploads of archives larger than the remaining RAM size to fail due to memory exhaustion.
+# [MEDIUM] The backup would halt if the upload to S3 failed instead of simply raising a warning
+# [MEDIUM] System Restore Points were throwing a fatal error while applying size quota
+# [MEDIUM] Fatal error on sites with open_basedir restrictions on the site's root
+# [LOW] System Restore Points throwing warnings
+
 Akeeba Backup 4.1.0.rc2
 ================================================================================
 ! Settings would be lost when upgrading to 4.1.0.rc1 due to the loss of the settings' encryption key on upgrade
 # [LOW] 500 error when a specified engine (scanner, archiver, post-processing, dump) doesn't exist
 
->>>>>>> 294e780b4f542dad36413b435c262b91edfa30fd
 Akeeba Backup 4.1.0.rc1
 ================================================================================
 + New and improved backup engine

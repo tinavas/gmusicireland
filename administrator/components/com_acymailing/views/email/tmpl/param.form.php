@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo JText::_( 'JOOMEXT_SUBJECT' ); ?>
 				</label>
 			</td>
-			<td>
+			<td class="paramlist_value">
 				<input type="text" name="data[mail][subject]" id="subject" class="inputbox" style="width:80%" value="<?php echo $this->escape(@$this->mail->subject); ?>" />
 			</td>
 		</tr>
@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td class="paramlist_key">
 				<?php echo JText::_( 'SEND_HTML' ); ?>
 			</td>
-			<td>
+			<td class="paramlist_value">
 				<?php echo JHTML::_('acyselect.booleanlist', "data[mail][html]" , 'onchange="updateAcyEditor(this.value)"',$this->mail->html); ?>
 			</td>
 		</tr>
@@ -35,11 +35,11 @@ defined('_JEXEC') or die('Restricted access');
 			if($jflanguages->multilingue){ ?>
 			<tr>
 				<td class="paramlist_key">
-					<label for="language">
+					<label for="jlang">
 						<?php echo JText::_('ACY_LANGUAGE'); ?>
 					</label>
 				</td>
-				<td>
+				<td class="paramlist_value">
 					<?php
 						$jflanguages->sef = true;
 						echo $jflanguages->displayJLanguages('data[mail][language]', empty($this->mail->language) ? '' : $this->mail->language);
@@ -55,13 +55,13 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if(!empty($this->mail->attach)){?>
 		<fieldset class="adminform">
 		<legend><?php echo JText::_( 'ATTACHED_FILES' ); ?></legend>
-			<?php
-					foreach($this->mail->attach as $idAttach => $oneAttach){
-						$idDiv = 'attach_'.$idAttach;
-						echo '<div id="'.$idDiv.'">'.$oneAttach->filename.' ('.(round($oneAttach->size/1000,1)).' Ko)';
-						echo $this->toggleClass->delete($idDiv,$this->mail->mailid.'_'.$idAttach,'mail');
+		<?php
+			foreach($this->mail->attach as $idAttach => $oneAttach){
+				$idDiv = 'attach_'.$idAttach;
+				echo '<div id="'.$idDiv.'">'.$oneAttach->filename.' ('.(round($oneAttach->size/1000,1)).' Ko)';
+				echo $this->toggleClass->delete($idDiv,$this->mail->mailid.'_'.$idAttach,'mail');
 				echo '</div>';
-					}
+			}
 		?>
 		</fieldset>
 		<?php } ?>
@@ -74,38 +74,42 @@ defined('_JEXEC') or die('Restricted access');
 		<br style="font-size:1px"/>
 		<table width="100%" class="paramlist admintable">
 			<tr>
-					<td class="paramlist_key">
-						<?php echo JText::_( 'FROM_NAME' ); ?>
-					</td>
-					<td class="paramlist_value">
-						<input placeholder="<?php echo JText::_( 'USE_DEFAULT_VALUE' ); ?>" class="inputbox" type="text" id="fromname" name="data[mail][fromname]" style="width:200px" value="<?php echo $this->escape($this->mail->fromname); ?>" />
-					</td>
-				</tr>
+				<td class="paramlist_key">
+					<?php echo JText::_( 'FROM_NAME' ); ?>
+				</td>
+				<td class="paramlist_value">
+					<input placeholder="<?php echo JText::_( 'USE_DEFAULT_VALUE' ); ?>" class="inputbox" type="text" id="fromname" name="data[mail][fromname]" style="width:200px" value="<?php echo $this->escape($this->mail->fromname); ?>" />
+				</td>
+			</tr>
 			<tr>
-					<td class="paramlist_key">
-						<?php echo JText::_( 'FROM_ADDRESS' ); ?>
-					</td>
-					<td class="paramlist_value">
-						<input placeholder="<?php echo JText::_( 'USE_DEFAULT_VALUE' ); ?>" class="inputbox" type="text" id="fromemail" name="data[mail][fromemail]" style="width:200px" value="<?php echo $this->escape($this->mail->fromemail); ?>" />
-					</td>
-				</tr>
-				<tr>
+				<td class="paramlist_key">
+					<?php echo JText::_( 'FROM_ADDRESS' ); ?>
+				</td>
+				<td class="paramlist_value">
+					<input onchange="validateEmail(this.value, '<?php echo addslashes(JText::_('FROM_ADDRESS')); ?>')" placeholder="<?php echo JText::_( 'USE_DEFAULT_VALUE' ); ?>" class="inputbox" type="text" id="fromemail" name="data[mail][fromemail]" style="width:200px" value="<?php echo $this->escape($this->mail->fromemail); ?>" />
+				</td>
+			</tr>
+			<tr>
 				<td class="paramlist_key">
 					<?php echo JText::_( 'REPLYTO_NAME' ); ?>
-					</td>
-					<td class="paramlist_value">
-						<input placeholder="<?php echo JText::_( 'USE_DEFAULT_VALUE' ); ?>" class="inputbox" type="text" id="replyname" name="data[mail][replyname]" style="width:200px" value="<?php echo $this->escape($this->mail->replyname); ?>" />
-					</td>
-				</tr>
-				<tr>
+				</td>
+				<td class="paramlist_value">
+					<input placeholder="<?php echo JText::_( 'USE_DEFAULT_VALUE' ); ?>" class="inputbox" type="text" id="replyname" name="data[mail][replyname]" style="width:200px" value="<?php echo $this->escape($this->mail->replyname); ?>" />
+				</td>
+			</tr>
+			<tr>
 				<td class="paramlist_key">
 					<?php echo JText::_( 'REPLYTO_ADDRESS' ); ?>
-					</td>
-					<td class="paramlist_value">
-						<input placeholder="<?php echo JText::_( 'USE_DEFAULT_VALUE' ); ?>" class="inputbox" type="text" id="replyemail" name="data[mail][replyemail]" style="width:200px" value="<?php echo $this->escape($this->mail->replyemail); ?>" />
-					</td>
+				</td>
+				<td class="paramlist_value">
+					<input onchange="validateEmail(this.value, '<?php echo addslashes(JText::_('REPLYTO_ADDRESS')); ?>')" placeholder="<?php echo JText::_( 'USE_DEFAULT_VALUE' ); ?>" class="inputbox" type="text" id="replyemail" name="data[mail][replyemail]" style="width:200px" value="<?php echo $this->escape($this->mail->replyemail); ?>" />
+				</td>
 			</tr>
 		</table>
+<?php echo acymailing_getFunctionsEmailCheck();
 
-<?php echo $this->tabs->endPanel(); echo $this->tabs->endPane(); ?>
+		echo $this->tabs->endPanel();
+		$this->config = acymailing_config();
+		if(acymailing_level(3) && acymailing_isAllowed($this->config->get('acl_newsletters_inbox_actions','all'))) include(ACYMAILING_BACK.'views'.DS.'newsletter'.DS.'tmpl'.DS.'inboxactions.php');
+		echo $this->tabs->endPane(); ?>
 	</div>

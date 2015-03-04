@@ -20,6 +20,7 @@ CKEDITOR.plugins.add( 'sourcedialog', {
 			editor.ui.addButton( 'Sourcedialog', {
 				label: editor.lang.sourcedialog.toolbar,
 				command: 'sourcedialog',
+				icon: this.path.split("/plugins/")[0] + "/media/com_acymailing/images/editor/sourcedialog.png",
 				toolbar: 'mode,10'
 			} );
 		}

@@ -160,7 +160,7 @@ class Srpquotas extends Object
 		if (count($quotaFiles) > 0)
 		{
 			Factory::getLog()->log(LogLevel::DEBUG, "Applying quotas");
-			JLoader::import('joomla.filesystem.file');
+			\JLoader::import('joomla.filesystem.file');
 			foreach ($quotaFiles as $file)
 			{
 				if (!@Platform::getInstance()->unlink($file))

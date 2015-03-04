@@ -3,7 +3,7 @@
  * Akeeba Engine
  * The modular PHP5 site backup engine
  *
- * @copyright Copyright (c)2009-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2006-2015 Nicholas K. Dionysopoulos
  * @license   GNU GPL version 3 or, at your option, any later version
  * @package   akeebaengine
  *
@@ -12,6 +12,8 @@
 namespace Akeeba\Engine;
 
 // Protection against direct access
+use Akeeba\Engine\Util\ParseIni;
+
 defined('AKEEBAENGINE') or die();
 
 /**
@@ -352,7 +354,9 @@ class Configuration
 					continue;
 				}
 
-				if ($file->getExtension() == 'ini')
+				// PHP 5.3.5 and earlier do not support getExtension
+				// if ($file->getExtension() == 'ini')
+				if (substr($file->getBasename(), -4) == '.ini')
 				{
 					$this->mergeEngineINI($file->getRealPath());
 				}
@@ -408,7 +412,7 @@ class Configuration
 			return false;
 		}
 
-		$inidata = parse_ini_file($inifile, true);
+		$inidata = ParseIni::parse_ini_file($inifile, true);
 
 		foreach ($inidata as $rootkey => $rootvalue)
 		{
@@ -460,7 +464,7 @@ class Configuration
 			return false;
 		}
 
-		$inidata = parse_ini_file($inifile, true);
+		$inidata = ParseIni::parse_ini_file($inifile, true);
 
 		foreach ($inidata as $section => $nodes)
 		{

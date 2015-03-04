@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -106,6 +106,15 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 				<td class="key">
+				<?php echo acymailing_tooltip(JText::_('NOTIF_CONTACT_MENU_DESC'), JText::_('NOTIF_CONTACT_MENU'), '', JText::_('NOTIF_CONTACT_MENU')); ?>
+				</td>
+				<td>
+					<input class="inputbox" type="text" name="config[notification_contact_menu]" style="width:200px" value="<?php echo $this->escape($this->config->get('notification_contact_menu')); ?>">
+					<?php echo $this->elements->edit_notification_contact_menu; ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="key">
 				<?php echo acymailing_tooltip(JText::_('NOTIF_CONFIRM_DESC'), JText::_('NOTIF_CONFIRM'), '', JText::_('NOTIF_CONFIRM')); ?>
 				</td>
 				<td>
@@ -120,7 +129,7 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="admintable" cellspacing="1">
 			<tr>
 				<td class="key">
-				<?php echo acymailing_tooltip(JText::_('REDIRECTION_SUB_DESC').'<br/><br/><i>'.JText::_('REDIRECTION_NOT_MODULE').'</i>', JText::_('REDIRECTION_SUB'), '', JText::_('REDIRECTION_SUB')); ?>
+				<?php echo acymailing_tooltip(JText::_('REDIRECTION_SUB_DESC').'<br /><br /><i>'.JText::_('REDIRECTION_NOT_MODULE').'</i>', JText::_('REDIRECTION_SUB'), '', JText::_('REDIRECTION_SUB')); ?>
 				</td>
 				<td>
 					<input class="inputbox" type="text" id="sub_redirect" name="config[sub_redirect]" style="width:250px" value="<?php echo $this->escape($this->config->get('sub_redirect')); ?>">
@@ -128,7 +137,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 				<td class="key">
-				<?php echo acymailing_tooltip(JText::_('REDIRECTION_MODIF_DESC').'<br/><br/><i>'.JText::_('REDIRECTION_NOT_MODULE').'</i>', JText::_('REDIRECTION_MODIF'), '', JText::_('REDIRECTION_MODIF')); ?>
+				<?php echo acymailing_tooltip(JText::_('REDIRECTION_MODIF_DESC').'<br /><br /><i>'.JText::_('REDIRECTION_NOT_MODULE').'</i>', JText::_('REDIRECTION_MODIF'), '', JText::_('REDIRECTION_MODIF')); ?>
 				</td>
 				<td>
 					<input class="inputbox" type="text" id="modif_redirect" name="config[modif_redirect]" style="width:250px" value="<?php echo $this->escape($this->config->get('modif_redirect')); ?>">

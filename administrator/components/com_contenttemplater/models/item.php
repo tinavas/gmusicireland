@@ -3,11 +3,11 @@
  * Item Model
  *
  * @package         Content Templater
- * @version         4.10.2
+ * @version         4.12.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -31,7 +31,7 @@ class ContentTemplaterModelItem extends JModelAdmin
 	{
 		// Load plugin parameters
 		require_once JPATH_PLUGINS . '/system/nnframework/helpers/parameters.php';
-		$this->parameters = NNParameters::getInstance();
+		$this->parameters = nnParameters::getInstance();
 		$this->_config = $this->parameters->getComponentParams('contenttemplater');
 
 		parent::__construct();
@@ -190,7 +190,7 @@ class ContentTemplaterModelItem extends JModelAdmin
 		{
 			foreach ($item as $key => $val)
 			{
-				if (is_string($val))
+				if (is_string($val) && $key != 'content')
 				{
 					$item->$key = stripslashes($val);
 				}
@@ -225,6 +225,37 @@ class ContentTemplaterModelItem extends JModelAdmin
 		}
 
 		return $item;
+	}
+
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param   array $data The form data.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   1.6
+	 */
+	public function save($data)
+	{
+		require_once JPATH_PLUGINS . '/system/nnframework/helpers/text.php';
+
+		$params = json_decode($data['params'], 1);
+
+		// correct the publish date details
+		if (isset($params['assignto_date_publish_up']))
+		{
+			nnText::fixDateOffset($params['assignto_date_publish_up']);
+		}
+
+		if (isset($params['assignto_date_publish_down']))
+		{
+			nnText::fixDateOffset($params['assignto_date_publish_down']);
+		}
+
+		$data['params'] = json_encode($params);
+
+		return parent::save($data);
 	}
 
 	/**
@@ -308,9 +339,7 @@ class ContentTemplaterModelItem extends JModelAdmin
 			}
 		}
 
-		$registry = new JRegistry;
-		$registry->loadArray($params);
-		$newdata['params'] = (string) $registry;
+		$newdata['params'] = json_encode($params);
 
 		return $newdata;
 	}
@@ -408,7 +437,7 @@ class ContentTemplaterModelItem extends JModelAdmin
 				{
 					if ($match['1'] && strpos($match['1'], '%') !== false)
 					{
-						$match['1'] = NNText::dateToDateFormat($match['1']);
+						$match['1'] = nnText::dateToDateFormat($match['1']);
 					}
 					$replace = JHtml::_('date', time(), $match['1']);
 					$str = str_replace($match['0'], $replace, $str);

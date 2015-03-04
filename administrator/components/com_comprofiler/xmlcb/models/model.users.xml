@@ -20,12 +20,12 @@
 			<option value="1" title="Approve User">Approved</option>
 		</type>
 		<type name="user_operator" base="list" valuetype="string">
-			<option value="=" />
-			<option value="&lt;&gt;||ISNULL">&lt;&gt;</option>
-			<option value="&lt;" />
-			<option value="&lt;=" />
-			<option value="&gt;" />
-			<option value="&gt;=" />
+			<option value="=">Equal to</option>
+			<option value="&lt;&gt;||ISNULL">Not equal to</option>
+			<option value="&lt;">Less than</option>
+			<option value="&lt;=">Less than or equal to</option>
+			<option value="&gt;">Greater than</option>
+			<option value="&gt;=">Greater than or equal to</option>
 			<option value="LIKE">Contains</option>
 			<option value="NOT LIKE||ISNULL">Does not contain</option>
 			<option value="IN">Is one of (,-separated values)</option>

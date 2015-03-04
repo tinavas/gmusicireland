@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AdminTools
- * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -9,6 +9,11 @@
 defined('_JEXEC') or die;
 
 ?>
+<div class="alert">
+	<h3><?php echo JText::_('COM_ADMINTOOLS_COMMON_DEPRECATED_TITLE');?></h3>
+	<p><?php echo JText::_('COM_ADMINTOOLS_COMMON_DEPRECATED_BODY');?></p>
+</div>
+
 <div class="alert alert-info">
 	<a class="close" data-dismiss="alert" href="#">×</a>
 

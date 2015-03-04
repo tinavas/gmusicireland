@@ -3,7 +3,7 @@
  * Community Builder Package installer
  * @version $Id: 10/31/13 11:29 PM $
  * @package pkg_communitybuilder
- * @copyright (C) 2004-2014 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+ * @copyright (C) 2004-2015 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
  */
 
@@ -20,12 +20,15 @@ class pkg_communitybuilderInstallerScript {
 	 */
 	private $versions = array(
 		'php' => array (
+			'5.6' => '5.6.0',
 			'5.5' => '5.5.0',
 			'5.4' => '5.4.0',
 			'5.3' => '5.3.3',
 			'0' => '5.4.22' // Preferred version
 		),
 		'mysql' => array (
+			'5.6' => '5.6',
+			'5.5' => '5.5',
 			'5.1' => '5.1',
 			'0' => '5.5' // Preferred version
 		),
@@ -206,8 +209,9 @@ class pkg_communitybuilderInstallerScript {
 			return true;
 		}
 
-		$git = JPATH_ADMINISTRATOR . '/components/com_comprofiler/../../../.git';
-		if ( file_exists ( $git ) )
+		$gitCb		=	JPATH_ADMINISTRATOR . '/components/com_comprofiler/../../../.git';
+		$gitJoomla	=	JPATH_ADMINISTRATOR . '/../.git';
+		if ( file_exists ( $gitCb ) && ! file_exists( $gitJoomla ) )
 		{
 			$app->enqueueMessage('Oops! You tried to install Community Builder over your Git repository! Fortunately we checked and did not allow this', 'error');
 			return false;

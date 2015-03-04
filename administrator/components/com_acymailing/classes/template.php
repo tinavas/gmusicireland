@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -71,6 +71,10 @@ class templateClass extends acymailingClass{
 
 		$formData = JRequest::getVar( 'data', array(), '', 'array' );
 
+		if(!empty($formData['template']['category']) && $formData['template']['category'] == -1){
+			$formData['template']['category'] = JRequest::getString('newcategory', '');
+		}
+
 		foreach($formData['template'] as $column => $value){
 			acymailing_secureField($column);
 			$template->$column = strip_tags($value);
@@ -93,54 +97,11 @@ class templateClass extends acymailingClass{
 		}
 		$template->styles = serialize($styles);
 
-		$files = JRequest::getVar( 'pictures', array(), 'files', 'array' );
-		if(!empty($files)){
-			jimport('joomla.filesystem.file');
+		$acypictHelper = acymailing_get('helper.acypict');
+		$acypictHelper->uploadThumbnail($template);
 
-			$uploadFolder = JPath::clean(html_entity_decode($config->get('uploadfolder')));
-			$uploadFolder = trim($uploadFolder,DS.' ').DS;
-			$uploadPath = JPath::clean(ACYMAILING_ROOT.$uploadFolder);
-
-			acymailing_createDir($uploadPath,true);
-
-			if(!is_writable($uploadPath)){
-				@chmod($uploadPath,'0755');
-				if(!is_writable($uploadPath)){
-					$app->enqueueMessage(JText::sprintf( 'WRITABLE_FOLDER',$uploadPath), 'notice');
-				}
-			}
-
-			$allowedExtensions = array('jpg','gif','png','jpeg','ico','bmp');
-
-			foreach($files['name'] as $id => $filename){
-				if(empty($filename)) continue;
-				$extension = strtolower(substr($filename,strrpos($filename,'.')+1));
-				if(!in_array($extension,$allowedExtensions)){
-					$app->enqueueMessage(JText::sprintf('ACCEPTED_TYPE',$extension,implode(', ',$allowedExtensions)), 'notice');
-					continue;
-				}
-
-				$pictname = strtolower(substr(JFile::makeSafe($filename),0,strrpos($filename,'.')+1));
-				$pictname = preg_replace('#[^0-9a-z]#i','_',$pictname);
-				$pictfullname = $pictname.'.'.$extension;
-				if(file_exists($uploadPath.$pictfullname)){
-					$pictfullname = $pictname.time().'.'.$extension;
-				}
-
-				if(!JFile::upload($files['tmp_name'][$id], $uploadPath.$pictfullname)){
-					if ( !move_uploaded_file($files['tmp_name'][$id], $uploadPath . $pictfullname)) {
-						$app->enqueueMessage(JText::sprintf( 'FAIL_UPLOAD','<b><i>'.$files['tmp_name'][$id].'</i></b>','<b><i>'.$uploadPath . $pictfullname.'</i></b>'), 'error');
-						continue;
-					}
-				}
-
-				$template->$id = str_replace(DS,'/',$uploadFolder).$pictfullname;
-			}
-		}
-
-
-
-		$template->body = JRequest::getVar('editor_body','','','string',JREQUEST_ALLOWHTML);
+		$template->body = JRequest::getVar('editor_body','','','string',JREQUEST_ALLOWRAW);
+		if(ACYMAILING_J25) $template->body = JComponentHelper::filterText($template->body);
 
 		if(!empty($styles['color_bg'])){
 			$pat1 = '#^([^<]*<[^>]*background-color:)([^;">]{1,30})#i';
@@ -241,7 +202,7 @@ class templateClass extends acymailingClass{
 				}elseif($class != 'color_bg'){
 					if(!empty($style)) $inline.= '.'.$class.' {'.$style.'} '."\n";
 				}else{
-					if(!empty($style)) $inline.= 'body{background-color:'.$style.'} '."\n";
+					if(!empty($style)) $inline.= 'body{background-color:'.$style.';} '."\n";
 				}
 			}
 		}
@@ -323,9 +284,9 @@ class templateClass extends acymailingClass{
 		}
 
 		if(!empty($newTemplate->stylesheet)){
-			if(preg_match('#body *\{[^\}]*background-color:([^;]*);#Uis',$newTemplate->stylesheet,$backgroundresults)){
+			if(preg_match('#body *\{[^\}]*background-color:([^;\}]*)[;\}]#Uis',$newTemplate->stylesheet,$backgroundresults)){
 				$newTemplate->styles['color_bg'] = trim($backgroundresults[1]);
-				$newTemplate->stylesheet = preg_replace('#(body *\{[^\}]*)background-color:[^;]*;#Uis','$1',$newTemplate->stylesheet);
+				$newTemplate->stylesheet = preg_replace('#(body *\{[^\}]*)background-color:[^;\}]*[;\}]#Uis','$1',$newTemplate->stylesheet);
 			}
 
 			$quickstyle = array('tag_h1' => 'h1','tag_h2' => 'h2', 'tag_h3' => 'h3','tag_h4' => 'h4','tag_h5' => 'h5','tag_h6' => 'h6','tag_a' => 'a','tag_ul' => 'ul','tag_li' => 'li','acymailing_unsub' => '\.acymailing_unsub','acymailing_online' => '\.acymailing_online','acymailing_title' => '\.acymailing_title','acymailing_content' => '\.acymailing_content','acymailing_readmore' => '\.acymailing_readmore');
@@ -670,6 +631,23 @@ class templateClass extends acymailingClass{
 			}
 		}
 
+		if(preg_match_all('#(<table[^>]*>)((?:(?!<table).)*</table>)#Uis',$html,$results)){
+			foreach($results[0] as $i => $newContent){
+				if(strpos($newContent,'<tbody') === false){
+					$newContent = preg_replace('#(<table[^>]*>)#Uis','$1<tbody>',$newContent);
+					$newContent = preg_replace('#(< */ *table *>)#Uis','</tbody>$1',$newContent);
+				}
+
+				if(preg_match('#(<tbody[^>]*)class=("|\'])#Uis',$newContent,$charused)){
+					$newContent = str_replace($charused[0],$charused[1].'class='.$charused[2].'acyeditor_sortable ',$newContent);
+				}else{
+					$newContent = str_replace('<tbody','<tbody class="acyeditor_sortable"',$newContent);
+				}
+
+				$html = str_replace($results[0][$i],$newContent,$html);
+			}
+		}
+
 		return true;
 
 
@@ -753,7 +731,7 @@ class templateClass extends acymailingClass{
 		$result = JArchive::extract( $tmp_dest, $extractdir);
 		JFile::delete($tmp_dest);
 
-		$allFiles = JFolder::files($extractdir,'.',true,true);
+		$allFiles = JFolder::files($extractdir,'.',true,true,array(),array());
 		foreach($allFiles as $oneFile){
 			if(preg_match('#\.(jpg|gif|png|jpeg|ico|bmp|html|htm|css)$#i',$oneFile)){
 				continue;

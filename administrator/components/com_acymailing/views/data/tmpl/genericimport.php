@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -29,13 +29,11 @@ defined('_JEXEC') or die('Restricted access');
 
 	<div style="overflow-x: auto;max-width: 100%;">
 		<fieldset class="adminform" id="matchdata">
-		<?php
-			include_once(ACYMAILING_BACK.'views'.DS.'data'.DS.'tmpl'.DS.'ajaxencoding.php');
-		?>
+		<?php include_once(ACYMAILING_BACK.'views'.DS.'data'.DS.'tmpl'.DS.'ajaxencoding.php'); ?>
 		</fieldset>
 	</div>
 
-	<div class="loading" align="center"><?php echo JText::sprintf('ACY_FIRST_LINES', ($nbLines < 11-$firstLine ? ($nbLines-1+$firstLine) : 10)); ?></div>
+	<div class="loading" align="center"><?php echo JText::sprintf('ACY_FIRST_LINES', ($nbLines < 11-$noHeader ? ($nbLines-1+$noHeader) : 10)); ?></div>
 
 	<table class="admintable" cellspacing="1">
 		<tr id="trfilecharset">
@@ -104,11 +102,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr id="trsumup">
 				<td>
 					<?php
-						if(empty($this->lists)){
-							echo JText::_('ACY_IMPORT_LISTS').': '.JText::_('ACY_NONE');
-						}else{
-							echo JText::_('ACY_IMPORT_LISTS').': '.$this->lists;
-						}
+					echo JText::_('ACY_IMPORT_LISTS').' : '.(empty($this->lists) ? JText::_('ACY_NONE') : $this->lists);
 					?>
 				</td>
 			</tr>
@@ -125,7 +119,7 @@ defined('_JEXEC') or die('Restricted access');
 			var emailField = false;
 			var columns = "";
 			var selectedFields = Array();
-			var fieldNb = document.adminForm.newcustom.length;
+			var fieldNb = <?php echo $nbColumns; ?>;
 			if(isNaN(fieldNb)) fieldNb = 1;
 
 			for(var i=0; i < fieldNb; i++){
@@ -205,7 +199,7 @@ defined('_JEXEC') or die('Restricted access');
 	function changeCharset(){
 		var URL = "index.php?option=com_acymailing&ctrl=<?php if(!$app->isAdmin()){ echo 'front'; } ?>data&encoding="+document.getElementById("charsetconvert").value+"&tmpl=component&task=ajaxencoding&filename=<?php echo urlencode($filename); ?>";
 		var selectedDropdowns = "";
-		var fieldNb = document.adminForm.newcustom.length;
+		var fieldNb = <?php echo $nbColumns; ?>;
 		if(isNaN(fieldNb)) fieldNb = 1;
 
 		for(var i=0; i < fieldNb; i++){
@@ -237,6 +231,17 @@ defined('_JEXEC') or die('Restricted access');
 				},
 				onComplete: function() { document.getElementById("loadingEncoding").innerHTML = ''; }
 			}).send();
+		}
+	}
+
+	function ignoreAllOthers(){
+		var fieldNb = document.adminForm.newcustom.length;
+		if(isNaN(fieldNb)) fieldNb = 1;
+
+		for(var i=0; i < fieldNb; i++){
+			if(document.getElementById("fieldAssignment"+i).value == 0){
+				document.getElementById("fieldAssignment"+i).value = 1;
+			}
 		}
 	}
 -->

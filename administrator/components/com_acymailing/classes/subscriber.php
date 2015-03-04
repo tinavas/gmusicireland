@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -33,6 +33,7 @@ class subscriberClass extends acymailingClass{
 	var $triggerFilterBE = false;
 
 	var $geolocRight = false;
+	var $geolocData = null;
 
 
 	function save($subscriber){
@@ -98,7 +99,8 @@ class subscriberClass extends acymailingClass{
 			$subscriber->subid = $subid;
 
 			if($this->geolocRight){
-				$classGeoloc->saveGeolocation('creation', $subscriber->subid);
+				$this->geolocData = $classGeoloc->saveGeolocation('creation', $subscriber->subid);
+
 			}
 
 			$this->userForNotification = $subscriber;
@@ -107,7 +109,7 @@ class subscriberClass extends acymailingClass{
 			$action = 'created';
 		}else{
 			if($this->geolocRight){
-				$classGeoloc->saveGeolocation('modify', $subscriber->subid);
+				$this->geolocData = $classGeoloc->saveGeolocation('modify', $subscriber->subid);
 			}
 
 			$resultsTrigger = $dispatcher->trigger('onAcyUserModify',array($subscriber));
@@ -153,6 +155,12 @@ class subscriberClass extends acymailingClass{
 			$mailer->addParam('user:subscription',$listSubClass->getSubscriptionString($subscriber->subid));
 		}
 
+		if(!empty($this->geolocData)){
+			foreach($this->geolocData as $map=>$value){
+				$mailer->addParam('geoloc:notif_'.$map,$value);
+			}
+		}
+
 		$mailer->addParamInfo();
 
 		$allUsers = explode(' ',trim(str_replace(array(';',','),' ',$notifyUsers)));
@@ -167,18 +175,20 @@ class subscriberClass extends acymailingClass{
 
 		$myuser = $this->get($subid);
 		$config = acymailing_config();
-		if(empty($myuser->confirmed) && $config->get('require_confirmation',false)){
-			$mailClass = acymailing_get('helper.mailer');
-			$mailClass->checkConfirmField = false;
-			$mailClass->checkEnabled = false;
-			$mailClass->checkAccept = false;
-			$mailClass->report = $config->get('confirm_message',0);
-			$this->confirmationSentSuccess = $mailClass->sendOne('confirmation',$myuser);
-			$this->confirmationSentError = $mailClass->reportMessage;
-			$this->confirmationSent = true;
-			return true;
-		}
-		return false;
+		if(!empty($myuser->confirmed)) return false;
+
+		if(!$config->get('require_confirmation',false)) return false;
+
+		$mailClass = acymailing_get('helper.mailer');
+		$mailClass->checkConfirmField = false;
+		$mailClass->checkEnabled = false;
+		$mailClass->checkAccept = false;
+		$mailClass->report = $config->get('confirm_message',0);
+		$this->confirmationSentSuccess = $mailClass->sendOne('confirmation',$myuser);
+		$this->confirmationSentError = $mailClass->reportMessage;
+		$this->confirmationSent = true;
+		return true;
+
 	}
 
 	function subid($email){
@@ -401,8 +411,32 @@ class subscriberClass extends acymailingClass{
 			return false;
 		}
 
-		return $this->saveSubscription($subid,$formData['listsub']);
+		$subscriptionSaved = $this->saveSubscription($subid,$formData['listsub']);
 
+		$notifContact = $config->get('notification_contact_menu');
+		if(!empty($notifContact) && !$app->isAdmin()){
+			$userHelper = acymailing_get('helper.user');
+			$mailer = acymailing_get('helper.mailer');
+			$listsubClass = acymailing_get('class.listsub');
+			$mailer->autoAddUser = true;
+			$mailer->checkConfirmField = false;
+			$mailer->report = false;
+			foreach($subscriber as $field => $value) $mailer->addParam('user:'.$field,$value);
+			$mailer->addParam('user:subscription',$listsubClass->getSubscriptionString($subscriber->subid));
+			$mailer->addParam('user:ip',$userHelper->getIP());
+			if(!empty($this->geolocData)){
+				foreach($this->geolocData as $map=>$value){
+					$mailer->addParam('geoloc:notif_'.$map,$value);
+				}
+			}
+			$mailer->addParamInfo();
+			$allUsers = explode(' ',trim(str_replace(array(';',','),' ',$notifContact)));
+			foreach($allUsers as $oneUser){
+				if(empty($oneUser)) continue;
+				$mailer->sendOne('notification_contact_menu',$oneUser);
+			}
+		}
+		return $subscriptionSaved;
 	}
 
 	function saveSubscription($subid,$formlists){
@@ -455,7 +489,7 @@ class subscriberClass extends acymailingClass{
 
 		$this->database->setQuery('UPDATE '.acymailing_table('subscriber').' SET `confirmed` = 1, `confirmed_date` = '.time().', `confirmed_ip` = '.$this->database->Quote($ip).' WHERE `subid` = '.intval($subid).' LIMIT 1');
 		if(!$this->database->query()){
-			acymailing_display('Please contact the admin of this website with the error message :<br/>'.substr(strip_tags($this->database->getErrorMsg()),0,200).'...','error');
+			acymailing_display('Please contact the admin of this website with the error message :<br />'.substr(strip_tags($this->database->getErrorMsg()),0,200).'...','error');
 			exit;
 		}
 
@@ -469,7 +503,7 @@ class subscriberClass extends acymailingClass{
 
 		if($this->geolocRight){
 			$classGeoloc = acymailing_get('class.geolocation');
-			$classGeoloc->saveGeolocation('confirm', $subid);
+			$this->geolocData = $classGeoloc->saveGeolocation('confirm', $subid);
 		}
 
 		if(empty($listids)) return;

@@ -3,11 +3,11 @@
  * List Model
  *
  * @package         ReReplacer
- * @version         5.12.2
+ * @version         5.13.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -44,7 +44,7 @@ class ReReplacerModelList extends JModelList
 
 		// Load plugin parameters
 		require_once JPATH_PLUGINS . '/system/nnframework/helpers/parameters.php';
-		$this->parameters = NNParameters::getInstance();
+		$this->parameters = nnParameters::getInstance();
 
 		parent::__construct($config);
 	}
@@ -261,6 +261,17 @@ class ReReplacerModelList extends JModelList
 		$publish_all = JFactory::getApplication()->input->getInt('publish_all', 0);
 
 		$data = file_get_contents($file['tmp_name']);
+
+		if (empty($data))
+		{
+			JFactory::getApplication()->redirect('index.php?option=com_snippets&view=list', JText::_('File is empty!'));
+
+			return;
+		}
+
+		if ($data['0'] == '<')
+		{
+			// Old format
 		$data = explode('<RR_ITEM_START>', $data);
 
 		$items = array();
@@ -280,23 +291,29 @@ class ReReplacerModelList extends JModelList
 						$item[$data_item_keyval['0']] = (isset($data_item_keyval['1'])) ? $data_item_keyval['1'] : '';
 					}
 				}
-				$item['id'] = 0;
-				if ($publish_all == 0)
-				{
-					unset($item['published']);
-				}
-				else if ($publish_all == 1)
-				{
-					$item['published'] = 1;
-				}
-				$items[] = $item;
 			}
+		}
+		}
+		else
+		{
+			$items = json_decode($data, true);
 		}
 
 		$msg = JText::_('Items saved');
 
 		foreach ($items as $item)
 		{
+			$item['id'] = 0;
+			if ($publish_all == 0)
+			{
+				unset($item['published']);
+			}
+			else if ($publish_all == 1)
+			{
+				$item['published'] = 1;
+			}
+			$items[] = $item;
+
 			$saved = $model->save($item);
 			if ($saved != 1)
 			{
@@ -315,36 +332,29 @@ class ReReplacerModelList extends JModelList
 	{
 		$db = $this->getDbo();
 		$query = $db->getQuery(true)
-			->select('r.*')
+			->select('r.name')
+			->select('r.description')
+			->select('r.search')
+			->select('r.replace')
+			->select('r.area')
+			->select('r.params')
+			->select('r.published')
+			->select('r.ordering')
 			->from('#__rereplacer as r')
 			->where('r.id IN ( ' . implode(', ', $ids) . ' )');
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
-		$string = '';
-		foreach ($rows as $row)
-		{
-			unset($row->id);
-			unset($row->checked_out);
-			unset($row->checked_out_time);
-			$string .= '<RR_ITEM_START>' . "\n";
-			foreach ($row as $key => $val)
-			{
-				$string .= '	<RR_KEY>' . $key;
-				$string .= '<RR_VAL>' . $val;
-				$string .= '<RR_END>' . "\n";
-			}
-			$string .= '<RR_ITEM_END>' . "\n\n";
-		}
+		$string = json_encode($rows);
 
-		$filename = 'ReReplacer Item';
+		$filename = 'ReReplacer Items';
 		if (count($rows) == 1)
 		{
-			$filename .= ' (' . preg_replace('#(.*?)_*$#', '\1', str_replace('__', '_', preg_replace('#[^a-z0-9_-]#', '_', strtolower(html_entity_decode($rows['0']->name))))) . ')';
-		}
-		else
-		{
-			$filename .= 's';
+			$name = utf8_strtolower(html_entity_decode($rows['0']->name));
+			$name = preg_replace('#[^a-z0-9_-]#', '_', $name);
+			$name = trim(preg_replace('#__+#', '_', $name), '_-');
+
+			$filename = 'ReReplacer Item (' . $name . ')';
 		}
 
 		// SET DOCUMENT HEADER

@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 					} ?>
 				</tbody>
 			</table>
-			<br/>
+			<br />
 			<input type="hidden" name="totalsend" value="<?php echo $total; ?>" />
 			<input class="btn btn-primary" type="submit" onclick="document.adminForm.task.value='continuesend';" value="<?php echo JText::_('SEND'); ?>">
 		</fieldset>
@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access');
 					} ?>
 				</tbody>
 			</table>
-			<?php if($sendButton) { ?><br/><input class="btn btn-primary" onclick="document.adminForm.task.value='genschedule';" type="submit" value="<?php echo JText::_('GENERATE',true); ?>"><?php } ?>
+			<?php if($sendButton) { ?><br /><input class="btn btn-primary" onclick="document.adminForm.task.value='genschedule';" type="submit" value="<?php echo JText::_('GENERATE',true); ?>"><?php } ?>
 		</fieldset>
 	<?php } ?>
 
@@ -76,7 +76,7 @@ defined('_JEXEC') or die('Restricted access');
 						<td>
 							<?php
 							echo JText::sprintf('EMAIL_READY',$row->mailid,$row->subject,$row->nbsub);
-							echo '<br/>'.JText::sprintf('QUEUE_NEXT_SCHEDULE',acymailing_getDate($row->senddate));
+							echo '<br />'.JText::sprintf('QUEUE_NEXT_SCHEDULE',acymailing_getDate($row->senddate));
 							 ?>
 						</td>
 					</tr>

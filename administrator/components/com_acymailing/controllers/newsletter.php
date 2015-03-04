@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -36,7 +36,7 @@ class NewsletterController extends acymailingController{
 
 		foreach($cids as $oneMailid){
 			$query = 'INSERT INTO `#__acymailing_mail` (`subject`, `body`, `altbody`, `published`'. $addSendDate . ', `created`, `fromname`, `fromemail`, `replyname`, `replyemail`, `type`, `visible`, `userid`, `alias`, `attach`, `html`, `tempid`, `key`, `frequency`, `params`,`filter`,`metakey`,`metadesc`)';
-			$query .= " SELECT CONCAT('copy_',`subject`), `body`, `altbody`, `published`". $addSendDate .", '.$time.', `fromname`, `fromemail`, `replyname`, `replyemail`, `type`, `visible`, '.$creatorId.', `alias`, `attach`, `html`, `tempid`, ".$db->Quote(md5(rand(1000,999999))).', `frequency`, `params`,`filter`,`metakey`,`metadesc` FROM `#__acymailing_mail` WHERE `mailid` = '.(int) $oneMailid;
+			$query .= " SELECT CONCAT('copy_',`subject`), `body`, `altbody`, `published`". $addSendDate .", '.$time.', `fromname`, `fromemail`, `replyname`, `replyemail`, `type`, `visible`, '.$creatorId.', `alias`, `attach`, `html`, `tempid`, ".$db->Quote(acymailing_generateKey(8)).', `frequency`, `params`,`filter`,`metakey`,`metadesc` FROM `#__acymailing_mail` WHERE `mailid` = '.(int) $oneMailid;
 			$db->setQuery($query);
 			$db->query();
 			$newMailid = $db->insertid();
@@ -121,10 +121,9 @@ class NewsletterController extends acymailingController{
 		JRequest::checkToken() or die( 'Invalid Token' );
 
 		$mailid = acymailing_getCID('mailid');
+		$test_selection = JRequest::getVar('test_selection','','','string');
 
-		$receiver_type = JRequest::getVar('receiver_type','','','string');
-
-		if(empty($mailid) OR empty($receiver_type)) return false;
+		if(empty($mailid) OR empty($test_selection)) return false;
 
 		$app = JFactory::getApplication();
 		$mailer = acymailing_get('helper.mailer');
@@ -133,25 +132,24 @@ class NewsletterController extends acymailingController{
 		if($app->isAdmin()) $mailer->SMTPDebug = 1;
 		$mailer->checkConfirmField = false;
 		$comment = JRequest::getString('commentTest', '');
-		if(!empty($comment))
-			$mailer->introtext = '<div align="center" style="width:600px;margin:auto;margin-top:10px;margin-bottom:10px;padding:10px;border:1px solid #cccccc;background-color:#f6f6f6;color:#333333;">'.nl2br($comment).'</div>';
+		if(!empty($comment)) $mailer->introtext = '<div align="center" style="width:600px;margin:auto;margin-top:10px;margin-bottom:10px;padding:10px;border:1px solid #cccccc;background-color:#f6f6f6;color:#333333;">'.nl2br($comment).'</div>';
 
 		$receivers = array();
-		if($receiver_type == 'user'){
-			$user = JFactory::getUser();
-			$receivers[] = $user->email;
-		}elseif($receiver_type == 'other'){
-			$receiverEntry = JRequest::getVar('test_email','','','string');
-			if(substr_count($receiverEntry,'@')>1){
-				$receivers = explode(' ',trim(preg_replace('# +#',' ',str_replace(array(';',','),' ',$receiverEntry))));
-			}else{
-				$receivers[] = trim($receiverEntry);
+		if($test_selection == 'users'){
+			$receiverEntry = JRequest::getVar('test_emails','','','string');
+			if(!empty($receiverEntry)){
+				if(substr_count($receiverEntry,'@')>1){
+					$receivers = explode(',', trim(preg_replace('# +#', '', $receiverEntry)) );
+				}else{
+					$receivers[] = trim($receiverEntry);
+				}
 			}
 		}else{
-			$gid = substr($receiver_type,strpos($receiver_type,'_')+1);
-			if(empty($gid)) return false;
+			$gid = JRequest::getInt('test_group','-1');
+			if($gid == -1) return false;
 			$db = JFactory::getDBO();
-			$db->setQuery('SELECT email from '.acymailing_table('users',false).' WHERE gid = '.intval($gid));
+			if(!ACYMAILING_J16) $db->setQuery('SELECT email FROM '.acymailing_table('users',false).' WHERE gid = '.intval($gid));
+			else $db->setQuery('SELECT u.email FROM '.acymailing_table('users',false).' AS u JOIN '.acymailing_table('user_usergroup_map',false).' AS ugm ON u.id = ugm.user_id WHERE ugm.group_id = '.intval($gid));
 			$receivers = acymailing_loadResultArray($db);
 		}
 

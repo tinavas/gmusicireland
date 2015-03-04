@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -11,29 +11,34 @@ defined('_JEXEC') or die('Restricted access');
 
 class plgEditorAcyEditor extends JPlugin
 {
-	public function onInit()
-	{
+
+	function plgEditorAcyEditor(&$subject, $config){
+		parent::__construct($subject, $config);
 
 		include_once(rtrim(JPATH_ADMINISTRATOR,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_acymailing'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'helper.php');
 
+		if(!isset($this->params)){
+			$plugin = JPluginHelper::getPlugin('acymailing', 'acyeditor');
+			$this->params = new acyParameter( $plugin->params );
+		}
+	}
+
+
+	public function onInit()
+	{
 		$config =& acymailing_config();
 		$doc = JFactory::getDocument();
 		$doc->addScript(ACYMAILING_JS.'acyeditor.js?v='.@filemtime(ACYMAILING_MEDIA.'js'.DS.'acyeditor.js'));
 
 		$websiteurl = rtrim(JURI::root(),'/').'/';
 
-		if(ACYMAILING_J30){
+		if (ACYMAILING_J16){
 			$doc->addScript($websiteurl.'plugins/editors/acyeditor/acyeditor/ckeditor/ckeditor.js?v='.@filemtime(ACYMAILING_ROOT.'plugins'.DS.'editors'.DS.'acyeditor'.DS.'acyeditor'.DS.'ckeditor'.DS.'ckeditor.js'));
-		}
-		elseif (ACYMAILING_J16){
-			$doc->addScript($websiteurl.'plugins/editors/acyeditor/acyeditor/ckeditor/ckeditor.js?v='.@filemtime(ACYMAILING_ROOT.'plugins'.DS.'editors'.DS.'acyeditor'.DS.'acyeditor'.DS.'ckeditor'.DS.'ckeditor.js'));
-			$doc->addScript($websiteurl.'plugins/editors/acyeditor/acyeditor/scripts/jquery-1.9.1.min.js?v='.@filemtime(ACYMAILING_ROOT.'plugins'.DS.'editors'.DS.'acyeditor'.DS.'acyeditor'.DS.'scripts'.DS.'jquery-1.9.1.min.js'));
-		}
-		else{
+		} else{
 			$doc->addScript($websiteurl.'plugins/editors/acyeditor/ckeditor/ckeditor.js?v='.@filemtime(ACYMAILING_ROOT.'plugins'.DS.'editors'.DS.'acyeditor'.DS.'ckeditor'.DS.'ckeditor.js'));
-			$doc->addScript($websiteurl.'plugins/editors/acyeditor/scripts/jquery-1.9.1.min.js?v='.@filemtime(ACYMAILING_ROOT.'plugins'.DS.'editors'.DS.'acyeditor'.DS.'scripts'.DS.'jquery-1.9.1.min.js'));
 		}
-
+		$doc->addScript($websiteurl.'media/com_acymailing/js/jquery/jquery-1.9.1.min.js?v='.@filemtime(ACYMAILING_ROOT.'media'.DS.'com_acymailing'.DS.'js'.DS.'jquery'.DS.'jquery-1.9.1.min.js'));
+		$doc->addScript($websiteurl.'media/com_acymailing/js/jquery/jquery-ui.min.js?v='.@filemtime(ACYMAILING_ROOT.'media'.DS.'com_acymailing'.DS.'js'.DS.'jquery'.DS.'jquery-ui.min.js'));
 		return '';
 	}
 
@@ -139,7 +144,7 @@ class plgEditorAcyEditor extends JPlugin
 
 		$pasteType = $this->params->get('pasteType', 'plain');
 		$enterMode = $this->params->get('enterMode', 'br');
-		$inlineSource = $this->params->get('inlineSource', 0);
+		$inlineSource = $this->params->get('inlineSource', 1);
 		$doc = JFactory::getDocument();
 
 		$js = "
@@ -151,6 +156,7 @@ class plgEditorAcyEditor extends JPlugin
 		titleBtnDupliAfter='".str_replace("'", "\'", JText::_('ACYEDITOR_DUPLICATE_AFTER'))."';
 		tooltipInitAreas='".str_replace("'", "\'", JText::_('ACYEDITOR_REINIT_ZONE_TOOLTIP'))."';
 		confirmInitAreas='".str_replace("'", "\'", JText::_('ACYEDITOR_REINIT_ZONE_CONFIRMATION'))."';
+		tooltipTemplateSortable='".str_replace("'", "\'", JText::_('ACYEDITOR_SORTABLE_AREA_TOOLTIP'))."';
 		inlineSource='".$inlineSource."';
 		";
 

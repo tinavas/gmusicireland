@@ -3,5 +3,5 @@
 defined('_JEXEC') or die('Restricted Access');
 
 define('AKEEBA_PRO', '0');
-define('AKEEBA_VERSION', '4.1.0.rc2');
-define('AKEEBA_DATE', '2014-11-19');
+define('AKEEBA_VERSION', '4.1.2');
+define('AKEEBA_DATE', '2015-02-03');

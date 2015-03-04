@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -173,7 +173,7 @@ class acyimportHelper{
 
 		$extension = strtolower(JFile::getExt($importFile['name']));
 		if(in_array($extension, array('xls', 'xlsx'))){
-			acymailing_display('Excel files are not supported.<br/>Please convert your file into CSV :<ol><li>Open your file with Excel</li><li>Select File => Save as...</li><li>For the type, select "CSV (separator: semi-colon) (*.csv)"</li></ol>','error');
+			acymailing_display('Excel files are not supported.<br />Please convert your file into CSV :<ol><li>Open your file with Excel</li><li>Select File => Save as...</li><li>For the type, select "CSV (separator: semi-colon) (*.csv)"</li></ol>','error');
 			return false;
 		}
 
@@ -365,8 +365,51 @@ class acyimportHelper{
 			if(!empty($this->charsetConvert)){
 				$importLines[$i] = $encodingHelper->change($importLines[$i],$this->charsetConvert,'UTF-8');
 			}
+			if(strpos($importLines[$i], '"') !== false){
+				$data = array();
+				$j = $i+1;
+				$position = -1;
 
-			$data = explode($this->separator,rtrim(trim($importLines[$i]),$this->separator));
+				while($j < ($i+30)){
+
+					$quoteOpened = substr($importLines[$i], $position +1, 1) == '"';
+
+					if($quoteOpened){
+						$nextQuotePosition = strpos($importLines[$i], '"', $position+2);
+						if($nextQuotePosition === false){
+							if(!isset($importLines[$j])) break;
+
+							if(!empty($this->charsetConvert)) $importLines[$i] .= "\n".$encodingHelper->change($importLines[$j],$this->charsetConvert,'UTF-8');
+							else $importLines[$i] .= "\n".$importLines[$j];
+							$importLines[$i] = rtrim($importLines[$i], $this->separator);
+							unset($importLines[$j]);
+							$j++;
+							continue;
+						}else{
+
+							if(strlen($importLines[$i])-1 == $nextQuotePosition){
+								$data[] = substr($importLines[$i], $position+1);
+								break;
+							}
+							$data[] = substr($importLines[$i], $position+1, $nextQuotePosition+1 -($position+1));
+							$position = $nextQuotePosition+1;
+						}
+					}else{
+						$nextSeparatorPosition = strpos($importLines[$i], $this->separator, $position+1);
+						if($nextSeparatorPosition === false){
+							$data[] = substr($importLines[$i], $position+1);
+							break;
+						}else{ // If found the next separator, add the value in $data and change the position
+							$data[] = substr($importLines[$i], $position+1, $nextSeparatorPosition -($position+1));
+							$position = $nextSeparatorPosition;
+						}
+					}
+				}
+
+				$importLines = array_merge($importLines);
+			}else{
+				$data = explode($this->separator,rtrim(trim($importLines[$i]),$this->separator));
+			}
 
 			if(!empty($this->removeSep)){
 				for($b = $numberColumns+$this->removeSep-1;$b >= $numberColumns;$b-- ){
@@ -392,7 +435,7 @@ class acyimportHelper{
 			}
 
 			if(count($data) < $numberColumns){
-				for($a=count($data);$a<$numberColumns;$a++){
+				for($a=count($data) ; $a<$numberColumns ; $a++){
 					$data[$a] = '';
 				}
 			}
@@ -482,7 +525,6 @@ class acyimportHelper{
 		}
 
 		$this->_subscribeUsers();
-
 		return $success;
 	}
 
@@ -746,16 +788,31 @@ class acyimportHelper{
 
 		if(empty($listsSubscribe)) return true;
 
+		if(acymailing_level(3)){
+			$listClass= acymailing_get('class.list');
+			$campaignClass = acymailing_get('helper.campaign');
+			$listCampaign = $listClass->getCampaigns(array_keys($lists));
+			foreach($lists as $listid => $val){
+				if($val == 2 && !empty($listCampaign[$listid])){
+					$query = 'SELECT sub.subid FROM #__acymailing_subscriber sub LEFT JOIN #__acymailing_listsub list ON sub.subid=list.subid AND list.listid='.intval($listid).' WHERE list.subid IS NULL AND sub.userid > 0 ';
+					$this->db->setQuery($query);
+					$listSubidNotInList = acymailing_loadResultArray($this->db);
+					if(empty($listSubidNotInList)) continue;
+					foreach($listCampaign[$listid] as $campaignId){
+						$campaignClass->autoSubCampaign($listSubidNotInList, $campaignId);
+					}
+				}
+			}
+		}
+
 		$query = 'INSERT IGNORE INTO '.acymailing_table('listsub').' (`listid`,`subid`,`subdate`,`status`) ';
 		$query.= 'SELECT a.`listid`, b.`subid` ,'.$time.',1 FROM '.acymailing_table('list').' as a, '.acymailing_table('subscriber').' as b  WHERE a.`listid` IN ('.implode(',',$listsSubscribe).') AND b.`userid` > 0';
 		$this->db->setQuery($query);
 		$this->db->query();
 		$nbsubscribed = $this->db->getAffectedRows();
-
 		$app->enqueueMessage(JText::sprintf('IMPORT_SUBSCRIPTION',$nbsubscribed));
 
 		return true;
-
 	}
 
 	function acajoom(){
@@ -1469,7 +1526,7 @@ class acyimportHelper{
 		$searchResult = ldap_search($this->ldap_conn,$this->ldap_basedn,$search,$this->ldap_selectedFields);
 		$app = JFactory::getApplication();
 		if(!$searchResult){
-			acymailing_display('Could not search for elements<br/>'.ldap_error($this->ldap_conn),'warning');
+			acymailing_display('Could not search for elements<br />'.ldap_error($this->ldap_conn),'warning');
 			return false;
 		}
 		$entries = ldap_get_entries($this->ldap_conn,$searchResult);
@@ -1542,7 +1599,7 @@ class acyimportHelper{
 		}
 
 		if(!$bindResult){
-			acymailing_display('Could not bind to the LDAP directory '.$newConfig->ldap_host.':'.$newConfig->ldap_port.' with specified username and password<br/>'.ldap_error($this->ldap_conn),'warning');
+			acymailing_display('Could not bind to the LDAP directory '.$newConfig->ldap_host.':'.$newConfig->ldap_port.' with specified username and password<br />'.ldap_error($this->ldap_conn),'warning');
 			return false;
 		}
 
@@ -1559,7 +1616,7 @@ class acyimportHelper{
 
 		$searchResult = @ldap_search($this->ldap_conn,trim(JRequest::getString('ldap_basedn')),'mail=*@*',array(),0,5);
 		if(!$searchResult){
-			acymailing_display('Could not search for elements<br/>'.ldap_error($this->ldap_conn),'warning');
+			acymailing_display('Could not search for elements<br />'.ldap_error($this->ldap_conn),'warning');
 			return false;
 		}
 		$entries = ldap_get_entries($this->ldap_conn,$searchResult);
@@ -1585,7 +1642,7 @@ class acyimportHelper{
 		}
 
 		if(empty($fields)){
-			acymailing_display('Could not load elements<br/>'.ldap_error($this->ldap_conn),'warning');
+			acymailing_display('Could not load elements<br />'.ldap_error($this->ldap_conn),'warning');
 			return false;
 		}
 
@@ -1611,7 +1668,7 @@ class acyimportHelper{
 		$lists = $listClass->getLists('listid');
 
 		for($i=0;$i<5;$i++){
-			echo '<br/>Subscribe to list '.JHTML::_('select.genericlist',  $lists, 'ldap_sublists['.$i.']', 'class="inputbox" size="1" ', 'listid', 'name', (int) $config->get('ldap_sublists_'.$i)).' if the value is <input type="text" value="'.htmlspecialchars($config->get('ldap_subcond_'.$i),ENT_COMPAT, 'UTF-8').'" name="ldap_subcond['.$i.']" />';
+			echo '<br />Subscribe to list '.JHTML::_('select.genericlist',  $lists, 'ldap_sublists['.$i.']', 'class="inputbox" size="1" ', 'listid', 'name', (int) $config->get('ldap_sublists_'.$i)).' if the value is <input type="text" value="'.htmlspecialchars($config->get('ldap_subcond_'.$i),ENT_COMPAT, 'UTF-8').'" name="ldap_subcond['.$i.']" />';
 		}
 		echo '</fieldset>';
 
@@ -1647,6 +1704,7 @@ class acyimportHelper{
 			$confirmedUsers = $config->get('zoho_confirmed');
 			$delete = $config->get('zoho_delete');
 			$generateName = $config->get('zoho_generate_name', 'fromemail');
+			$importnew = $config->get('zoho_importnew', 0);
 		}else{
 			$list = JRequest::getVar('zoho_list');
 			$fields = JRequest::getVar('zoho_fields');
@@ -1664,6 +1722,8 @@ class acyimportHelper{
 			$newConfig->zoho_confirmed = $confirmedUsers;
 			$newConfig->zoho_delete = $delete;
 			$newConfig->zoho_generate_name = $generateName = JRequest::getVar('zoho_generate_name', 'fromemail');
+			$newConfig->zoho_importnew = $importnew = JRequest::getVar('zoho_importnew', 0);
+			$newConfig->zoho_importdate = date('Y-m-d H:i:s');
 			$config->save($newConfig);
 		}
 

@@ -3,7 +3,7 @@
 * Community Builder (TM)
 * @version $Id: $
 * @package CommunityBuilder
-* @copyright (C) 2004-2014 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2015 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -39,15 +39,15 @@ $mode								=	(int) $params->get( 'mode', 1 );
 $feedEntries						=	(int) $params->get( 'feed_entries', 5 );
 $feedDuration						=	(int) $params->get( 'feed_duration', 12 );
 $modalDisplay						=	(int) $params->get( 'modal_display', 1 );
-$modalWidth							=	(int) $params->get( 'modal_width', 800 );
-$modalHeight						=	(int) $params->get( 'modal_height', 500 );
+$modalWidth							=	$params->get( 'modal_width', '90%' );
+$modalHeight						=	$params->get( 'modal_height', '90vh' );
 
 if ( ! $modalWidth ) {
-	$modalWidth						=	800;
+	$modalWidth						=	'90%';
 }
 
 if ( ! $modalHeight ) {
-	$modalHeight					=	500;
+	$modalHeight					=	'90vh';
 }
 
 $_CB_framework->document->addHeadStyleSheet( $_CB_framework->getCfg( 'live_site' ) . '/administrator/modules/mod_cbadmin/mod_cbadmin.css' );
@@ -76,12 +76,17 @@ switch ( $mode ) {
 		$messages					=	array();
 
 		if ( $cbVersion && ( version_compare( $cbVersion, $ueConfig['version'] ) > 0 ) ) {
+			modCBAdminHelper::enableUpdateSite();
+
 			$latestVersion			=	'<span class="cbUpdateVersion label label-danger">' . $cbVersion . '</span>';
 
-			$updateButton			=	'<a href="https://www.joomlapolis.com/?pk_campaign=in-cb&amp;pk_kwd=admin-module-update-button" target="_blank"><button class="btn btn-primary cbUpdateButton">' . CBTxt::T( 'Update Now' ) . '</button></a>';
+			$learnButton			=	'<a href="https://www.joomlapolis.com/?pk_campaign=in-cb&amp;pk_kwd=admin-module-update-button" target="_blank"><button class="btn btn-primary cbLearnButton">' . CBTxt::T( 'Learn More' ) . '</button></a>';
+
+			/** @noinspection HtmlUnknownTarget */
+			$updateButton			=	'<a href="index.php?option=com_installer&amp;view=update"><button class="btn btn-primary cbUpdateButton">' . CBTxt::T( 'Update Now' ) . '</button></a>';
 
 			$messages[]				=	'<div class="cbUpdateNotification alert alert-danger">'
-									.			CBTxt::T( 'COMMUNITY_BUILDER_VERSION_VERSION_IS_AVAILABLE_BUTTON', 'Community Builder version [version] is available: [button]', array( '[version]' => $latestVersion, '[button]' => $updateButton ) )
+									.			CBTxt::T( 'COMMUNITY_BUILDER_VERSION_VERSION_IS_AVAILABLE_BUTTON', 'Community Builder version [version] is available: [learn_button] [update_button]', array( '[version]' => $latestVersion, '[learn_button]' => $learnButton, '[update_button]' => $updateButton ) )
 									.	'</div>';
 		}
 

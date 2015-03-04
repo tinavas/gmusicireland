@@ -1,16 +1,16 @@
 <?php
 /**
  * @package         Advanced Module Manager
- * @version         4.18.3
+ * @version         4.20.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
 /**
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -28,7 +28,8 @@ class AdvancedModulesModelModules extends JModelList
 	/**
 	 * Constructor.
 	 *
-	 * @param   array  An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
 	 * @see     JController
 	 * @since   1.6
 	 */
@@ -49,7 +50,7 @@ class AdvancedModulesModelModules extends JModelList
 				'access', 'a.access', 'access_level',
 				'ordering', 'a.ordering',
 				'module', 'a.module',
-				'language', 'a.language',
+				'language', 'a.language', 'language_title',
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
 				'client_id', 'a.client_id',
@@ -66,6 +67,11 @@ class AdvancedModulesModelModules extends JModelList
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
 	 *
 	 * @since   1.6
 	 */
@@ -93,6 +99,7 @@ class AdvancedModulesModelModules extends JModelList
 		$this->setState('filter.menuid', $menuid);
 
 		$clientId = $app->input->getString('client_id', '');
+
 		if ($clientId !== '')
 		{
 			if ($clientId != $app->getUserState($this->context . '.client_id'))
@@ -104,6 +111,7 @@ class AdvancedModulesModelModules extends JModelList
 		{
 			$clientId = $app->getUserState($this->context . '.client_id');
 		}
+
 		$clientId = (int) $clientId;
 		$this->setState('stfilter.client_id', $clientId);
 
@@ -160,7 +168,7 @@ class AdvancedModulesModelModules extends JModelList
 	 * different modules that might need different sets of data or different
 	 * ordering requirements.
 	 *
-	 * @param   string    A prefix for the store id.
+	 * @param   string  $id  A prefix for the store id.
 	 *
 	 * @return  string    A store id.
 	 */
@@ -182,15 +190,16 @@ class AdvancedModulesModelModules extends JModelList
 	/**
 	 * Returns an object list
 	 *
-	 * @param   string The query
-	 * @param   int    Offset
-	 * @param   int    The number of records
+	 * @param   string  $query       The query
+	 * @param   int     $limitstart  Offset
+	 * @param   int     $limit       The number of records
+	 *
 	 * @return  array
 	 */
 	protected function _getList($query, $limitstart = 0, $limit = 0)
 	{
-		$ordering = strtolower($this->getState('list.ordering'));
-		$orderDirn = strtoupper($this->getState('list.direction'));
+		$ordering = strtolower($this->getState('list.ordering', 'ordering'));
+		$orderDirn = strtoupper($this->getState('list.direction', 'ASC'));
 
 		if (in_array($ordering, array('pages', 'name')))
 		{
@@ -200,11 +209,13 @@ class AdvancedModulesModelModules extends JModelList
 			JArrayHelper::sortObjects($result, $ordering, $orderDirn == 'DESC' ? -1 : 1, true, true);
 			$total = count($result);
 			$this->cache[$this->getStoreId('getTotal')] = $total;
+
 			if ($total < $limitstart)
 			{
 				$limitstart = 0;
 				$this->setState('list.start', 0);
 			}
+
 			return array_slice($result, $limitstart, $limit ? $limit : null);
 		}
 		else if ($ordering == 'color')
@@ -213,6 +224,7 @@ class AdvancedModulesModelModules extends JModelList
 			$result = $this->_db->loadObjectList();
 			$this->translate($result);
 			$newresult = array();
+
 			foreach ($result as $i => $row)
 			{
 				$params = json_decode($row->advancedparams);
@@ -221,6 +233,7 @@ class AdvancedModulesModelModules extends JModelList
 				$color = empty($color) ? 'none' : $color;
 				$newresult['_' . $color . '_' . (($i + 1) / 10000)] = $row;
 			}
+
 			if ($orderDirn == 'DESC')
 			{
 				krsort($newresult);
@@ -229,14 +242,17 @@ class AdvancedModulesModelModules extends JModelList
 			{
 				ksort($newresult);
 			}
+
 			$newresult = array_values($newresult);
 			$total = count($newresult);
 			$this->cache[$this->getStoreId('getTotal')] = $total;
+
 			if ($total < $limitstart)
 			{
 				$limitstart = 0;
 				$this->setState('list.start', 0);
 			}
+
 			return array_slice($newresult, $limitstart, $limit ? $limit : null);
 		}
 		else
@@ -246,17 +262,22 @@ class AdvancedModulesModelModules extends JModelList
 				$query->order('a.position ASC');
 				$ordering = 'a.ordering';
 			}
-			if ($ordering == 'language')
+
+			if ($ordering == 'language_title')
 			{
 				$ordering = 'l.title';
 			}
+
 			$query->order($this->_db->quoteName($ordering) . ' ' . $orderDirn);
+
 			if ($ordering == 'position')
 			{
 				$query->order('a.ordering ASC');
 			}
+
 			$result = parent::_getList($query, $limitstart, $limit);
 			$this->translate($result);
+
 			return $result;
 		}
 	}
@@ -264,7 +285,8 @@ class AdvancedModulesModelModules extends JModelList
 	/**
 	 * Translate a list of objects
 	 *
-	 * @param   array The array of objects
+	 * @param   array  &$items  The array of objects
+	 *
 	 * @return  array The array of translated objects
 	 */
 	protected function translate(&$items)
@@ -293,6 +315,7 @@ class AdvancedModulesModelModules extends JModelList
 					->where('a.id = ' . (int) $params->mirror_moduleid['0']);
 				$db->setQuery($query);
 				$item->pages = $db->loadResult();
+
 				if ($params->mirror_module == 2)
 				{
 					if (is_null($item->pages))
@@ -305,6 +328,7 @@ class AdvancedModulesModelModules extends JModelList
 					}
 				}
 			}
+
 			if (is_null($item->pages))
 			{
 				$item->pages = JText::_('JNONE');
@@ -374,6 +398,7 @@ class AdvancedModulesModelModules extends JModelList
 
 		// Filter by menuid
 		$menuid = $this->getState('filter.menuid');
+
 		switch ($menuid)
 		{
 			case '':
@@ -397,6 +422,7 @@ class AdvancedModulesModelModules extends JModelList
 
 		// Filter by position
 		$position = $this->getState('filter.position');
+
 		if ($position && $position != 'none')
 		{
 			$query->where('a.position = ' . $db->quote($position));
@@ -409,6 +435,7 @@ class AdvancedModulesModelModules extends JModelList
 
 		// Filter by search in title
 		$search = trim($this->getState('filter.search'));
+
 		if (!empty($search))
 		{
 			if (stripos($search, 'id:') === 0)
@@ -436,6 +463,7 @@ class AdvancedModulesModelModules extends JModelList
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
 			$query->where('a.published = ' . (int) $published);
@@ -447,6 +475,7 @@ class AdvancedModulesModelModules extends JModelList
 
 		// Filter by client.
 		$clientId = $this->getState('stfilter.client_id');
+
 		if (is_numeric($clientId))
 		{
 			$query->where('a.client_id = ' . (int) $clientId . ' AND e.client_id =' . (int) $clientId);
@@ -456,6 +485,7 @@ class AdvancedModulesModelModules extends JModelList
 
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
+
 		foreach ($items as $item)
 		{
 			if (JFactory::getUser()->authorise('core.edit', 'com_modules.module.' . $item->id))
@@ -465,6 +495,7 @@ class AdvancedModulesModelModules extends JModelList
 		}
 
 		$query->clear('where');
+
 		if (empty($ids))
 		{
 			$query->where('1 = 0');
@@ -503,6 +534,7 @@ class AdvancedModulesModelModules extends JModelList
 			$parameters = nnParameters::getInstance();
 			$this->config = $parameters->getComponentParams('advancedmodules');
 		}
+
 		return $this->config;
 	}
 }

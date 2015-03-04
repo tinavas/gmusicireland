@@ -3,11 +3,11 @@
  * Item Model
  *
  * @package         Snippets
- * @version         3.5.2
+ * @version         3.5.6
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -31,7 +31,7 @@ class SnippetsModelItem extends JModelAdmin
 	{
 		// Load plugin parameters
 		require_once JPATH_PLUGINS . '/system/nnframework/helpers/parameters.php';
-		$this->parameters = NNParameters::getInstance();
+		$this->parameters = nnParameters::getInstance();
 
 		$this->_config = $this->parameters->getComponentParams('snippets');
 
@@ -186,7 +186,7 @@ class SnippetsModelItem extends JModelAdmin
 		{
 			foreach ($item as $key => $val)
 			{
-				if (is_string($val))
+				if (is_string($val) && $key != 'content')
 				{
 					$item->$key = stripslashes($val);
 				}
@@ -197,7 +197,6 @@ class SnippetsModelItem extends JModelAdmin
 		{
 			$xmlfile = JPATH_ADMINISTRATOR . '/components/com_snippets/item_params.xml';
 			$params = new JForm('jform', array('control' => 'jform'));
-			$registry = new JRegistry;
 			$params->loadFile($xmlfile, 1, '//config');
 			$params->bind($item);
 			$item->form = $params;
@@ -293,9 +292,7 @@ class SnippetsModelItem extends JModelAdmin
 			}
 		}
 
-		$registry = new JRegistry;
-		$registry->loadArray($params);
-		$newdata['params'] = (string) $registry;
+		$newdata['params'] = json_encode($params);
 
 		return $newdata;
 	}
@@ -372,7 +369,7 @@ class SnippetsModelItem extends JModelAdmin
 				{
 					if ($match['1'] && !(strpos($match['1'], '%') === false))
 					{
-						$match['1'] = NNText::dateToDateFormat($match['1']);
+						$match['1'] = nnText::dateToDateFormat($match['1']);
 					}
 					$replace = JHtml::_('date', time(), $match['1']);
 					$str = str_replace($match['0'], $replace, $str);

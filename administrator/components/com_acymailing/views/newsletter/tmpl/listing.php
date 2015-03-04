@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td colspan="10">
 					<?php echo $this->pagination->getListFooter();
 					echo $this->pagination->getResultsCounter();
-					if(ACYMAILING_J30) echo '<br/>'.$this->pagination->getLimitBox(); ?>
+					if(ACYMAILING_J30) echo '<br />'.$this->pagination->getLimitBox(); ?>
 				</td>
 			</tr>
 		</tfoot>
@@ -121,9 +121,9 @@ defined('_JEXEC') or die('Restricted access');
 							if(empty($row->replyemail)) $row->replyemail = $this->config->get('reply_email');
 							if(!empty($row->fromname)){
 								$text = '<b>'.JText::_('FROM_NAME').' : </b>'.$row->fromname;
-								$text .= '<br/><b>'.JText::_('FROM_ADDRESS').' : </b>'.$row->fromemail;
-								$text .= '<br/><br/><b>'.JText::_('REPLYTO_NAME').' : </b>'.$row->replyname;
-								$text .= '<br/><b>'.JText::_('REPLYTO_ADDRESS').' : </b>'.$row->replyemail;
+								$text .= '<br /><b>'.JText::_('FROM_ADDRESS').' : </b>'.$row->fromemail;
+								$text .= '<br /><br /><b>'.JText::_('REPLYTO_NAME').' : </b>'.$row->replyname;
+								$text .= '<br /><b>'.JText::_('REPLYTO_ADDRESS').' : </b>'.$row->replyemail;
 								echo acymailing_tooltip($text, ' ', '', $row->fromname);
 							}
 						?>
@@ -132,9 +132,9 @@ defined('_JEXEC') or die('Restricted access');
 						<?php
 						if(!empty($row->name)){
 							$text = '<b>'.JText::_('JOOMEXT_NAME').' : </b>'.$row->name;
-							$text .= '<br/><b>'.JText::_('ACY_USERNAME').' : </b>'.$row->username;
-							$text .= '<br/><b>'.JText::_('JOOMEXT_EMAIL').' : </b>'.$row->email;
-							$text .= '<br/><b>'.JText::_('ACY_ID').' : </b>'.$row->userid;
+							$text .= '<br /><b>'.JText::_('ACY_USERNAME').' : </b>'.$row->username;
+							$text .= '<br /><b>'.JText::_('JOOMEXT_EMAIL').' : </b>'.$row->email;
+							$text .= '<br /><b>'.JText::_('ACY_ID').' : </b>'.$row->userid;
 							echo acymailing_tooltip($text, $row->name, '', $row->name,'index.php?option=com_users&task=edit&cid[]='.$row->userid);
 						}
 						?>

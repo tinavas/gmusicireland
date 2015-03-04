@@ -1,16 +1,16 @@
 <?php
 /**
  * @package         Advanced Module Manager
- * @version         4.18.3
+ * @version         4.20.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
 /**
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -27,7 +27,14 @@ JLog::add('ModulesHelperXML is deprecated. Do not use.', JLog::WARNING, 'depreca
 class ModulesHelperXML
 {
 	/**
+	 * Parse the module XML file
+	 *
+	 * @param   array  &$rows  XML rows
+	 *
+	 * @return  void
+	 *
 	 * @since       1.5
+	 *
 	 * @deprecated  3.2  Do not use.
 	 */
 	public function parseXMLModuleFile(&$rows)

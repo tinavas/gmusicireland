@@ -3,11 +3,11 @@
  * DB Replacer Default View
  *
  * @package         DB Replacer
- * @version         3.2.0
+ * @version         3.3.1
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -46,7 +46,7 @@ class DBReplacerViewDefault extends JViewLegacy
 		$viewLayout = JFactory::getApplication()->input->get('layout', 'default');
 
 		require_once JPATH_PLUGINS . '/system/nnframework/helpers/parameters.php';
-		$this->parameters = NNParameters::getInstance();
+		$this->parameters = nnParameters::getInstance();
 		$this->config = $this->parameters->getComponentParams('com_dbreplacer');
 
 		JHtml::stylesheet('nnframework/style.min.css', false, true);

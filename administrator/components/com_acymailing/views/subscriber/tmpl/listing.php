@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -77,7 +77,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td colspan="<?php echo $app->isAdmin() ? count($this->displayFields)+9 : count($this->displayFields)+3; ?>">
 					<?php echo $this->pagination->getListFooter();
 					echo $this->pagination->getResultsCounter();
-					if(ACYMAILING_J30) echo '<br/>'.$this->pagination->getLimitBox(); ?>
+					if(ACYMAILING_J30) echo '<br />'.$this->pagination->getLimitBox(); ?>
 				</td>
 			</tr>
 		</tfoot>
@@ -97,7 +97,9 @@ defined('_JEXEC') or die('Restricted access');
 					<td align="center" style="text-align:center" >
 						<?php echo JHTML::_('grid.id', $i, $row->subid); ?>
 					 </td>
-					<?php foreach($this->displayFields as $map => $oneField){
+					<?php
+					$this->customFields->currentUser = $row;
+					foreach($this->displayFields as $map => $oneField){
 						if($map == 'html') continue; ?>
 						<td>
 						<?php
@@ -123,13 +125,13 @@ defined('_JEXEC') or die('Restricted access');
 								$extra = array();
 								$extra['color'] = $this->lists[$listid]->color;
 								$extra['tooltiptitle'] = $this->lists[$listid]->name;
-								$extra['tooltip'] = '<b>'.JText::_('LIST_NAME').' : </b>'.$this->lists[$listid]->name.'<br/>';
+								$extra['tooltip'] = '<b>'.JText::_('LIST_NAME').' : </b>'.$this->lists[$listid]->name.'<br />';
 								if($row->subscription->$listid->status > 0){
 									$extra['tooltip'] .= '<b>'.JText::_('STATUS').' : </b>';
 									$extra['tooltip'] .= ($row->subscription->$listid->status == '1') ? JText::_('SUBSCRIBED') : JText::_('PENDING_SUBSCRIPTION');
-									$extra['tooltip'] .= '<br/><b>'.JText::_('SUBSCRIPTION_DATE').' : </b>'.acymailing_getDate($row->subscription->$listid->subdate);
+									$extra['tooltip'] .= '<br /><b>'.JText::_('SUBSCRIPTION_DATE').' : </b>'.acymailing_getDate($row->subscription->$listid->subdate);
 								}else{
-									$extra['tooltip'] .= '<b>'.JText::_('STATUS').' : </b>'.JText::_('UNSUBSCRIBED').'<br/>';
+									$extra['tooltip'] .= '<b>'.JText::_('STATUS').' : </b>'.JText::_('UNSUBSCRIBED').'<br />';
 									$extra['tooltip'] .= '<b>'.JText::_('UNSUBSCRIPTION_DATE').' : </b>'.acymailing_getDate($row->subscription->$listid->unsubdate);
 								}
 
@@ -140,7 +142,7 @@ defined('_JEXEC') or die('Restricted access');
 						?>
 						</td>
 					<?php } ?>
-					<td align="center" style="text-align:center" >
+					<td align="center" style="text-align:center" class="valuedate">
 						<?php echo acymailing_getDate($row->created); ?>
 					</td>
 
@@ -168,7 +170,7 @@ defined('_JEXEC') or die('Restricted access');
 								$editLink = 'index.php?option=com_users&task=user.edit&id=';
 							}
 							$text = JText::_('ACY_USERNAME').' : <b>'.acymailing_dispSearch($row->username,$this->pageInfo->search);
-							$text .= '</b><br/>'.JText::_('USER_ID').' : <b>'.acymailing_dispSearch($row->userid,$this->pageInfo->search).'</b>';
+							$text .= '</b><br />'.JText::_('USER_ID').' : <b>'.acymailing_dispSearch($row->userid,$this->pageInfo->search).'</b>';
 							echo acymailing_tooltip($text,acymailing_dispSearch($row->username,$this->pageInfo->search),'',acymailing_dispSearch($row->userid,$this->pageInfo->search),$editLink.$row->userid);} ?>
 					</td>
 					<td align="center" style="text-align:center" >

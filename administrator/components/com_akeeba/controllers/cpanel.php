@@ -96,7 +96,7 @@ class AkeebaControllerCpanel extends F0FController
 					}
 					else
 					{
-						$params = new JParameter($component->params);
+						$params = new JRegistry($component->params);
 					}
 
 					$versionLast = $params->get('lastversion', '');

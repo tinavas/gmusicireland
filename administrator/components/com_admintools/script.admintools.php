@@ -197,6 +197,10 @@ class Com_AdmintoolsInstallerScript extends F0FUtilsInstallscript
 
 			// CSS/JS Combination
 			'plugins/system/admintools/admintools/cssmin.php',
+
+			// Obsolete System - Admin Tools files
+			'plugins/system/admintools/admintools/pro.php',
+			'plugins/system/admintools/admintools/core.php',
 		),
 		'folders' => array(
 			'administrator/components/com_admintools/views/acl',

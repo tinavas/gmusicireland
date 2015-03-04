@@ -1,16 +1,16 @@
 <?php
 /**
  * @package         Advanced Module Manager
- * @version         4.18.3
+ * @version         4.20.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
 /**
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -22,7 +22,14 @@ JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.combobox');
 JHtml::_('formbehavior.chosen', 'select');
 
-$hasContent = empty($this->item->module) || $this->item->module == 'custom' || $this->item->module == 'mod_custom';
+$hasContent = empty($this->item->module) || isset($this->item->xml->customContent);
+$hasContentFieldName = 'content';
+
+// For a later improvement
+if ($hasContent)
+{
+	$hasContentFieldName = 'content';
+}
 
 // Get Params Fieldsets
 $this->fieldsets = $this->form->getFieldsets('params');
@@ -34,7 +41,7 @@ Joomla.submitbutton = function(task)
 	if (task == 'module.cancel' || document.formvalidator.isValid(document.id('module-form'))) {";
 if ($hasContent)
 {
-	$script .= $this->form->getField('content')->save();
+	$script .= $this->form->getField($hasContentFieldName)->save();
 }
 $script .= "	Joomla.submitform(task, document.getElementById('module-form'));
 				if (self != top)
@@ -128,7 +135,7 @@ JFactory::getDocument()->addScriptVersion(JURI::root(true) . '/media/nnframework
 				<?php
 				if ($hasContent)
 				{
-					echo $this->form->getInput('content');
+					echo $this->form->getInput($hasContentFieldName);
 				}
 				$this->fieldset = 'basic';
 				$html = JLayoutHelper::render('joomla.edit.fieldset', $this);

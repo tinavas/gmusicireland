@@ -1,18 +1,26 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
-?><style type="text/css">
+?><?php $app = JFactory::getApplication();
+	$backend = $app->isAdmin();?>
+<style type="text/css">
 .respuserinfo{
 	float:left;
+	display:inline-table;
+	<?php if(!$backend){ ?>
+	max-width:900px;
+	min-width:60%;
+	width: 100%;
+	<?php } else{ ?>
 	max-width:600px;
 	min-width:30%;
-	display:inline-table;
+	<?php } ?>
 }
 
 .respuserinfo50{
@@ -29,9 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 
 #acysubscriberinfo{
 	clear:both;
-	<?php $app = JFactory::getApplication();
-	$backend = $app->isAdmin();
-	if(!$backend){
+	<?php if(!$backend){
 		echo "overflow:auto;
 			max-width:750px;
 			min-width:80%";
@@ -263,6 +269,7 @@ defined('_JEXEC') or die('Restricted access');
 			</fieldset>
 <?php if(!empty($this->extraFields)){
 		$app = JFactory::getApplication();
+		$this->fieldsClass->currentUser = $this->subscriber;
 		include(dirname(__FILE__).DS.'extrafields.'.basename(__FILE__));
 } ?>
 
@@ -619,7 +626,7 @@ defined('_JEXEC') or die('Restricted access');
 										$id = 'history_details'.$i;
 										echo '<div style="cursor:pointer;text-align:center" onclick="if(document.getElementById(\''.$id.'\').style.display == \'none\'){document.getElementById(\''.$id.'\').style.display = \'block\'}else{document.getElementById(\''.$id.'\').style.display = \'none\'}">'.JText::_('VIEW_DETAILS').'</div>';
 										echo '<div id="'.$id.'" style="display:none">';
-										if(!empty($row->mailid)) echo '<b>'.JText::_('NEWSLETTER').' : </b>'.$this->escape($row->subject).' ( '.JText::_('ACY_ID').' : '.$row->mailid.' )<br/>';
+										if(!empty($row->mailid)) echo '<b>'.JText::_('NEWSLETTER').' : </b>'.$this->escape($row->subject).' ( '.JText::_('ACY_ID').' : '.$row->mailid.' )<br />';
 										foreach($data as $value){
 											if(!strpos($value,'::')){ echo $value; continue;}
 											list($part1,$part2) = explode("::",$value);

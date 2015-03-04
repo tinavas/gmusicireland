@@ -7,7 +7,7 @@
 	<author>Acyba</author>
 	<authorEmail>dev@acyba.com</authorEmail>
 	<authorUrl>http://www.acyba.com</authorUrl>
-	<copyright>Copyright (C) 2009-2014 ACYBA SARL - All rights reserved.</copyright>
+	<copyright>Copyright (C) 2009-2015 ACYBA SARL - All rights reserved..</copyright>
 	<license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
 	<description>This plugin enables you to remove some text from your Newsletter or add a signature at the end of all your Newsletters or add/remove an e-mail from the queue...</description>
 	<files>
@@ -30,6 +30,10 @@
 		<param name="bccaddresses3" type="text" size="50" default="" label="BCC addresses 3" description="Add here the e-mails addresses (separated by a comma) you want to add as BCC" />
 		<param name="bccmailids3" type="text" size="20" default="" label="Ids of Newsletters 3" description="Add here the Ids of the Newsletters separated by a comma on which we should add the e-mail addresses as BCC" />
 
+		<param name="frontendaccess" type="list" default="all" label="Front-end Access for filter" description="You can restrict the access to the filter 'Randomly select X Users' on the Front-end">
+			<option value="all">Always display this filter</option>
+			<option value="none">Don't display this filter on the front-end</option>
+		</param>
 	</params>
 	<config>
 		<fields name="params" addfieldpath="/components/com_acymailing/params">
@@ -50,6 +54,10 @@
 				<field name="bccaddresses3" type="text" size="50" default="" label="BCC addresses 3" description="Add here the e-mails addresses (separated by a comma) you want to add as BCC" />
 				<field name="bccmailids3" type="text" size="20" default="" label="Ids of Newsletters 3" description="Add here the Ids of the Newsletters separated by a comma on which we should add the e-mail addresses as BCC" />
 
+				<field name="frontendaccess" type="list" default="all" label="Front-end Access for filter" description="You can restrict the access to the filter 'Randomly select X Users' on the Front-end">
+					<option value="all">Always display this filter</option>
+					<option value="none">Don't display this filter on the front-end</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

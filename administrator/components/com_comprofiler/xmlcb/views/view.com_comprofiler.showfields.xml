@@ -47,6 +47,14 @@
 				</filters>
 				<orderby>
 					<ordergroup name="ordering_asc" label="Order ascending" default="true" translate-default="no">
+						<field name="tabposition_comment" type="sql:string" ordering="ASC">
+							<data name="position" type="sql:field" table="#__comprofiler_tabs" class="\CB\Database\Table\TabTable">
+								<joinkeys type="inner" dogroupby="false">
+									<column name="fields" operator="=" value="1" type="sql:field" valuetype="const:int" />
+									<column name="tabid" operator="=" value="tabid" type="sql:field" valuetype="sql:field" />
+								</joinkeys>
+							</data>
+						</field>
 						<field name="tabordering_comment" type="sql:int" ordering="ASC">
 							<data name="ordering" type="sql:field" table="#__comprofiler_tabs" class="\CB\Database\Table\TabTable">
 								<joinkeys type="inner" dogroupby="false">
@@ -59,6 +67,14 @@
 						<field name="name" ordering="ASC" />
 					</ordergroup>
 					<ordergroup name="ordering_desc" label="Order descending">
+						<field name="tabposition_comment" type="sql:string" ordering="ASC">
+							<data name="position" type="sql:field" table="#__comprofiler_tabs" class="\CB\Database\Table\TabTable">
+								<joinkeys type="inner" dogroupby="false">
+									<column name="fields" operator="=" value="1" type="sql:field" valuetype="const:int" />
+									<column name="tabid" operator="=" value="tabid" type="sql:field" valuetype="sql:field" />
+								</joinkeys>
+							</data>
+						</field>
 						<field name="tabordering_comment" type="sql:int" ordering="ASC">
 							<data name="ordering" type="sql:field" table="#__comprofiler_tabs" class="\CB\Database\Table\TabTable">
 								<joinkeys type="inner" dogroupby="false">

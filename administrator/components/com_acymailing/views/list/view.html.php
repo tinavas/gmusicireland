@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -33,9 +33,11 @@ class ListViewList extends acymailingView
 
 		$pageInfo->filter->order->value = $app->getUserStateFromRequest( $paramBase.".filter_order", 'filter_order',	'a.ordering','cmd' );
 		$pageInfo->filter->order->dir	= $app->getUserStateFromRequest( $paramBase.".filter_order_Dir", 'filter_order_Dir',	'asc',	'word' );
+		if(strtolower($pageInfo->filter->order->dir) !== 'desc') $pageInfo->filter->order->dir = 'asc';
 		$pageInfo->search = $app->getUserStateFromRequest( $paramBase.".search", 'search', '', 'string' );
 		$pageInfo->search = JString::strtolower(trim($pageInfo->search));
 		$selectedCreator = $app->getUserStateFromRequest( $paramBase."filter_creator",'filter_creator',0,'int');
+		$selectedCategory = $app->getUserStateFromRequest( $paramBase."filter_category",'filter_category',0,'string');
 
 		$pageInfo->limit->value = $app->getUserStateFromRequest( $paramBase.'.list_limit', 'limit', $app->getCfg('list_limit'), 'int' );
 		$pageInfo->limit->start = $app->getUserStateFromRequest( $paramBase.'.limitstart', 'limitstart', 0, 'int' );
@@ -49,6 +51,7 @@ class ListViewList extends acymailingView
 		}
 		$filters[] = "a.type = 'list'";
 		if(!empty($selectedCreator)) $filters[] = 'a.userid = '.$selectedCreator;
+		if(!empty($selectedCategory)) $filters[] = 'a.category = '.$database->Quote($selectedCategory);
 
 		$query = 'SELECT a.*, d.name as creatorname, d.username, d.email';
 		$query .= ' FROM '.acymailing_table('list').' as a';
@@ -126,6 +129,8 @@ class ListViewList extends acymailingView
 		$filters = new stdClass();
 		$listcreatorType = acymailing_get('type.listcreator');
 		$filters->creator = $listcreatorType->display('filter_creator',$selectedCreator);
+		$listcategoryType = acymailing_get('type.categoryfield');
+		$filters->category = $listcategoryType->getFilter('list', 'filter_category', $selectedCategory, ' onchange="document.adminForm.submit();"');
 
 		$this->assignRef('filters',$filters);
 		$this->assignRef('order',$order);
@@ -154,6 +159,7 @@ class ListViewList extends acymailingView
 			$list = new stdClass();
 			$list->visible = 1;
 			$list->description = '';
+			$list->category = '';
 			$list->published = 1;
 			$user = JFactory::getUser();
 			$list->creatorname = $user->name;

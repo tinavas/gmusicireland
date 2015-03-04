@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -18,7 +18,7 @@ class plgAcymailingTagsubscriber extends JPlugin
 		parent::__construct($subject, $config);
 		if(!isset($this->params)){
 			$plugin = JPluginHelper::getPlugin('acymailing', 'tagsubscriber');
-			$this->params = new JParameter( $plugin->params );
+			$this->params = new acyParameter( $plugin->params );
 		}
 	}
 
@@ -56,11 +56,11 @@ class plgAcymailingTagsubscriber extends JPlugin
 				$text .= '<tr style="cursor:pointer" class="row'.$k.'" onclick="setTag(\'{user:'.$fieldname.$type.'}\');insertTag();" ><td class="acytdcheckbox"></td><td>'.$fieldname.'</td><td>'.$descriptions[$fieldname].'</td></tr>';
 				$k = 1-$k;
 			}
-			$text .= '</table><br/><br/>';
+			$text .= '</table><br /><br />';
 			echo $text;
 		}
 
-		$text = JText::_('RECEIVER_INFORMATION') . '<br/><table class="adminlist table table-striped table-hover" cellpadding="1">';
+		$text = JText::_('RECEIVER_INFORMATION') . '<br /><table class="adminlist table table-striped table-hover" cellpadding="1">';
 
 		$others = array();
 		$others['{subtag:name|part:first|ucfirst}'] = array('name'=> JText::_('SUBSCRIBER_FIRSTPART'), 'desc'=>JText::_('SUBSCRIBER_FIRSTPART').' '.JText::_('SUBSCRIBER_FIRSTPART_DESC'));
@@ -224,18 +224,26 @@ class plgAcymailingTagsubscriber extends JPlugin
 		$jsOnChange = "if(document.getElementById('action__num__acymailingfieldvalvalue')!= undefined){ currentVal=document.getElementById('action__num__acymailingfieldvalvalue').value;} else{currentVal='';}
 			displayCondFilter('displayFieldPossibleValues', 'toChangeAction__num__',__num__,'map='+document.getElementById('action__num__acymailingfieldvalmap').value+'&value='+currentVal); ";
 
+	 	$operator = array();
+		$operator[] = JHTML::_('select.option','=', '=');
+		$operator[] = JHTML::_('select.option','+', '+');
+		$operator[] = JHTML::_('select.option','-', '-');
+		$operator[] = JHTML::_('select.option','addend', JText::_('ACY_OPERATOR_ADDEND'));
+		$operator[] = JHTML::_('select.option','addbegin', JText::_('ACY_OPERATOR_ADDBEGINNING'));
+
 		$content .= '<div id="action__num__acymailingfieldval">'.JHTML::_('select.genericlist', $field, "action[__num__][acymailingfieldval][map]", 'onchange="'.$jsOnChange.'" class="inputbox" size="1"', 'value', 'text');
-		$content .= ' = <span id="toChangeAction__num__"><input class="inputbox" type="text" id="action__num__acymailingfieldvalvalue" name="action[__num__][acymailingfieldval][value]" style="width:200px" value=""></span></div>';
+		$content .= ' '.JHTML::_('select.genericlist',   $operator, "action[__num__][acymailingfieldval][operator]", 'class="inputbox" size="1" style="width:150px;"', 'value', 'text', '=');
+		$content .= ' <span id="toChangeAction__num__"><input class="inputbox" type="text" id="action__num__acymailingfieldvalvalue" name="action[__num__][acymailingfieldval][value]" style="width:200px" value=""></span></div>';
 
 		$type['acymailingfieldval'] = JText::_('SET_SUBSCRIBER_VALUE');
 
 	 	return $content;
-	 }
+	}
 
-	 function onAcyTriggerFct_displayFieldPossibleValues(){
+	function onAcyTriggerFct_displayFieldPossibleValues(){
  		$num = JRequest::getInt('num');
 		$map = JRequest::getCmd('map');
-		$value = JRequest::getCmd('value');
+		$value = JRequest::getString('value');
 
 		$emptyInputReturn = '<input class="inputbox" type="text" name="action['.$num.'][acymailingfieldval][value]" id="action'.$num.'acymailingfieldvalvalue" style="width:200px" value="'.$value.'">';
 
@@ -246,7 +254,7 @@ class plgAcymailingTagsubscriber extends JPlugin
 		if(empty($myField) || !in_array($myField->type, array('radio', 'checkbox', 'singledropdown', 'multipledropdown'))) return $emptyInputReturn;
 
 		return $fieldClass->display($myField, '', 'action['.$num.'][acymailingfieldval][value]');
-	 }
+	}
 
 	function onAcyProcessAction_acymailingfieldval($cquery,$action,$num){
 
@@ -254,12 +262,49 @@ class plgAcymailingTagsubscriber extends JPlugin
 		$replace = array('{year}','{month}','{day}');
 		$replaceBy = array(date('Y'),date('m'),date('d'));
 		$value = str_replace($replace,$replaceBy,$value);
+		if(empty($action['operator'])) $action['operator'] = '=';
+
+		preg_match_all('#(?:{|%7B)field:(.*)(?:}|%7D)#Ui', $value, $tags);
+		$fields = array_keys(acymailing_getColumns('#__acymailing_subscriber'));
+
+		if(in_array($action['operator'], array('+', '-'))){
+			if(empty($tags)){
+				$value = intval($value);
+			}else{
+				if(count($tags[1]) > 1 || substr($value,0,1) != '{' || substr($value,strlen($value)-1,1) != '}'){
+					return 'You can\'t use more than one tag for the + and - operators (you also can\'t add or remove a value from the inserted tag for these two operators)';
+				}
+				if(!in_array($tags[1][0], $fields)) return 'Unexisting field: '.$tags[1][0].' | The available fields are: '.implode(', ', $fields);
+				$value = 'sub.`'.acymailing_secureField($tags[1][0]).'`';
+			}
+		}else{
+			$value = $cquery->db->Quote($value);
+			if(!empty($tags)){
+				foreach($tags[1] as $i => $oneField){
+					if(!in_array($oneField, $fields)) return 'Unexisting field: '.$oneField.' | The available fields are: '.implode(', ', $fields);
+					$value = str_replace($tags[0][$i], "', sub.`".acymailing_secureField($oneField)."`, '", $value);
+				}
+				$value = "CONCAT(".$value.")";
+			}
+		}
 
 		$query = 'UPDATE #__acymailing_subscriber as sub';
 		if(!empty($cquery->join)) $query .= ' JOIN '.implode(' JOIN ',$cquery->join);
 		if(!empty($cquery->leftjoin)) $query .= ' LEFT JOIN '.implode(' LEFT JOIN ',$cquery->leftjoin);
 
-		$query .= " SET sub.`".$action['map']."` = ".$cquery->db->Quote($value);
+		if($action['operator'] == '='){
+			$newValue = $value;
+		}elseif(in_array($action['operator'], array('+', '-'))){
+			$newValue = "sub.`".acymailing_secureField($action['map'])."` ".$action['operator']." ".$value;
+		}elseif($action['operator'] == 'addend'){
+			$newValue = "CONCAT(sub.`".acymailing_secureField($action['map'])."`, ".$value.")";
+		}elseif($action['operator'] == 'addbegin'){
+			$newValue = "CONCAT(".$value.", sub.`".acymailing_secureField($action['map'])."`)";
+		}else{
+			return 'Non existing operator: '.$action['operator'];
+		}
+
+		$query .= " SET sub.`".acymailing_secureField($action['map'])."` = ".$newValue;
 		if(!empty($cquery->where)) $query .= ' WHERE ('.implode(') AND (',$cquery->where).')';
 
 		$cquery->db->setQuery($query);
@@ -268,7 +313,7 @@ class plgAcymailingTagsubscriber extends JPlugin
 		return JText::sprintf('NB_MODIFIED',$nbAffected);
 	}
 
-	 function onAcyProcessAction_acymailingfield($cquery,$action,$num){
+	function onAcyProcessAction_acymailingfield($cquery,$action,$num){
 
 		$subClass = acymailing_get('class.subscriber');
 

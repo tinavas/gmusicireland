@@ -3,11 +3,11 @@
  * Item Model
  *
  * @package         ReReplacer
- * @version         5.12.2
+ * @version         5.13.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -31,7 +31,7 @@ class ReReplacerModelItem extends JModelAdmin
 	{
 		// Load plugin parameters
 		require_once JPATH_PLUGINS . '/system/nnframework/helpers/parameters.php';
-		$this->parameters = NNParameters::getInstance();
+		$this->parameters = nnParameters::getInstance();
 
 		parent::__construct();
 	}
@@ -55,6 +55,7 @@ class ReReplacerModelItem extends JModelAdmin
 			return false;
 		}
 		$user = JFactory::getUser();
+
 		return $user->authorise('core.admin', 'com_rereplacer');
 	}
 
@@ -160,6 +161,7 @@ class ReReplacerModelItem extends JModelAdmin
 			if ($return === false && $table->getError())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 		}
@@ -194,13 +196,43 @@ class ReReplacerModelItem extends JModelAdmin
 		{
 			$xmlfile = JPATH_ADMINISTRATOR . '/components/com_rereplacer/item_params.xml';
 			$params = new JForm('jform', array('control' => 'jform'));
-			$registry = new JRegistry;
 			$params->loadFile($xmlfile, 1, '//config');
 			$params->bind($item);
 			$item->form = $params;
 		}
 
 		return $item;
+	}
+
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param   array $data The form data.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   1.6
+	 */
+	public function save($data)
+	{
+		require_once JPATH_PLUGINS . '/system/nnframework/helpers/text.php';
+
+		$params = json_decode($data['params'], 1);
+
+		// correct the publish date details
+		if (isset($params['assignto_date_publish_up']))
+		{
+			nnText::fixDateOffset($params['assignto_date_publish_up']);
+		}
+
+		if (isset($params['assignto_date_publish_down']))
+		{
+			nnText::fixDateOffset($params['assignto_date_publish_down']);
+		}
+
+		$data['params'] = json_encode($params);
+
+		return parent::save($data);
 	}
 
 	/**
@@ -227,6 +259,7 @@ class ReReplacerModelItem extends JModelAdmin
 		{
 			$pks = array();
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
+
 			return false;
 		}
 
@@ -244,9 +277,11 @@ class ReReplacerModelItem extends JModelAdmin
 			if ($error = $this->_db->getErrorMsg())
 			{
 				$this->setError($error);
+
 				return false;
 			}
 		}
+
 		return true;
 	}
 
@@ -261,6 +296,7 @@ class ReReplacerModelItem extends JModelAdmin
 		if (empty($data['name']))
 		{
 			$this->setError(JText::_('RR_THE_ITEM_MUST_HAVE_A_NAME'));
+
 			return $newdata;
 		}
 
@@ -270,6 +306,7 @@ class ReReplacerModelItem extends JModelAdmin
 			if (trim($data['xml']) == '')
 			{
 				$this->setError(JText::_('RR_THE_ITEM_MUST_HAVE_AN_XML_FILE'));
+
 				return $newdata;
 			}
 		}
@@ -278,11 +315,13 @@ class ReReplacerModelItem extends JModelAdmin
 			if (trim($data['search']) == '')
 			{
 				$this->setError(JText::_('RR_THE_ITEM_MUST_HAVE_SOMETHING_TO_SEARCH_FOR'));
+
 				return $newdata;
 			}
 			else if (strlen(trim($data['search'])) < 3)
 			{
 				$this->setError(JText::sprintf('RR_THE_SEARCH_STRING_SHOULD_BE_LONGER', 2));
+
 				return $newdata;
 			}
 		}
@@ -304,9 +343,7 @@ class ReReplacerModelItem extends JModelAdmin
 			}
 		}
 
-		$registry = new JRegistry;
-		$registry->loadArray($params);
-		$newdata['params'] = (string) $registry;
+		$newdata['params'] = json_encode($params);
 
 		return $newdata;
 	}

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+  	<name>com_cwtags</name>
+  	<author>Cesky WEB s.r.o.</author>
+  	<creationDate>May 2014</creationDate>
+  	<copyright>(C) 2014 Cesky WEB s.r.o. All rights reserved.
+  	</copyright>
+  	<license>GNU General Public License version 2 or later; see
+  		LICENSE.txt</license>
+  	<authorEmail>info@cesky-web.com</authorEmail>
+  	<authorUrl>www.cesky-web.com</authorUrl>
+  	<version>1.1.8</version>
+  	<description>COM_CWTAGS_XML_DESCRIPTION</description>
+	  <scriptfile>script.php</scriptfile>
+
+  	<install> <!-- Runs on install -->
+  		<sql>
+  			<file driver="mysql" charset="utf8">sql/install_data.sql</file>
+  		</sql>
+  	</install>
+  	<uninstall> <!-- Runs on uninstall -->
+  		<sql>
+  			<file driver="mysql" charset="utf8">sql/uninstall.sql</file>
+  		</sql>
+  	</uninstall>
+    <update>
+  		<schemas>
+  			<schemapath type="mysql">sql/updates</schemapath>
+  		</schemas>
+  	</update>
+    
+  	<files folder="site">
+  		<filename>cwtags.php</filename>
+  		<filename>controller.php</filename>
+  		<filename>index.html</filename>
+  		<filename>router.php</filename>
+  		<folder>assets</folder>
+      <folder>helpers</folder>
+  		<folder>models</folder>
+      <folder>views</folder>
+  	</files>
+  	<languages folder="site">
+  		<language tag="en-GB">language/en-GB/en-GB.com_cwtags.ini</language>
+  		<language tag="cs-CZ">language/cs-CZ/cs-CZ.com_cwtags.ini</language>
+  	</languages>
+  	<administration>
+  		<menu img="components/com_cwtags/assets/images/icon-16-cwtag.png">COM_CWTAGS</menu>
+  		<submenu>
+  			<!--
+  				Note that all & must be escaped to &amp; for the file to be valid
+  				XML and be parsed by the installer
+  			-->
+  			<menu link="option=com_cwtags" view="cwtags" img="components/com_cwtags/assets/images/icon-16-cwtag.png"
+  				alt="cwtags/cwtags">COM_CWTAGS_CWTAGS</menu>
+  			<menu link="option=com_categories&amp;extension=com_cwtags"
+  				view="categories" img="components/com_cwtags/assets/images/icon-16-cwtag-categories.png" alt="cwtags/Categories">COM_CWTAGS_CATEGORIES</menu>
+  
+  		</submenu>
+  		<files folder="admin">
+  			<filename>access.xml</filename>
+  			<filename>config.xml</filename>
+  			<filename>controller.php</filename>
+  			<filename>cwtags.php</filename>
+        <filename>index.html</filename>
+  			<folder>controllers</folder>
+        <folder>assets</folder>
+  			<folder>helpers</folder>
+  			<folder>models</folder>
+        <folder>sql</folder>        
+  			<folder>tables</folder>
+  			<folder>views</folder>
+  		</files>
+  		<languages folder="admin">
+  			<language tag="en-GB">language/en-GB/en-GB.com_cwtags.ini</language>
+  			<language tag="en-GB">language/en-GB/en-GB.com_cwtags.sys.ini</language>
+  			<language tag="cs-CZ">language/cs-CZ/cs-CZ.com_cwtags.ini</language>
+  			<language tag="cs-CZ">language/cs-CZ/cs-CZ.com_cwtags.sys.ini</language>
+  		</languages>
+  	</administration>
+    <!-- UPDATESERVER DEFINITION -->
+    <updateservers>
+      <!-- Note: No spaces or linebreaks allowed between the server tags -->
+      <server type="extension" priority="1" name="CW Tags Update server">http://extensions.cesky-web.eu/update/com_cwtags-update.xml</server>
+    </updateservers>     
+</extension>
+

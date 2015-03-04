@@ -2,23 +2,18 @@
 <extension version="3.2" type="component" method="upgrade">
 	<name>COM_CONTENTTEMPLATER</name>
 	<description>COM_CONTENTTEMPLATER_DESC</description>
-	<version>4.10.2FREE</version>
-	<creationDate>November 2014</creationDate>
+	<version>4.12.2FREE</version>
+	<creationDate>February 2015</creationDate>
 	<author>NoNumber (Peter van Westen)</author>
 	<authorEmail>peter@nonumber.nl</authorEmail>
 	<authorUrl>http://www.nonumber.nl</authorUrl>
-	<copyright>Copyright © 2014 NoNumber All Rights Reserved</copyright>
+	<copyright>Copyright © 2015 NoNumber All Rights Reserved</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 
 	<administration>
 		<menu img="../media/contenttemplater/images/icon_contenttemplater.png">COM_CONTENTTEMPLATER</menu>
 	</administration>
 
-	<!-- Installation -->
-	<uninstallfile>uninstall.contenttemplater.php</uninstallfile>
-	<uninstall>
-		<sql>
-			<file driver="mysql" charset="utf8">uninstall.contenttemplater.sql</file>
-		</sql>
-	</uninstall>
+	<!-- installation/uninstallation -->
+	<scriptfile>script.contenttemplater.php</scriptfile>
 </extension>

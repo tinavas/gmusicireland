@@ -3,11 +3,11 @@
  * Main Admin file
  *
  * @package         DB Replacer
- * @version         3.2.0
+ * @version         3.3.1
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -44,7 +44,7 @@ if (!isset($nnep->name))
 
 // load the NoNumber Framework language file
 require_once JPATH_PLUGINS . '/system/nnframework/helpers/functions.php';
-NNFrameworkFunctions::loadLanguage('plg_system_nnframework');
+nnFrameworkFunctions::loadLanguage('plg_system_nnframework');
 
 $controller = JControllerLegacy::getInstance('DBReplacer');
 $controller->execute(JFactory::getApplication()->input->get('task'));

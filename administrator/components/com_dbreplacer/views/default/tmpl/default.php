@@ -3,11 +3,11 @@
  * DB Replacer Default View Template
  *
  * @package         DB Replacer
- * @version         3.2.0
+ * @version         3.3.1
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -43,7 +43,7 @@ JFactory::getDocument()->addScriptVersion(JURI::root(true) . '/media/nnframework
 require_once JPATH_PLUGINS . '/system/nnframework/helpers/versions.php';
 if ($this->config->show_update_notification)
 {
-	echo NNVersions::getInstance()->getMessage('dbreplacer', '', '', 'component');
+	echo nnVersions::getInstance()->getMessage('dbreplacer', '', '', 'component');
 }
 
 $s = JRequest::getVar('search', '', 'default', 'none', 2);
@@ -130,7 +130,7 @@ $r = str_replace('||space||', ' ', $r);
 <?php
 // PRO Check
 require_once JPATH_PLUGINS . '/system/nnframework/helpers/licenses.php';
-echo NNLicenses::getInstance()->getMessage('DB_REPLACER', 0);
+echo nnLicenses::getInstance()->getMessage('DB_REPLACER', 0);
 
 // Copyright
-echo NNVersions::getInstance()->getCopyright('DB_REPLACER', '', 13004, 'dbreplacer', 'component');
+echo nnVersions::getInstance()->getCopyright('DB_REPLACER', '', 0, 'dbreplacer', 'component');

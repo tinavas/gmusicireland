@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -33,7 +33,7 @@ div.plugarea{
 	<legend>
 	<?php
 	$usersCount = $this->filteredUsers['countTotal'];
-	 echo JText::sprintf('ACY_FILTEREDUSERS',($usersCount<20?$usersCount:20), $usersCount); ?></legend>
+	 echo JText::sprintf('ACY_FILTEREDUSERS',count($this->filteredUsers['users']), $usersCount); ?></legend>
 	<div id="acyFilteredUsers" >
 		<table class="adminlist table table-striped table-hover" cellpadding="1">
 			<thead>
@@ -117,7 +117,7 @@ div.plugarea{
 								<input id="trigger_<?php echo $key; ?>" type="checkbox" name="trigger[<?php echo $key; ?>]" value="1" <?php if(isset($this->filter->trigger[$key])) echo 'checked="checked"'; ?> />
 									<label for="trigger_<?php echo $key; ?>"><?php echo $triggerName; ?></label><?php echo ($key == 'daycron')?' '.$this->hours.' : '.$this->minutes . ' ' . $this->nextDate:''; ?>
 								<?php }?>
-								<br/>
+								<br />
 							<?php } ?>
 					</fieldset>
 					</td>
@@ -168,7 +168,7 @@ div.plugarea{
 	</fieldset>
 	<?php }?>
 <?php if(!empty($this->filters)){ ?>
-<br/><br/>
+<br /><br />
 <fieldset class="adminform">
 <legend><?php echo JText::_( 'EXISTING_FILTERS' ); ?></legend>
 	<table class="adminlist table table-striped table-hover" cellpadding="1">

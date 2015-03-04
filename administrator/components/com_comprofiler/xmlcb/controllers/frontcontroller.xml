@@ -31,7 +31,7 @@
 			<showview view="showfields" mode="show" />
 		</action>
 
-		<action name="tools" request="view" action="tools" permission="core.admin" permissionasset="com_comprofiler">
+		<action name="tools" request="view" action="tools" permission="core.manage" permissionasset="com_comprofiler.tools">
 			<showview view="showtools" mode="show" />
 		</action>
 
@@ -81,43 +81,49 @@
 
 		<action name="config" request="view" action="showconfig" permission="core.admin" permissionasset="com_comprofiler">
 			<showview view="editconfig" mode="edit">
-				<data name="params" type="class" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
+				<data name="params" type="sql:row" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
 			</showview>
 		</action>
 
 		<action name="perms" request="view" action="showperms" permission="core.admin" permissionasset="root">
 			<showview view="editperms" mode="edit">
-				<data name="params" type="class" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
+				<data name="params" type="sql:row" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
 			</showview>
 		</action>
 
 		<action name="tabperms" request="view" action="showtabperms" permission="core.admin" permissionasset="root">
 			<showview view="edittabperms" mode="edit">
-				<data name="params" type="class" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
+				<data name="params" type="sql:row" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
 			</showview>
 		</action>
 
 		<action name="pluginperms" request="view" action="showpluginperms" permission="core.admin" permissionasset="root">
 			<showview view="editpluginperms" mode="edit">
-				<data name="params" type="class" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
+				<data name="params" type="sql:row" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
 			</showview>
 		</action>
 
 		<action name="userperms" request="view" action="showuserperms" permission="core.admin" permissionasset="root">
 			<showview view="edituserperms" mode="edit">
-				<data name="params" type="class" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
+				<data name="params" type="sql:row" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
 			</showview>
 		</action>
 
 		<action name="listperms" request="view" action="showlistperms" permission="core.admin" permissionasset="root">
 			<showview view="editlistperms" mode="edit">
-				<data name="params" type="class" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
+				<data name="params" type="sql:row" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
 			</showview>
 		</action>
 
 		<action name="fieldperms" request="view" action="showfieldperms" permission="core.admin" permissionasset="root">
 			<showview view="editfieldperms" mode="edit">
-				<data name="params" type="class" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
+				<data name="params" type="sql:row" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
+			</showview>
+		</action>
+
+		<action name="toolperms" request="view" action="showtoolperms" permission="core.admin" permissionasset="root">
+			<showview view="edittoolperms" mode="edit">
+				<data name="params" type="sql:row" table="#__comprofiler_plugin" class="\CB\Database\Table\PluginTable" key="id" value="1" valuetype="const:int" />
 			</showview>
 		</action>
 

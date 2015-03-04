@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td colspan="4">
 					<?php echo $this->pagination->getListFooter();
 					echo $this->pagination->getResultsCounter();
-					if(ACYMAILING_J30) echo '<br/>'.$this->pagination->getLimitBox(); ?>
+					if(ACYMAILING_J30) echo '<br />'.$this->pagination->getLimitBox(); ?>
 				</td>
 			</tr>
 		</tfoot>
@@ -76,7 +76,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td align="center" style="text-align:center" >
 					<?php
 						$text = '<b>'.JText::_('ACY_NAME').' : </b>'.$row->name;
-						$text .= '<br/><b>'.JText::_('ACY_ID').' : </b>'.$row->subid;
+						$text .= '<br /><b>'.JText::_('ACY_ID').' : </b>'.$row->subid;
 						echo acymailing_tooltip( $text, $row->email, '', $row->email);
 					?>
 				</td>

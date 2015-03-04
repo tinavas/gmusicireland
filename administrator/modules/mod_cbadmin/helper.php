@@ -3,7 +3,7 @@
 * Community Builder (TM)
 * @version $Id: $
 * @package CommunityBuilder
-* @copyright (C) 2004-2014 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2015 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -197,6 +197,70 @@ class modCBAdminHelper {
 		}
 
 		return $return;
+	}
+
+	/**
+	 * Re-enables the update site if disabled or creates it if missing
+	 */
+	public static function enableUpdateSite()
+	{
+		global $_CB_database;
+
+		$query			=	'SELECT ' . $_CB_database->NameQuote( 'extension_id' )
+						.	"\n FROM " . $_CB_database->NameQuote( '#__extensions' )
+						.	"\n WHERE " . $_CB_database->NameQuote( 'element' ) . ' = ' . $_CB_database->Quote( 'comprofiler' );
+		$_CB_database->setQuery( $query );
+		$extensionId	=	$_CB_database->loadResult();
+
+		$query			=	'SELECT ' . $_CB_database->NameQuote( 'update_site_id' )
+						.	"\n FROM " . $_CB_database->NameQuote( '#__update_sites_extensions' )
+						.	"\n WHERE " . $_CB_database->NameQuote( 'extension_id' ) . ' = ' . (int) $extensionId;
+		$_CB_database->setQuery( $query );
+		$updateSiteId	=	$_CB_database->loadResult();
+
+		if ( $updateSiteId ) {
+			$query		=	'SELECT ' . $_CB_database->NameQuote( 'enabled' )
+						.	"\n FROM " . $_CB_database->NameQuote( '#__update_sites' )
+						.	"\n WHERE " . $_CB_database->NameQuote( 'update_site_id' ) . ' = ' . (int) $updateSiteId;
+			$_CB_database->setQuery( $query );
+			$isEnabled	=	$_CB_database->loadResult();
+
+			if ( ! $isEnabled ) {
+				$query	=	'UPDATE ' . $_CB_database->NameQuote( '#__update_sites' )
+						.	"\n SET " . $_CB_database->NameQuote( 'enabled' ) . " = 1"
+						.	"\n WHERE " . $_CB_database->NameQuote( 'update_site_id' ) . " = " . (int) $updateSiteId;
+				$_CB_database->setQuery( $query );
+				$_CB_database->query();
+			}
+		} else {
+			$query		=	'INSERT INTO ' . $_CB_database->NameQuote( '#__update_sites' )
+						.	"\n ("
+						.		$_CB_database->NameQuote( 'name' )
+						.		', ' . $_CB_database->NameQuote( 'type' )
+						.		', ' . $_CB_database->NameQuote( 'location' )
+						.		', ' . $_CB_database->NameQuote( 'enabled' )
+						.	')'
+						.	"\n VALUES ("
+						.		$_CB_database->Quote( 'Community Builder Package Update Site' )
+						.		', ' . $_CB_database->Quote( 'collection' )
+						.		', ' . $_CB_database->Quote( 'http://update.joomlapolis.net/versions/pkg-communitybuilder-list.xml' )
+						.		', 1'
+						.	')';
+			$_CB_database->setQuery( $query );
+			$_CB_database->query();
+
+			$query		=	'INSERT INTO ' . $_CB_database->NameQuote( '#__update_sites_extensions' )
+						.	"\n ("
+						.		$_CB_database->NameQuote( 'update_site_id' )
+						.		', ' . $_CB_database->NameQuote( 'extension_id' )
+						.	')'
+						.	"\n VALUES ("
+						.		(int) $_CB_database->insertid()
+						.		', ' . (int) $extensionId
+						.	')';
+			$_CB_database->setQuery( $query );
+			$_CB_database->query();
+		}
 	}
 
 	/**

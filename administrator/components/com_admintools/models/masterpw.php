@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AdminTools
- * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  * @version   $Id$
  */
@@ -16,7 +16,7 @@ class AdmintoolsModelMasterpw extends F0FModel
 	var $views = array(
 		'adminpw', 'badwords', 'dbtools', 'eom', 'fixperms',
 		'fixpermsconfig', 'htmaker', 'ipbl', 'ipwl',
-		'log', 'redirs',
+		'log', 'redirs', 'masterpw',
 		'update', 'waf', 'wafconfig', 'cleantmp', 'dbchcol', 'seoandlink',
 		'dbprefix',
 	);

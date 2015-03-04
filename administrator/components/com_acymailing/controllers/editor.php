@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -378,7 +378,7 @@ class EditorController extends acymailingController{
 							document.getElementById('acy_media_browser_image_selected').style.display=\"\";
 							if(!name){ var name = url.substr(url.lastIndexOf('/') + 1); }
 							if(width){
-								document.getElementById('acy_media_browser_image_selected_info').innerHTML='<div><span id=\"acy_media_browser_image_selected_name\" style=\"font-weight:bold;\"> '+name+'</span><br/>'+width+'x'+height+'<br/>';
+								document.getElementById('acy_media_browser_image_selected_info').innerHTML='<div><span id=\"acy_media_browser_image_selected_name\" style=\"font-weight:bold;\"> '+name+'</span><br />'+width+'x'+height+'<br />';
 								var widthField = document.getElementById('acy_media_browser_image_width');
 								var heightField = document.getElementById('acy_media_browser_image_height');
 								if(widthField) widthField.value = width;
@@ -604,7 +604,7 @@ class EditorController extends acymailingController{
 							echo '<div style="display:inline-block;width:100%;">';
 							echo '<form method="post" action="index.php?option=com_acymailing&ctrl='.(JFactory::getApplication()->isAdmin()?'':'front').'editor&task=createFolder" >';
 							echo '<div id="acy_media_browser_path_dropdown" >';
-							echo JHTML::_('select.genericlist',   $this->values, 'acy_media_browser_files_path', 'class="inputbox chzn-done" size="1" onchange="changeFolder(this.value)" style="width:350px" ', 'value', 'text', $defaultFolder).'<br/>';
+							echo JHTML::_('select.genericlist',   $this->values, 'acy_media_browser_files_path', 'class="inputbox chzn-done" size="1" onchange="changeFolder(this.value)" style="width:350px" ', 'value', 'text', $defaultFolder).'<br />';
 							echo '</div>';
 
 							echo '<div id="acy_media_browser_global_create_folder" >';
@@ -654,8 +654,8 @@ class EditorController extends acymailingController{
 									<img id="acy_media_browser_image_<?php echo $k; ?>" src="<?php echo ACYMAILING_LIVE.$defaultFolder.'/'.$file; ?>" height="135" width="135" style="height: 135px; width:135px;"></img>
 									<a href="#" onclick="displayImageFromUrl('<?php echo ACYMAILING_LIVE.$defaultFolder.'/'.$file; ?>', 'success', '<?php echo $file; ?>', '<?php echo $imageSize[0]; ?>', '<?php echo $imageSize[1]; ?>'); return false;" >
 											<div id="acy_media_browser_image_info_<?php echo $k; ?>" style="box-shadow: 0px 3px 3px 3px rgba(0, 0, 0, 0.3); padding-top:40px; text-align:center; vertical-align:middle; color: white; position:absolute; top:0px; left:0px; bottom:0px; right:0px; display:none; background-color: rgba(0,0,0,0.5);">
-												<?php echo $file; ?><br/>
-												<span class="acy_media_browser_image_size" ><?php echo $imageSize[0].'x'.$imageSize[1]; ?> - <?php echo round((filesize($uploadPath.DS.$file)* 0.0009765625),2).' ko'; ?><br/></span>
+												<?php echo $file; ?><br />
+												<span class="acy_media_browser_image_size" ><?php echo $imageSize[0].'x'.$imageSize[1]; ?> - <?php echo round((filesize($uploadPath.DS.$file)* 0.0009765625),2).' ko'; ?><br /></span>
 											</div>
 									</a>
 								</li>
@@ -680,7 +680,7 @@ class EditorController extends acymailingController{
 									<div id="acy_media_browser_hidden_elements">
 										<div id="upload_image" style="position: relative; padding-top:5px;	display:none; text-align: center;">
 											<form method="post"  name="adminForm" id="adminForm" enctype="multipart/form-data" style="margin:0px; margin-top:3px;" >
-												<input type="file" style="width:auto;" name="uploadedImage" /><br/>
+												<input type="file" style="width:auto;" name="uploadedImage" /><br />
 												<input type="hidden" name="task" value="browse" />
 												<input type="hidden" name="selected_folder" value="<?php echo htmlspecialchars($defaultFolder, ENT_COMPAT, 'UTF-8'); ?>" />
 												<?php echo JHTML::_( 'form.token' ); ?>
@@ -712,15 +712,15 @@ class EditorController extends acymailingController{
 										<input type="text" id="acy_media_browser_image_target" placeholder="<?php echo ACYMAILING_LIVE; ?>..." class="inputbox" style="width:100%"  value="" />
 									<?php }else{ ?>
 										<label for="acy_media_browser_image_width" style="display:inline;"><?php echo JText::_( 'CAPTCHA_WIDTH' ); ?></label>	<input type="text" id="acy_media_browser_image_width"  style="width:23%;"  value="" oninput="calculateSize(0, this.value)" />
-										<br/><label for="acy_media_browser_image_height" style="display:inline;"><?php echo JText::_( 'CAPTCHA_HEIGHT' ); ?></label>	<input type="text" id="acy_media_browser_image_height"  style="width:22%;"  value="" oninput="calculateSize(this.value, 0)" />
-										<br/><label for="acy_media_browser_image_align" style="display:inline;"><?php echo JText::_( 'ALIGNMENT' ); ?></label>
+										<br /><label for="acy_media_browser_image_height" style="display:inline;"><?php echo JText::_( 'CAPTCHA_HEIGHT' ); ?></label>	<input type="text" id="acy_media_browser_image_height"  style="width:22%;"  value="" oninput="calculateSize(this.value, 0)" />
+										<br /><label for="acy_media_browser_image_align" style="display:inline;"><?php echo JText::_( 'ALIGNMENT' ); ?></label>
 										<select id="acy_media_browser_image_align" class="chzn-done" style="width:50%">
 											<option value=""><?php echo JText::_( 'NOT_SET' ); ?></option>
 											<option value="left"><?php echo JText::_( 'ACY_LEFT' ); ?></option>
 											<option value="right"><?php echo JText::_( 'ACY_RIGHT' ); ?></option>
-										</select><br/>
-										<label for="acy_media_browser_image_margin" style="display:inline;"><?php echo JText::_( 'ACY_MARGIN' ); ?></label>	<input type="text" style="width:23%;"  id="acy_media_browser_image_margin"  value="" /><br/>
-										<label for="acy_media_browser_image_border" style="display:inline;"><?php echo JText::_( 'ACY_BORDER' ); ?></label>	<input type="text" style="width:23%;"  id="acy_media_browser_image_border"  value="" /><br/>
+										</select><br />
+										<label for="acy_media_browser_image_margin" style="display:inline;"><?php echo JText::_( 'ACY_MARGIN' ); ?></label>	<input type="text" style="width:23%;"  id="acy_media_browser_image_margin"  value="" /><br />
+										<label for="acy_media_browser_image_border" style="display:inline;"><?php echo JText::_( 'ACY_BORDER' ); ?></label>	<input type="text" style="width:23%;"  id="acy_media_browser_image_border"  value="" /><br />
 										<label for="acy_media_browser_image_class" style="display:inline;"><?php echo JText::_( 'ACY_CLASS' ); ?></label>	<input type="text" style="width:50%;"  id="acy_media_browser_image_class"  value="" />
 										<input type="hidden" id="acy_media_browser_image_linkhref"  value="" />
 									<?php } ?>
@@ -824,7 +824,7 @@ class EditorController extends acymailingController{
 			$additionalMsg='';
 
 			if($image["error"] > 0){
-				$this->message = "Error Uploading code: ".htmlspecialchars($image["error"], ENT_COMPAT, 'UTF-8')."<br/>";
+				$this->message = "Error Uploading code: ".htmlspecialchars($image["error"], ENT_COMPAT, 'UTF-8')."<br />";
 				return false;
 			}
 
@@ -851,7 +851,7 @@ class EditorController extends acymailingController{
 				}
 
 				$image["name"] = $nameFile.'_'.$i.'.'.$ext;
-				$additionalMsg = '<br/>'.JText::sprintf('FILE_RENAMED', $image["name"]);
+				$additionalMsg = '<br />'.JText::sprintf('FILE_RENAMED', $image["name"]);
 			}
 
 			if(!JFile::upload($image["tmp_name"],rtrim($uploadPath,DS).DS. $image["name"])){
@@ -869,7 +869,7 @@ class EditorController extends acymailingController{
 					$pictureHelper->destination =  $uploadPath;
 					$thumb = $pictureHelper->generateThumbnail(rtrim($uploadPath,DS).DS. $image["name"], $image["name"]);
 					$resize = JFile::move($thumb['file'],$uploadPath.DS.$image["name"]);
-					if($thumb) $additionalMsg .='<br/>'.JText::_( 'IMAGE_RESIZED' );
+					if($thumb) $additionalMsg .='<br />'.JText::_( 'IMAGE_RESIZED' );
 				}
 			}
 			$this->message = '<strong>'.JText::_( 'SUCCESS_FILE_UPLOAD' ).'</strong>'.$additionalMsg;

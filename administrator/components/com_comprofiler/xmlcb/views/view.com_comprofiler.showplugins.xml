@@ -176,7 +176,7 @@
 					</rows>
 				</listfields>
 				<batchprocess permission="core.edit">
-					<batch name="access" value="access" valuetype="sql:int" type="viewaccesslevel" label="" blanktext="- Select Access -" managelevels="false" />
+					<batch name="viewaccesslevel" value="viewaccesslevel" valuetype="sql:int" type="viewaccesslevel" label="" blanktext="- Select Access -" managelevels="false" />
 				</batchprocess>
 			</tablebrowser>
 		</view>

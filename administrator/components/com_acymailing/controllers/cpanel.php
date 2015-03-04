@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -249,7 +249,7 @@ class CpanelController extends acymailingController{
 				$fields2 = null;
 			}
 			if($fields2 == null){
-				echo "<span style=\"color:blue\">Could not load columns from the table : ".$oneTableName." : ".(isset($e) ? $e->getMessage() : substr(strip_tags($db->getErrorMsg()),0,200))."</span><br/>";
+				echo "<span style=\"color:blue\">Could not load columns from the table : ".$oneTableName." : ".(isset($e) ? $e->getMessage() : substr(strip_tags($db->getErrorMsg()),0,200))."</span><br />";
 				$db->setQuery($createTable[$oneTableName]);
 				try{
 					$isError = $db->query();
@@ -257,10 +257,10 @@ class CpanelController extends acymailingController{
 					$isError = null;
 				}
 				if($isError == null){
-					echo "<span style=\"color:red\">[ERROR]Could not create the table ".$oneTableName." </span><br/>";
+					echo "<span style=\"color:red\">[ERROR]Could not create the table ".$oneTableName." </span><br />";
 					acymailing_display(isset($e) ? $e->getMessage() : substr(strip_tags($db->getErrorMsg()),0,200).'...','error');
 				}else{
-					echo "<span style=\"color:green\">[OK]Problem solved : Table ".$oneTableName." created</span><br/>";
+					echo "<span style=\"color:green\">[OK]Problem solved : Table ".$oneTableName." created</span><br />";
 				}
 				continue;
 			}
@@ -272,11 +272,11 @@ class CpanelController extends acymailingController{
 		foreach($tableName as $oneTableName){
 			$resultCompare[$oneTableName] = array_diff(array_keys($structure[$oneTableName]),$structureDB[$oneTableName]);
 			if(empty($resultCompare[$oneTableName])){
-				echo "<span style=\"color:green\">Table ".$oneTableName." OK</span><br/>";
+				echo "<span style=\"color:green\">Table ".$oneTableName." OK</span><br />";
 				continue;
 			}
 			foreach($resultCompare[$oneTableName] as $oneField){
-				echo "<span style=\"color:blue\">Field ".$oneField." missing in ".$oneTableName."</span><br/>";
+				echo "<span style=\"color:blue\">Field ".$oneField." missing in ".$oneTableName."</span><br />";
 				try{
 					$db->setQuery("ALTER TABLE ".$oneTableName." ADD ".$structure[$oneTableName][$oneField]);
 					$isError = $db->query();
@@ -284,11 +284,11 @@ class CpanelController extends acymailingController{
 					$isError = null;
 				}
 				if($isError == null){
-					echo "<span style=\"color:red\">[ERROR]Could not add the field ".$oneField." on the table : ".$oneTableName."</span><br/>";
+					echo "<span style=\"color:red\">[ERROR]Could not add the field ".$oneField." on the table : ".$oneTableName."</span><br />";
 					acymailing_display(isset($e) ? $e->getMessage() : substr(strip_tags($db->getErrorMsg()),0,200).'...','error');
 					continue;
 				}else{
-					echo "<span style=\"color:green\">[OK]Problem solved : Add ".$oneField." in ".$oneTableName."</span><br/>";
+					echo "<span style=\"color:green\">[OK]Problem solved : Add ".$oneField." in ".$oneTableName."</span><br />";
 				}
 			}
 		}
@@ -297,14 +297,14 @@ class CpanelController extends acymailingController{
 		$db->query();
 		$nbdeleted = $db->getAffectedRows();
 		if(!empty($nbdeleted)){
-			echo "<span style=\"color:blue\">".$nbdeleted." lost subscriber entries fixed</span><br/>";
+			echo "<span style=\"color:blue\">".$nbdeleted." lost subscriber entries fixed</span><br />";
 		}
 
 		$db->setQuery("DELETE listsub.* FROM #__acymailing_listsub AS listsub LEFT JOIN #__acymailing_list AS b ON listsub.listid = b.listid WHERE b.listid IS NULL");
 		$db->query();
 		$nbdeleted = $db->getAffectedRows();
 		if(!empty($nbdeleted)){
-			echo "<span style=\"color:blue\">".$nbdeleted." lost list entries fixed</span><br/>";
+			echo "<span style=\"color:blue\">".$nbdeleted." lost list entries fixed</span><br />";
 		}
 	}
 }

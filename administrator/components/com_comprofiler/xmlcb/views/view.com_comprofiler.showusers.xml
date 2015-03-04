@@ -94,7 +94,7 @@
 						<field name="session_id" type="checkmark" width="5%" align="center" label="Online" responsivehiddenon="xsmall" allowordering="ascending,descending">
 							<data name="session_id" type="sql:field" table="#__session">
 								<joinkeys type="left" dogroupby="false">
-									<column name="client_id" operator="=" value="1" type="sql:field" valuetype="const:int" />
+									<column name="client_id" operator="in" value="0,1" type="sql:field" valuetype="sql:formula" />
 									<column name="userid" operator="=" value="id" type="sql:field" valuetype="sql:field" />
 								</joinkeys>
 							</data>

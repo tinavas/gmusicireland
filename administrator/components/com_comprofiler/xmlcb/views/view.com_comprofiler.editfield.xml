@@ -157,8 +157,8 @@
 								<param name="profile" type="xml:field_display" default="1" label="Show on Profile" display="2lines" description="Select how this field should display on profile view." />
 								<param name="registration" type="xml:field_display" default="1" label="Show on Registration" display="2lines" description="Select how this field should display on registration." />
 								<if name="registration" nametype="data:int" operator="&gt;" value="0" valuetype="const:int" type="showhide">
-									<param name="cb_default" type="text" label="Default Registration Value" display="2lines" description="Input the default value for this field on registration. For select field types the default must be a valid value available to the field." />
-									<else action="set" name="cb_default" value="" type="const:string" />
+									<param name="default" type="text" label="Default Registration Value" display="2lines" description="Input the default value for this field on registration. For select field types the default must be a valid value available to the field." />
+									<else action="set" name="default" value="" type="const:string" />
 								</if>
 								<param name="edit" default="1" type="xml:field_display" label="Show on Profile Edit" display="2lines" description="Select how this field should display on profile edit." />
 								<if name="tablecolumns" nametype="param:string" operator="!=" value="" valuetype="const:string" type="condition">
@@ -193,7 +193,9 @@
 								<if name="type" nametype="param:string" operator="regexp" value="^$|textarea|editorta|emailaddress|password|text|integer|predefined|webaddress" valuetype="const:string" type="condition">
 									<param name="maxlength" type="text" default="0" label="Maximum Length" display="2lines" description="Optionally input the maximum number of characters for this field." />
 								</if>
-								<param name="size" type="text" default="0" label="Size" display="2lines" description="Optionally input the size of the HTML input for this field." />
+								<if name="type" nametype="param:string" operator="!regexp" value="textarea|editorta|checkbox" valuetype="const:string" type="condition">
+									<param name="size" type="text" default="0" label="Size" display="2lines" description="Optionally input the size of the HTML input for this field." />
+								</if>
 								<if name="type" nametype="param:string" operator="regexp" value="textarea|editorta|radio|multicheckbox" valuetype="const:string" type="condition">
 									<param name="cols" type="text" default="0" label="Columns" display="2lines" description="Optionally input the number of columns to use for textarea display or when displayed as a list for this field." />
 									<param name="rows" type="text" default="0" label="Rows" display="2lines" description="Optionally input the number of rows to use for textarea display or when displayed as a list for this field." />

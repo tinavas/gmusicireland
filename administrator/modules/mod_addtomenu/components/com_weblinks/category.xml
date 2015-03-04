@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <addtomenu>
 	<name>Add to Menu Component XML - com_weblinks : Category</name>
-	<version>3.2.0FREE</version>
+	<version>3.2.3FREE</version>
 	<author>NoNumber (Peter van Westen)</author>
 	<authorEmail>peter@nonumber.nl</authorEmail>
 	<authorUrl>http://www.nonumber.nl</authorUrl>
-	<copyright>Copyright © 2014 NoNumber All Rights Reserved</copyright>
+	<copyright>Copyright © 2015 NoNumber All Rights Reserved</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description><![CDATA[
 		This template is used when viewing the weblinks list and a category is selected (dropdown)

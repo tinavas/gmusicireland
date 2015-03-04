@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -48,10 +48,11 @@ class dataViewdata extends acymailingView
 		$listsName = array();
 		foreach($allLists as $oneList){
 			if($lists[$oneList->listid] == 1) $listsName[] = $oneList->name;
+			if($lists[$oneList->listid] == 2) $listsName[] = $oneList->name.' + '.JText::_('CAMPAIGN');
 		}
 		$createList = JRequest::getCmd('createlist');
 		if(!empty($createList)) $listsName[] = $createList;
-		if(!empty($listsName)) $this->assign('lists', '"'.implode('", "', $listsName).'"');
+		if(!empty($listsName)) $this->assign('lists', implode(', ', $listsName));
 
 		$importFrom = JRequest::getCmd('importfrom');
 		$this->assignRef('type', $importFrom);
@@ -236,6 +237,11 @@ class dataViewdata extends acymailingView
 					$this->assignRef('otherfields',$otherFields);
 				}
 			}
+		}
+
+		if(acymailing_level(3)){
+			$geolocFields = acymailing_getColumns('#__acymailing_geolocation');
+			$this->assign('geolocfields', $geolocFields);
 		}
 	}
 }

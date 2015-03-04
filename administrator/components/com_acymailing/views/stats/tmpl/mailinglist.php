@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -222,7 +222,7 @@ defined('_JEXEC') or die('Restricted access');
 	</script>
 
 	<div id="iframedoc"></div>
-	<?php echo JText::_('SEND_DATE').' : <span class="statnumber">'.acymailing_getDate($this->mailing->senddate); ?></span><br/>
+	<?php echo JText::_('SEND_DATE').' : <span class="statnumber">'.acymailing_getDate($this->mailing->senddate); ?></span><br />
 	<div class="acychart mailingListChart" width="350px" height="350px">
 		<div id="chartMailSent" ></div>
 		<img style="position:relative;cursor:pointer;margin-top:-30px;" onclick="showData('sent');" class="donotprint" src="<?php echo ACYMAILING_IMAGES.'smallexport.png'; ?>" alt="<?php echo JText::_('VIEW_DETAILS',true)?>" title="<?php echo JText::_('VIEW_DETAILS',true)?>" width="30px" />

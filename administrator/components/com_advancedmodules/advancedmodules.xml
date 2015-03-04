@@ -2,27 +2,18 @@
 <extension version="3.2" type="component" method="upgrade">
 	<name>com_advancedmodules</name>
 	<description>COM_ADVANCEDMODULES_DESC</description>
-	<version>4.18.3FREE</version>
-	<creationDate>November 2014</creationDate>
+	<version>4.20.2FREE</version>
+	<creationDate>February 2015</creationDate>
 	<author>NoNumber (Peter van Westen)</author>
 	<authorEmail>peter@nonumber.nl</authorEmail>
 	<authorUrl>http://www.nonumber.nl</authorUrl>
-	<copyright>Copyright © 2014 NoNumber All Rights Reserved</copyright>
+	<copyright>Copyright © 2015 NoNumber All Rights Reserved</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 
 	<administration>
 		<menu>com_advancedmodules</menu>
 	</administration>
 
-	<!-- Installation -->
+	<!-- installation/uninstallation -->
 	<scriptfile>script.advancedmodules.php</scriptfile>
-	<uninstall>
-		<sql>
-			<file driver="mysql" charset="utf8">uninstall.advancedmodules.sql</file>
-		</sql>
-	</uninstall>
-
-	<updateservers>
-		<server type="extension" priority="1" name="com_advancedmodules"><![CDATA[http://download.nonumber.nl/updates.php?e=advancedmodulemanager&]]></server>
-	</updateservers>
 </extension>

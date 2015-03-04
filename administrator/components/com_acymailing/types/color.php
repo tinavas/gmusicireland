@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -64,8 +64,8 @@ class colorType{
 	function displayAll($id,$map,$color){
 		 $this->jsScript = 'function applyColor'.$id.'(newcolor){document.getElementById(\'color'.$id.'\').value = newcolor; document.getElementById("colordiv'.$id.'").style.display = "none";applyColorExample'.$id.'();}';
 
-		$code = '<input type="text" name="'.$map.'" id="color'.$id.'" onchange=\'applyColorExample'.$id.'()\' class="inputbox" style="width:50px" value="'.$color.'" />';
-		$code .= ' <input type="text" maxlength="0" style="cursor:pointer;width:50px;background-color:'.$color.';" onclick="if(document.getElementById(\'colordiv'.$id.'\').style.display == \'block\'){document.getElementById(\'colordiv'.$id.'\').style.display = \'none\';}else{document.getElementById(\'colordiv'.$id.'\').style.display = \'block\';}" id=\'colorexample'.$id.'\' />';
+		$code = '<input type="text" name="'.$map.'" id="color'.$id.'" onchange=\'applyColorExample'.$id.'()\' class="inputbox" style="width:50px" value="'.htmlspecialchars($color,ENT_COMPAT, 'UTF-8').'" />';
+		$code .= ' <input type="text" maxlength="0" style="cursor:pointer;width:50px;background-color:'.htmlspecialchars($color,ENT_COMPAT, 'UTF-8').';" onclick="if(document.getElementById(\'colordiv'.$id.'\').style.display == \'block\'){document.getElementById(\'colordiv'.$id.'\').style.display = \'none\';}else{document.getElementById(\'colordiv'.$id.'\').style.display = \'block\';}" id=\'colorexample'.$id.'\' />';
 		$code .= '<div id=\'colordiv'.$id.'\' style=\'display:none;position:absolute;z-index:100;background-color:white;border:1px solid grey\'>'.$this->display($id).'</div>';
 		return $code;
 	}

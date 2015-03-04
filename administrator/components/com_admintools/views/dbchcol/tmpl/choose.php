@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AdminTools
- * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -12,6 +12,11 @@ $option = 'com_admintools';
 
 JHTML::_('behavior.framework', true);
 ?>
+<div class="alert">
+	<h3><?php echo JText::_('COM_ADMINTOOLS_COMMON_DEPRECATED_TITLE');?></h3>
+	<p><?php echo JText::_('COM_ADMINTOOLS_COMMON_DEPRECATED_BODY');?></p>
+</div>
+
 <form action="index.php" name="adminForm" id="adminForm" class="form form-inline">
 <input type="hidden" name="option" value="com_admintools"/>
 <input type="hidden" name="view" value="dbchcol"/>

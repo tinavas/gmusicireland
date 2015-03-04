@@ -1,26 +1,22 @@
 <?php
 /**
- * @category  Joomla Component
- * @package   com_oscontent
- * @author    Johann Eriksen
- * @copyright 2007-2009 Johann Eriksen
- * @copyright 2011, 2014 Open Source Training, LLC. All rights reserved
- * @contact   www.ostraining.com, support@ostraining.com
- * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version   1.9.3
- * @link      http://www.ostraining.com/downloads/joomla-extensions/oscontent/
+ * @package   OSContent
+ * @contact   www.alledia.com, hello@alledia.com
+ * @copyright 2014 Alledia.com, All rights reserved
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 defined('_JEXEC') or die();
 
 require_once JPATH_ADMINISTRATOR . '/components/com_oscontent/models/model.php';
+require_once JPATH_ADMINISTRATOR . '/components/com_content/tables/featured.php';
 
 /**
  * Model Content
  *
  * @since  1.0.0
  */
-class OSContentModelContent extends OSModel
+class OSContentModelContent extends OSModelAbstract
 {
     /**
      * @var    string  The prefix to use with controller messages.
@@ -121,9 +117,8 @@ class OSContentModelContent extends OSModel
         $row->published = 1;
         $row->language  = "*";
 
-        // $row->componentid = $id;
-        $row->component_id = 22;
-        // $row->ordering = 9999;
+        $row->component_id = $this->getExtensionId('com_content');
+
         $params                          = array();
         $params['display_num']           = 10;
         $params['show_headings']         = 1;
@@ -250,7 +245,7 @@ class OSContentModelContent extends OSModel
                 $query->join('LEFT', '`#__categories` AS p ON p.id = '.(int) $id);
                 $query->where('NOT(a.lft >= p.lft AND a.rgt <= p.rgt)');
 
-                $rowQuery	= $db->getQuery(true);
+                $rowQuery   = $db->getQuery(true);
                 $rowQuery->select('a.id AS value, a.title AS text, a.level, a.parent_id');
                 $rowQuery->from('#__categories AS a');
                 $rowQuery->where('a.id = ' . (int) $id);
@@ -438,7 +433,8 @@ class OSContentModelContent extends OSModel
         }
 
         // Build list of users
-        $lists['created_by'] = JHTML::_('list.users', 'created_by', 1);
+        $user = JFactory::getUser();
+        $lists['created_by'] = JHTML::_('list.users', 'created_by', $user->id);
 
         // Load params
         jimport('joomla.application.component.helper');
@@ -589,7 +585,7 @@ class OSContentModelContent extends OSModel
                     'addMenu'          => 'INT',
                     'menuselect'       => 'STRING',
                     'menuselect3'      => 'STRING',
-                    'state2'           => 'STRING'
+                    'featured'         => 'INT'
                 )
             );
 
@@ -643,25 +639,31 @@ class OSContentModelContent extends OSModel
             $row->fulltext   = ($intro_text != "" ? $full_text : "");
             $row->metakey    = $post["metakey"][$i];
             $row->metadesc   = $post["metadesc"][$i];
-            $row->robots     = isset($post["robots"]) ? $post["robots"] : "";
-            $row->author     = $post["created_by"];
             $row->catid      = $post["catid"];
             $row->access     = $post["access"];
             $row->language   = "*";
             $row->created_by = $post["created_by"];
 
+            if (isset($post["created_by_alias"])) {
+                $row->created_by_alias = $post["created_by_alias"];
+            }
+
+            $robots     = isset($post["robots"]) ? $post["robots"] : "";
+            $author     = $post["created_by"];
+
             // TODO: implement the metadata/robots
             $row->metadata = "";
-            if ($row->robots != "") {
-                $row->metadata = "robots=" . $row->robots . "\n";
+            if ($robots != "") {
+                $row->metadata = "robots=" . $robots . "\n";
             }
             // TODO: implement the author_alias
-            if ($row->author != "") {
-                $row->metadata .= "author=" . $row->author;
+            if ($author != "") {
+                $row->metadata .= "author=" . $author;
             }
+
             if ($row->metadata == "") {
                 $row->metadata = "robots=
-								  author=";
+                                  author=";
             }
 
             if ($post["created"]) {
@@ -708,11 +710,11 @@ class OSContentModelContent extends OSModel
                 }
             }
 
-            // Handle archived
-            if (isset($post["state2"]) && $post["state2"]) {
-                $row->state = -1;
-            } else {
+            // Handle state
+            if (isset($post["published"]) && $post["published"]) {
                 $row->state = 1;
+            } else {
+                $row->state = 0;
             }
 
             $table = JTable::getInstance('Content', 'Table');
@@ -722,6 +724,10 @@ class OSContentModelContent extends OSModel
                 'catid' => $row->catid
             );
 
+            if ((bool) $post['featured']) {
+                $row->featured = 1;
+            }
+
             if ($table->load($params) && ($table->id != $row->id || $row->id == 0)) {
                 JError::raiseWarning(
                     "Save content",
@@ -730,105 +736,6 @@ class OSContentModelContent extends OSModel
 
                 return false;
             }
-        }
-
-        for ($i = 0; $i < count($post["title"]); $i++) {
-            $index = $i + 1;
-
-            if ($post["title"][$i] == "") {
-                continue;
-            }
-
-            $row = $this->getTable();
-
-            $row->id    = 0;
-            $row->title = $post["title"][$i];
-            if ($post["alias"][$i]) {
-                $row->alias = JFilterOutput::stringURLSafe($post["alias"][$i]);
-            } else {
-                $row->alias = JFilterOutput::stringURLSafe($row->title);
-            }
-
-            if (trim(str_replace('-', '', $row->alias)) == '') {
-                $row->alias = JFactory::getDate()->format('Y-m-d-H-i-s') . "-" . $i;
-            }
-
-            $intro_text      = $post['introtext_' . $index];
-            $full_text       = $post['fulltext_' . $index];
-            $row->introtext  = ($intro_text != "" ? $intro_text : $full_text);
-            $row->fulltext   = ($intro_text != "" ? $full_text : "");
-            $row->metakey    = $post["metakey"][$i];
-            $row->metadesc   = $post["metadesc"][$i];
-            $row->robots     = @$post["robots"];
-            $row->author     = @$post["author"];
-            $row->catid      = $post["catid"];
-            $row->access     = $post["access"];
-            $row->language   = "*";
-            $row->created_by = $post["created_by"];
-
-            $row->metadata = "";
-            if ($row->robots != "") {
-                $row->metadata = "robots=" . $row->robots . "\n";
-            }
-            if ($row->author != "") {
-                $row->metadata .= "author=" . $row->author;
-            }
-            if ($row->metadata == "") {
-                $row->metadata = "robots=
-								  author=";
-            }
-
-            if ($post["created"]) {
-                $row->created = JFactory::getDate($post["created"]);
-
-                // Joomla 3.x Backward Compatibility
-                if (version_compare(JVERSION, '3.0', '<')) {
-                    $row->created = $row->created->toMySQL();
-                } else {
-                    $row->created = $row->created->toSQL();
-                }
-            }
-
-            if ($post["publish_up"]) {
-                $row->publish_up = JFactory::getDate($post["publish_up"]);
-
-                // Joomla 3.x Backward Compatibility
-                if (version_compare(JVERSION, '3.0', '<')) {
-                    $row->publish_up = $row->publish_up->toMySQL();
-                } else {
-                    $row->publish_up = $row->publish_up->toSQL();
-                }
-            }
-
-            if ($post["publish_down"] && trim($post["publish_down"]) != JText::_('COM_OSCONTENT_NEVER')) {
-                $row->publish_down = JFactory::getDate($post["publish_down"]);
-
-                // Joomla 3.x Backward Compatibility
-                if (version_compare(JVERSION, '3.0', '<')) {
-                    $row->publish_down = $row->publish_down->toMySQL();
-                } else {
-                    $row->publish_down = $row->publish_down->toSQL();
-                }
-            } elseif (trim($post["publish_down"]) == JText::_('COM_OSCONTENT_NEVER')) {
-                $post["publish_down"] = JFactory::getDBO()->getNullDate();
-
-                $row->publish_down = JFactory::getDate($post["publish_down"]);
-
-                // Joomla 3.x Backward Compatibility
-                if (version_compare(JVERSION, '3.0', '<')) {
-                    $row->publish_down = $row->publish_down->toMySQL();
-                } else {
-                    $row->publish_down = $row->publish_down->toSQL();
-                }
-            }
-
-
-            //handle archived
-            if (@$post["state2"]) {
-                $row->state = -1;
-            } else {
-                $row->state = 1;
-            }
 
             if (!$row->store()) {
                 return false;
@@ -836,14 +743,14 @@ class OSContentModelContent extends OSModel
 
             $row->reorder('catid = ' . (int)$row->catid . ' AND state >= 0');
 
-            if (@$post["addMenu"] === 0 || @$post['addMenu'] === 'on') {
+            if (@$post["addMenu"] === 1 || @$post['addMenu'] === 'on') {
                 $type = "content_item_link";
                 $this->menuLink($row->id, $row->title, @$post["menuselect"], $type, @$post["menuselect3"], $row->alias);
             }
 
-            if ($frontpage) {
+            if ((bool) $post['featured']) {
                 $db = JFactory::getDBO();
-                $fp = new TableFrontPage($db);
+                $fp = new ContentTableFeatured($db);
 
                 // Is the item already viewable on the frontpage?
                 // Insert the new entry

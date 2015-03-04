@@ -1,11 +1,11 @@
 <?php
 /**
  * @package         Advanced Template Manager
- * @version         1.1.7
+ * @version         1.3.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -19,8 +19,6 @@ defined('_JEXEC') or die;
 /**
  * Methods supporting a list of template style records.
  *
- * @package     Joomla.Administrator
- * @subpackage  com_templates
  * @since       1.6
  */
 class AdvancedTemplatesModelStyles extends JModelList
@@ -134,9 +132,8 @@ class AdvancedTemplatesModelStyles extends JModelList
 			$newresult = array();
 			foreach ($result as $i => $row)
 			{
-				$registry = new JRegistry;
-				$registry->loadString($row->advancedparams);
-				$params = $registry->toObject();
+				$params = json_decode($row->advancedparams);
+
 				$color = isset($params->color) ? str_replace('#', '', $params->color) : 'none';
 				$color = empty($color) ? 'none' : $color;
 				$newresult['_' . $color . '_' . (($i + 1) / 10000)] = $row;

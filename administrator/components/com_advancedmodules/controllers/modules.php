@@ -1,16 +1,16 @@
 <?php
 /**
  * @package         Advanced Module Manager
- * @version         4.18.3
+ * @version         4.20.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
 /**
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -31,6 +31,8 @@ class AdvancedModulesControllerModules extends JControllerAdmin
 	/**
 	 * Method to clone an existing module.
 	 *
+	 * @return  void
+	 *
 	 * @since   1.6
 	 */
 	public function duplicate()
@@ -47,6 +49,7 @@ class AdvancedModulesControllerModules extends JControllerAdmin
 			{
 				throw new Exception(JText::_('COM_MODULES_ERROR_NO_MODULES_SELECTED'));
 			}
+
 			$model = $this->getModel();
 			$model->duplicate($pks);
 			$this->setMessage(JText::plural('COM_MODULES_N_MODULES_DUPLICATED', count($pks)));
@@ -106,6 +109,7 @@ class AdvancedModulesControllerModules extends JControllerAdmin
 	public function getModel($name = 'Module', $prefix = 'AdvancedModulesModel', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
+
 		return $model;
 	}
 }

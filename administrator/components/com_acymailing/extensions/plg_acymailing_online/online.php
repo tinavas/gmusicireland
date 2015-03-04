@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -15,11 +15,11 @@ class plgAcymailingOnline extends JPlugin
 		parent::__construct($subject, $config);
 		if(!isset($this->params)){
 			$plugin = JPluginHelper::getPlugin('acymailing', 'online');
-			$this->params = new JParameter( $plugin->params );
+			$this->params = new acyParameter( $plugin->params );
 		}
-		}
+	}
 
-	 function acymailing_getPluginType() {
+	function acymailing_getPluginType(){
 
 		$app = JFactory::getApplication();
 	 	if($this->params->get('frontendaccess') == 'none' && !$app->isAdmin()) return;
@@ -29,9 +29,9 @@ class plgAcymailingOnline extends JPlugin
 	 	$onePlugin->help = 'plugin-online';
 
 	 	return $onePlugin;
-	 }
+	}
 
-	 function acymailingtagonline_show(){
+	function acymailingtagonline_show(){
 
 		$others = array();
 		$config = acymailing_config();
@@ -71,7 +71,7 @@ class plgAcymailingOnline extends JPlugin
 		//-->
 		</script>
 <?php
-		echo JText::_('FIELD_TEXT').' : <input type="text" name="tagtext" size="100px" onchange="setOnlineTag();" /><br/><br/>';
+		echo JText::_('FIELD_TEXT').' : <input type="text" name="tagtext" size="100px" onchange="setOnlineTag();" /><br /><br />';
 		$radios = array();
 		$radios[] = JHTML::_('select.option', "standard",JText::_('IN_TEMPLATE'));
 		$radios[] = JHTML::_('select.option', "notemplate",JText::_('WITHOUT_TEMPLATE'));
@@ -121,8 +121,8 @@ class plgAcymailingOnline extends JPlugin
 					}
 				}
 
-				$addkey = (!empty($email->key) AND $this->params->get('addkey','yes') == 'yes') ? '&key='.$email->key : '';
-				$adduserkey = (!empty($user->key) AND $this->params->get('adduserkey','yes') == 'yes') ? '&subid='.$user->subid.'-'.$user->key : '';
+				$addkey = (!empty($email->key) && $this->params->get('addkey','yes') == 'yes') ? '&key='.$email->key : '';
+				$adduserkey = (!empty($user->key) && $this->params->get('adduserkey','yes') == 'yes') ? '&subid='.$user->subid.'-'.$user->key : '';
 				$tmpl = ($tag->template == 'notemplate') ? '&tmpl=component' : '';
 				$item = empty($tag->itemid) ? '' : '&Itemid='.$tag->itemid;
 				$lang = empty($email->language) ? '' : '&lang='.$email->language;
@@ -133,12 +133,12 @@ class plgAcymailingOnline extends JPlugin
 					$link = acymailing_frontendLink('index.php?option=com_acymailing&ctrl=archive&task=forward&mailid='.$email->mailid.$addkey.$adduserkey.$tmpl.$item.$lang);
 				}
 
-				if(empty($allresults[3][$i])){ $tags[$oneTag] = $link;}
-				else{$tags[$oneTag] = '<a style="text-decoration:none;" href="'.$link.'"><span class="acymailing_online">'.$allresults[3][$i].'</span></a>';}
+				if(empty($allresults[3][$i])) $tags[$oneTag] = $link;
+				else $tags[$oneTag] = '<a style="text-decoration:none;" href="'.$link.'"><span class="acymailing_online">'.$allresults[3][$i].'</span></a>';
 			}
 		}
 
 		$email->body = str_replace(array_keys($tags),$tags,$email->body);
 		if(!empty($email->altbody)) $email->altbody = str_replace(array_keys($tags),$tags,$email->altbody);
-	 }
+	}
 }//endclass

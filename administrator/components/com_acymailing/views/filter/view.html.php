@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -82,6 +82,10 @@ class FilterViewFilter extends acymailingView
 				}
 				actionArea = 'action__num__'+currentActionType;
 				window.document.getElementById('actionarea_'+actionNum).innerHTML = window.document.getElementById(actionArea).innerHTML.replace(/__num__/g,actionNum);
+				if(typeof(window['onAcyDisplayAction_'+currentActionType]) == 'function') {
+					try{ window['onAcyDisplayAction_'+currentActionType](actionNum); }catch(e){alert('Error in the onAcyDisplayAction_'+currentActionType+' function : '+e); }
+				}
+
 			}";
 
 		$js .= "var numActions = 0;
@@ -155,6 +159,10 @@ class FilterViewFilter extends acymailingView
 					$js .= "if(document.adminForm.elements['".$datatype."[$num][$oneType][$key]'].type && document.adminForm.elements['".$datatype."[$num][$oneType][$key]'].type == 'checkbox'){ document.adminForm.elements['".$datatype."[$num][$oneType][$key]'].checked = 'checked'; }";
 					$js .= "}catch(e){}";
 				}
+
+				$js .= "\n"." if(typeof(onAcyDisplay".ucfirst($datatype)."_".$oneType.") == 'function'){
+					try{ onAcyDisplay".ucfirst($datatype)."_".$oneType."($num); }catch(e){alert('Error in the onAcyDisplay".ucfirst($datatype)."_".$oneType." function : '+e); }
+				}";
 
 				if($datatype == 'filter') $js.= " countresults($num);";
 			}

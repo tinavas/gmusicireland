@@ -3,7 +3,7 @@
 * Community Builder (TM)
 * @version $Id: $
 * @package CommunityBuilder
-* @copyright (C) 2004-2014 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2015 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -133,7 +133,7 @@ class Com_ComprofilerInstallerScript {
 		$liveSite								=	$_CB_framework->getCfg( 'live_site' );
 
 		$return									=	'<div style="margin-bottom:10px;width:100%;text-align:center;"><img alt="' . htmlspecialchars( CBTxt::T( 'CB Logo' ) ) . '" src="' . $liveSite . '/components/com_comprofiler/images/smcblogo.gif" /></div>'
-												.	'<div style="font-size:14px;margin-bottom:10px;">' . CBTxt::T( 'Copyright 2004-2014 Joomlapolis.com. This component is released under the GNU/GPL version 2 License. All copyright statements must be kept. Derivate work must prominently duly acknowledge original work and include visible online links.' ) . '</div>';
+												.	'<div style="font-size:14px;margin-bottom:10px;">Copyright 2004-2015 Joomlapolis.com. ' . CBTxt::T( 'This component is released under the GNU/GPL version 2 License. All copyright statements must be kept. Derivate work must prominently duly acknowledge original work and include visible online links.' ) . '</div>';
 
 		$cbDatabase								=	\CBLib\Application\Application::Database();
 
@@ -588,6 +588,14 @@ function cbInstaller_install_plugins( &$return ) {
 			}
 		}
 	}
+
+	// Ensure Default template, CB Core, and language plugins are published as they are not allowed to be unpublished:
+	$query						=	"UPDATE " . $cbDatabase->NameQuote( '#__comprofiler_plugin' )
+								.	"\n SET " . $cbDatabase->NameQuote( 'published' ) . " = 1"
+								.	"\n WHERE ( " . $cbDatabase->NameQuote( 'id' ) . " IN " . $cbDatabase->safeArrayOfIntegers( array( 1, 7 ) )
+								.	' OR ' . $cbDatabase->NameQuote( 'type' ) . ' = ' . $cbDatabase->quote( 'language' ) . ' )';
+	$cbDatabase->setQuery( $query );
+	$cbDatabase->query();
 
 	$pluginsFile				=	$_CB_adminpath . 'pluginsfiles.tgz';
 

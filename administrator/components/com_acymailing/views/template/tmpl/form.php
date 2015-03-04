@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -18,11 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_( 'SEND_TEST_TO' ); ?>
 			</td>
 			<td>
-				<?php echo $this->receiverClass->display('receiver_type',$this->infos->receiver_type); ?>
-				<div id="emailfield" style="display:none" >
-					<?php echo JText::_('EMAIL_ADDRESS')?> <input class="inputbox" type="text" id="test_email" name="test_email" style="width:200px" value="<?php echo $this->infos->test_email;?>" />
-					<?php echo ' <a class="modal" title="'.JText::_('ACY_SELECTUSER',true).'"  href="index.php?option=com_acymailing&amp;tmpl=component&amp;ctrl=subscriber&amp;task=choose" rel="{handler: \'iframe\', size: {x: 800, y: 500}}"><img class="icon16" src="'.ACYMAILING_IMAGES.'icons/icon-16-edit.png" alt="'.JText::_('ACY_SELECTUSER',true).'"/></a>'; ?>
-				</div>
+				<?php echo $this->testreceiverType->display($this->infos->test_selection, $this->infos->test_group, $this->infos->test_emails); ?>
 			</td>
 		</tr>
 		<tr>
@@ -70,6 +66,18 @@ defined('_JEXEC') or die('Restricted access');
 							<?php echo JHTML::_('acyselect.booleanlist', "data[template][premium]" , '',@$this->template->premium); ?>
 						</td>
 					</tr>
+					<?php if(acymailing_level(3)){ ?>
+					<tr>
+						<td>
+							<label for="datatemplatecategory">
+								<?php echo JText::_('ACY_CATEGORY'); ?>
+							</label>
+						</td>
+						<td>
+							<?php $catType = acymailing_get('type.categoryfield'); echo $catType->display('template', 'data[template][category]', $this->template->category); ?>
+						</td>
+					</tr>
+					<?php } ?>
 					<tr>
 						<td>
 							<label for="thumb">
@@ -77,11 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 							</label>
 						</td>
 						<td>
-							<input type="file" name="pictures[thumb]" style="width:auto;"/>
-							<?php if(!empty($this->template->thumb)) { ?>
-								<img src="<?php echo ACYMAILING_LIVE.$this->template->thumb ?>" style="float:left;max-height:50px;margin-right:10px;" />
-								<br/><input type="checkbox" name="data[template][thumb]" value="" id="deletethumb" /> <label for="deletethumb"><?php echo JText::_('DELETE_PICT') ?></label>
-							<?php } ?>
+							<?php $uploadpictType = acymailing_get('type.uploadpict'); echo $uploadpictType->display('data[template][thumb]', 'thumb', $this->template->thumb); ?>
 						</td>
 					</tr>
 					<tr>
@@ -117,7 +121,7 @@ defined('_JEXEC') or die('Restricted access');
 							<label for="fromemail"><?php echo JText::_( 'FROM_ADDRESS' ); ?></label>
 						</td>
 						<td class="paramlist_value">
-							<input class="inputbox" id="fromemail" type="text" name="data[template][fromemail]" style="width:200px" value="<?php echo $this->escape(@$this->template->fromemail); ?>" />
+							<input onchange="validateEmail(this.value, '<?php echo addslashes(JText::_('FROM_ADDRESS')); ?>')" class="inputbox" id="fromemail" type="text" name="data[template][fromemail]" style="width:200px" value="<?php echo $this->escape(@$this->template->fromemail); ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -133,10 +137,11 @@ defined('_JEXEC') or die('Restricted access');
 							<label for="replyemail"><?php echo JText::_( 'REPLYTO_ADDRESS' ); ?></label>
 						</td>
 						<td class="paramlist_value">
-							<input class="inputbox" id="replyemail" type="text" name="data[template][replyemail]" style="width:200px" value="<?php echo $this->escape(@$this->template->replyemail); ?>" />
+							<input onchange="validateEmail(this.value, '<?php echo addslashes(JText::_('REPLYTO_ADDRESS')); ?>')" class="inputbox" id="replyemail" type="text" name="data[template][replyemail]" style="width:200px" value="<?php echo $this->escape(@$this->template->replyemail); ?>" />
 						</td>
 					</tr>
 				</table>
+<?php echo acymailing_getFunctionsEmailCheck(); ?>
 			</td>
 			<td valign="top">
 			<?php
@@ -178,11 +183,8 @@ defined('_JEXEC') or die('Restricted access');
 									?>
 									<tr>
 										<td><?php echo JText::_('READMORE_PICTURE'); ?></span></td>
-										<td><input type="file" name="pictures[readmore]" />
-										<?php if(!empty($this->template->readmore)) { ?>
-											<img src="<?php echo ACYMAILING_LIVE.$this->template->readmore ?>" style="float:left;max-height:50px;margin-right:10px;"/>
-											<br/><input type="checkbox" name="data[template][readmore]" value="" id="deletereadmore" /> <label for="deletereadmore"><?php echo JText::_('DELETE_PICT') ?></label>
-										<?php } ?>
+										<td>
+											<?php echo $uploadpictType->display('data[template][readmore]', 'readmore', $this->template->readmore); ?>
 										</td>
 									</tr>
 									<?php
@@ -196,7 +198,7 @@ defined('_JEXEC') or die('Restricted access');
 										</ul>
 									</td>
 									<td><input type="text" id="style_tag_ul" onclick="showthediv('tag_ul',event);" style="width:200px" name="styles[tag_ul]" value="<?php echo $this->escape(@$this->template->styles['tag_ul']); ?>"/>
-									<br/><input type="text" id="style_tag_li" onclick="showthediv('tag_li',event);" style="width:200px" name="styles[tag_li]" value="<?php echo $this->escape(@$this->template->styles['tag_li']); ?>"/></td>
+									<br /><input type="text" id="style_tag_li" onclick="showthediv('tag_li',event);" style="width:200px" name="styles[tag_li]" value="<?php echo $this->escape(@$this->template->styles['tag_li']); ?>"/></td>
 								</tr>
 							<?php
 							unset($this->template->styles['color_bg']);unset($this->template->styles['tag_ul']);unset($this->template->styles['tag_li']);

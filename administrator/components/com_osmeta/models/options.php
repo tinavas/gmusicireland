@@ -1,17 +1,13 @@
 <?php
 /**
- * @category   Joomla Component
- * @package    com_osmeta
- * @author     JoomBoss
- * @copyright  2012, JoomBoss. All rights reserved
- * @copyright  2013 Open Source Training, LLC. All rights reserved
- * @contact    www.ostraining.com, support@ostraining.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version    1.0.2
+ * @package   OSMeta
+ * @contact   www.alledia.com, support@alledia.com
+ * @copyright 2013-2014 Alledia.com, All rights reserved
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
 // No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 
 jimport('cms.model.legacy');
 
@@ -34,7 +30,7 @@ class OSModelOptions extends JModelLegacy
     {
         $options = new stdClass;
 
-        $options->max_description_length = 255;
+        $options->max_description_length = 160;
 
         return $options;
     }

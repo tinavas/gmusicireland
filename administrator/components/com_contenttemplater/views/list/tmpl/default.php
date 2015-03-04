@@ -3,11 +3,11 @@
  * List View Template: Default
  *
  * @package         Content Templater
- * @version         4.10.2
+ * @version         4.12.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -45,7 +45,7 @@ $cols = 7;
 require_once JPATH_PLUGINS . '/system/nnframework/helpers/versions.php';
 if ($this->config->show_update_notification)
 {
-	echo NNVersions::getInstance()->getMessage('contenttemplater', '', '', 'component');
+	echo nnVersions::getInstance()->getMessage('contenttemplater', '', '', 'component');
 }
 ?>
 	<form action="<?php echo JRoute::_('index.php?option=com_contenttemplater&view=list'); ?>" method="post" name="adminForm" id="adminForm">
@@ -175,10 +175,10 @@ if ($this->config->show_update_notification)
 <?php
 // PRO Check
 require_once JPATH_PLUGINS . '/system/nnframework/helpers/licenses.php';
-echo NNLicenses::getInstance()->getMessage('CONTENT_TEMPLATER', 0);
+echo nnLicenses::getInstance()->getMessage('CONTENT_TEMPLATER', 0);
 
 // Copyright
-echo NNVersions::getInstance()->getCopyright('CONTENT_TEMPLATER', '', 7152, 'contenttemplater', 'component');
+echo nnVersions::getInstance()->getCopyright('CONTENT_TEMPLATER', '', 0, 'contenttemplater', 'component');
 
 function makeTooltipSafe($str)
 {

@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 <div id="iframetemplate"></div><div id="iframetag"></div>
 
 		<?php include(dirname(__FILE__).DS.'param.'.basename(__FILE__)); ?>
-		<br/>
+		<br />
 		<fieldset class="adminform" style="width:90%" id="htmlfieldset">
 			<legend><?php echo JText::_( 'HTML_VERSION' ); ?></legend>
 			<?php echo $this->editor->display(); ?>

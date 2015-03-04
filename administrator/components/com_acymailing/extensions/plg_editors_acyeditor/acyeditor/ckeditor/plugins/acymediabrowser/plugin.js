@@ -27,7 +27,7 @@
 		init:function(editor){
 			editor.addCommand(b,a);
 			editor.ui.addButton("acymediabrowser",{label:'Images',
-											icon: this.path + "icon-16-mediabrowser.png",
+											icon: this.path.split("/plugins/")[0] + "/media/com_acymailing/images/editor/icon-16-mediabrowser.png",
 											command:b,
 											toolbar: "insert"});
 

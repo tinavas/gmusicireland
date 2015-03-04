@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -64,7 +64,7 @@ class com_acymailingInstallerScript {
 class acymailingInstall{
 
 	var $level = 'starter';
-	var $version = '4.8.0';
+	var $version = '4.9.0';
 	var $update = false;
 	var $fromLevel = '';
 	var $fromVersion = '';
@@ -638,20 +638,83 @@ class acymailingInstall{
 
 			try{
 				$this->db->setQuery("ALTER TABLE `#__acymailing_mail` ADD `abtesting` VARCHAR( 250 ) DEFAULT NULL");
-				$this->db->query();
+				$res = $this->db->query();
 			}catch(Exception $e){
 				$res = null;
 			}
 			if($res === null) acymailing_display(isset($e) ? $e->getMessage() : substr(strip_tags($this->db->getErrorMsg()),0,200).'...','error');
 
 			try{
-				$this->db->setQuery("ALTER TABLE `#__acymailing_subscriber` ADD `source` VARCHAR( 50 ) NOT NULL DEFAULT ''");
+				$this->db->setQuery("ALTER TABLE `#__acymailing_subscriber` ADD `source` VARCHAR( 250 ) NOT NULL DEFAULT ''");
+				$res = $this->db->query();
+			}catch(Exception $e){
+				$res = null;
+			}
+			if($res === null) acymailing_display(isset($e) ? $e->getMessage() : substr(strip_tags($this->db->getErrorMsg()),0,200).'...','error');
+		}
+
+		if(version_compare($this->fromVersion, '4.8.2', '<')){
+			$tagsFile = JPATH_SITE.DS.'plugins'.DS.'acymailing'.DS.'tagcontent'.DS.'tagcontenttags.xml';
+			if(file_exists($tagsFile)) JFile::delete($tagsFile);
+
+			try{
+				$this->db->setQuery("ALTER TABLE `#__acymailing_mail` ADD `thumb` VARCHAR( 250 ) DEFAULT NULL");
+				$res = $this->db->query();
+			}catch(Exception $e){
+				$res = null;
+			}
+			if($res === null) acymailing_display(isset($e) ? $e->getMessage() : substr(strip_tags($this->db->getErrorMsg()),0,200).'...','error');
+
+			try{
+				$this->db->setQuery("ALTER TABLE `#__acymailing_mail` ADD `summary` TEXT NOT NULL DEFAULT ''");
+				$res = $this->db->query();
+			}catch(Exception $e){
+				$res = null;
+			}
+			if($res === null) acymailing_display(isset($e) ? $e->getMessage() : substr(strip_tags($this->db->getErrorMsg()),0,200).'...','error');
+
+			try{
+				$this->db->setQuery("ALTER TABLE `#__acymailing_template` ADD `category` VARCHAR( 250 ) NOT NULL DEFAULT ''");
+				$res = $this->db->query();
+			}catch(Exception $e){
+				$res = null;
+			}
+			if($res === null) acymailing_display(isset($e) ? $e->getMessage() : substr(strip_tags($this->db->getErrorMsg()),0,200).'...','error');
+
+			try{
+				$this->db->setQuery("ALTER TABLE `#__acymailing_list` ADD `category` VARCHAR( 250 ) NOT NULL DEFAULT ''");
+				$res = $this->db->query();
+			}catch(Exception $e){
+				$res = null;
+			}
+			if($res === null) acymailing_display(isset($e) ? $e->getMessage() : substr(strip_tags($this->db->getErrorMsg()),0,200).'...','error');
+
+			try{
+				$this->db->setQuery("ALTER TABLE `#__acymailing_fields` ADD `access` VARCHAR( 250 ) NOT NULL DEFAULT 'all'");
+				$res = $this->db->query();
+			}catch(Exception $e){
+				$res = null;
+			}
+			if($res === null) acymailing_display(isset($e) ? $e->getMessage() : substr(strip_tags($this->db->getErrorMsg()),0,200).'...','error');
+
+			try{
+				$this->db->setQuery("ALTER TABLE `#__acymailing_fields` ADD `fieldcat` INT( 11 ) NOT NULL DEFAULT '0'");
+				$res = $this->db->query();
+			}catch(Exception $e){
+				$res = null;
+			}
+			if($res === null) acymailing_display(isset($e) ? $e->getMessage() : substr(strip_tags($this->db->getErrorMsg()),0,200).'...','error');
+
+
+			try{
+				$this->db->setQuery("UPDATE `#__acymailing_template` SET body = REPLACE(body,'<tbody>','<tbody class=\"acyeditor_sortable\">') WHERE body LIKE '%acyeditor_%' ");
 				$this->db->query();
 			}catch(Exception $e){
 				$res = null;
 			}
 			if($res === null) acymailing_display(isset($e) ? $e->getMessage() : substr(strip_tags($this->db->getErrorMsg()),0,200).'...','error');
 		}
+
 	}
 
 	function updateJoomailing(){
@@ -731,6 +794,7 @@ class acymailingInstall{
 		if(ACYMAILING_J30){
 			$allPref['from_name'] = $conf->get('fromname');
 			$allPref['from_email'] = $conf->get('mailfrom');
+			$allPref['bounce_email'] =  $conf->get('mailfrom');
 			$allPref['mailer_method'] =  $conf->get('mailer');
 			$allPref['sendmail_path'] =  $conf->get('sendmail');
 			$smtpinfos = explode(':',$conf->get('smtphost'));
@@ -742,6 +806,7 @@ class acymailingInstall{
 		}else{
 			$allPref['from_name'] = $conf->getValue('config.fromname');
 			$allPref['from_email'] = $conf->getValue('config.mailfrom');
+			$allPref['bounce_email'] =  $conf->getValue('config.mailfrom');
 			$allPref['mailer_method'] =  $conf->getValue('config.mailer');
 			$allPref['sendmail_path'] =  $conf->getValue('config.sendmail');
 			$smtpinfos = explode(':',$conf->getValue('config.smtphost'));
@@ -755,7 +820,6 @@ class acymailingInstall{
 		$allPref['reply_email'] =  $allPref['from_email'];
 		$allPref['cron_sendto'] = $allPref['from_email'];
 
-		$allPref['bounce_email'] =  '';
 		$allPref['add_names'] = '1';
 		$allPref['encoding_format'] =  '8bit';
 		$allPref['charset'] = 'UTF-8';
@@ -799,7 +863,8 @@ class acymailingInstall{
 		$allPref['notification_accept'] =  '';
 		$allPref['notification_refuse'] = '';
 		$allPref['forward'] =  '0';
-		$descriptions = array('Joomla!™ Newsletter Extension','Joomla!™ Mailing Extension','Joomla!™ Newsletter System','Joomla!™ E-mail Marketing','Joomla!™ Marketing Campaign');
+
+		$descriptions = array('Joomla!® Newsletter Extension','Joomla!® Mailing Extension','Joomla!® Newsletter System','Joomla!® E-mail Marketing','Joomla!® Marketing Campaign');
 		$allPref['description_starter'] = $descriptions[rand(0,4)];
 		$allPref['description_essential'] = $descriptions[rand(0,4)];
 		$allPref['description_business'] = $descriptions[rand(0,4)];
@@ -817,6 +882,8 @@ class acymailingInstall{
 
 		$allPref['menu_position'] = 'under';
 		$allPref['unsub_reasons'] = serialize(array('UNSUB_SURVEY_FREQUENT','UNSUB_SURVEY_RELEVANT'));
+
+		$allPref['security_key'] = acymailing_generateKey(30);
 
 		$app = JFactory::getApplication();
 		$currentTemplate = $app->getTemplate();
@@ -860,10 +927,10 @@ class acymailingUninstall{
 
 	function message(){
 		?>
-		You uninstalled the AcyMailing component.<br/>
-		AcyMailing also unpublished the modules attached to the component.<br/><br/>
-		If you want to completely uninstall AcyMailing, please select all the AcyMailing modules and plugins and uninstall them from the Joomla Extensions Manager.<br/>
-		Then execute this query via phpMyAdmin to remove all AcyMailing data:<br/><br/>
+		You uninstalled the AcyMailing component.<br />
+		AcyMailing also unpublished the modules attached to the component.<br /><br />
+		If you want to completely uninstall AcyMailing, please select all the AcyMailing modules and plugins and uninstall them from the Joomla Extensions Manager.<br />
+		Then execute this query via phpMyAdmin to remove all AcyMailing data:<br /><br />
 		DROP TABLE <?php
 		$this->db->setQuery("SHOW TABLES LIKE '".$this->db->getPrefix()."acymailing%' ");
 		if(version_compare(JVERSION,'3.0.0','>=')){
@@ -872,8 +939,8 @@ class acymailingUninstall{
 			echo implode(' , ',$this->db->loadResultArray());
 		}
 
-		?>;<br/><br/>
-		If you DO NOT execute the query, you will be able to install AcyMailing again without losing data.<br/>
+		?>;<br /><br />
+		If you DO NOT execute the query, you will be able to install AcyMailing again without losing data.<br />
 		Please note that you don't have to uninstall AcyMailing to install a new version, simply install the new one without uninstalling your current version.
 		<?php
 	}

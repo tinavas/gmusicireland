@@ -8,7 +8,7 @@
 			label="NNEM_DOWNLOAD_KEY"
 			/>
 		<field name="@block_key_b" type="nn_block" end="1" />
-		<field name="@block_default_a" type="nn_block" start="1" label="JDEFAULT" />
+		<field name="@block_other_a" type="nn_block" start="1" />
 		<field name="check_data" type="radio" class="btn-group" default="1" label="NNEM_CHECK_DATA" description="NNEM_CHECK_DATA_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
@@ -17,8 +17,18 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="@block_default_b" type="nn_block" end="1" />
-		<field name="@block_other_a" type="nn_block" start="1" label="NN_OTHER_SETTINGS" />
+		<field name="show_key_field" type="radio" class="btn-group" default="1" label="NNEM_SHOW_KEY_FIELD" description="NNEM_SHOW_KEY_FIELD_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="show_reinstall_all" type="radio" class="btn-group" default="1" label="NNEM_SHOW_REINSTALL_ALL" description="NNEM_SHOW_REINSTALL_ALL_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="show_copyright" type="radio" class="btn-group" default="1" label="NN_SHOW_COPYRIGHT" description="NN_SHOW_COPYRIGHT_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="timeout" type="text" size="5" default="5" label="NNEM_TIMEOUT" description="NNEM_TIMEOUT_DESC" />
 		<field name="use_proxy" type="radio" class="btn-group" default="0" label="NNEM_USE_PROXY" description="NNEM_USE_PROXY_DESC">
 			<option value="0">JNO</option>
@@ -32,14 +42,6 @@
 		<field name="proxy_password" type="text" size="40" default="" label="NNEM_PROXY_PASSWORD" description="NNEM_PROXY_PASSWORD_DESC" />
 		<field name="@block_proxy_b" type="nn_block" end="1" />
 		<field name="@toggler_proxy_b" type="nn_toggler" />
-		<field name="show_update_notification" type="radio" class="btn-group" default="1" label="NN_SHOW_UPDATE_NOTIFICATION" description="NN_SHOW_UPDATE_NOTIFICATION_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="show_copyright" type="radio" class="btn-group" default="1" label="NN_SHOW_COPYRIGHT" description="NN_SHOW_COPYRIGHT_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
 		<field name="@block_other_b" type="nn_block" end="1" />
 	</fieldset>
 

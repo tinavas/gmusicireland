@@ -4,6 +4,7 @@
 		<view name="showtools" type="params" ui="admin" label="Tools" icon="wrench" viewformatting="div">
 			<toolbarmenu>
 				<menu name="cancel" action="linkAction" task="cancel" link="cb_action:panel" label="Close" />
+				<menu name="permissions" action="linkAction" task="options" link="cb_action:toolperms" label="Permissions" />
 				<menu name="help" action="help" href="http://www.joomlapolis.com/documentation/community-builder/help/tools?pk_campaign=in-cb&amp;pk_kwd=help" label="Help" />
 			</toolbarmenu>
 			<if name="" nametype="data:string" operator="=" value="" valuetype="const:string" type="condition">

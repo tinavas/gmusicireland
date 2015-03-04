@@ -1,56 +1,14 @@
-
-tr.acyeditor_delete:hover .acyeditor_zoneeditionsuppression{
-	outline: 1px dashed #fac337;
-}
-tr.acyeditor_delete td.acyeditor_text:hover{
-	outline: 1px solid #9daf07;
-}
-tr.acyeditor_delete td.acyeditor_picture:hover {
-	outline: 1px solid #37b6cc;
-}
-
-.acyeditor_delete:hover .acyeditor_zoneeditionsuppression{
-	outline: 1px dashed #fac337;
-}
-.acyeditor_text:hover  .acyeditor_zoneeditionsuppression{
-	outline: 1px solid #9daf07;
-}
-.acyeditor_picture:hover  .acyeditor_zoneeditionsuppression{
-	outline: 1px solid #37b6cc;
-}
-.acyeditor_delete:hover .acyeditor_zoneeditionsuppression{
-	outline-style:dashed;
-}
-
 .acyeditor_text, .acyeditor_picture
-{
-	cursor: pointer;
-}
-.acyeditor_text:not(.noOpacity):hover, .acyeditor_picture:not(.noOpacity):hover
-{
-	/* Netscape */
-	-moz-opacity: 0.5;
+{cursor: pointer;}
 
-	/* Safari 1.x */
-	-khtml-opacity: 0.5;
+tr.acyeditor_delete td.acyeditor_text:hover, tr.acyeditor_delete td.acyeditor_picture:hover{
+	outline: 2px dotted #cbcf46;
+}
 
-	/* Good browsers */
-	opacity: 0.5;
+.acyeditor_zoneeditionsuppression:hover{
+	outline: 3px double #5290db;
 }
-.acyeditor_editablehover
-{
-	/* IE 8 */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 
-	/* IE 5-7 */
-	filter: alpha(opacity=50);
-}
-.noOpacity{
-	/* IE 8 */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)" !important;
-	/* IE 5-7 */
-	filter: alpha(opacity=100) !important;
-}
 .acyeditor_zoneeditionsuppression
 {
 	display: none;
@@ -60,7 +18,7 @@ tr.acyeditor_delete td.acyeditor_picture:hover {
 
 .acyeditor_zoneeditdelete{
 	cursor:pointer;
-	width: 56px;
+	width: 84px;
 	height: 26px;
 	right: 0px;
 }
@@ -68,58 +26,66 @@ tr.acyeditor_delete td.acyeditor_picture:hover {
 {
 	cursor:pointer;
 	background-image: url(../images/editor_zone_delete.png);
-	width: 28px;
-	height: 26px;
+	width: 24px;
+	height: 24px;
 	float: right;
 }
 .acyeditor_edittext
 {
 	cursor:pointer;
 	background-image: url(../images/editor_zone_text.png);
-	width: 28px;
-	height: 26px;
+	width: 24px;
+	height: 24px;
 }
+
 .acyeditor_editpicture
 {
 	cursor:pointer;
 	background-image: url(../images/editor_zone_picture.png);
-	width: 28px;
-	height: 26px;
+	width: 24px;
+	height: 24px;
 }
 
-tr.acyeditor_delete:hover td.acyeditor_enedition .acyeditor_zoneeditionsuppression
-{
-	display:none;
-}
-.acyeditor_delete:not(.acyeditor_enedition):hover .acyeditor_zoneeditionsuppression, .acyeditor_text:not(.acyeditor_enedition):hover .acyeditor_zoneeditionsuppression, .acyeditor_picture:not(.acyeditor_enedition):hover .acyeditor_zoneeditionsuppression
-{
-	display:block;
-}
-.acyeditor_zoneeditionsuppressionhover
-{
-	display:block;
-}
 .acyeditor_btnplus{
 	cursor:pointer;
 	background-image: url(../images/editor_zone_plus.png);
-	width: 28px;
-	height: 26px;
-	right: 28px;
+	width: 24px;
+	height: 24px;
+	right: 24px;
 	float: right;
+}
+
+.acyeditor_btnmove{
+	cursor: move;
+	background-image: url(../images/editor_zone_drag.png);
+	width: 24px;
+	height: 24px;
+	right: 48px;
+	float: right;
+}
+
+tr.acyeditor_delete:hover td.acyeditor_enedition .acyeditor_zoneeditionsuppression{
+	display:none;
+}
+.acyeditor_delete:not(.acyeditor_enedition):hover .acyeditor_zoneeditionsuppression, .acyeditor_text:not(.acyeditor_enedition):hover .acyeditor_zoneeditionsuppression, .acyeditor_picture:not(.acyeditor_enedition):hover .acyeditor_zoneeditionsuppression{
+	display:block;
+}
+.acyeditor_zoneeditionsuppressionhover{
+	display:block;
 }
 
 .acyeditor_copyButton{
 	cursor:pointer;
 	width: 100px;
 	height: 60px;
-	z-index: 999;
+	z-index: 998;
 }
 .acyeditor_copyButtonAfter{
 	background-image: url(../images/duplicate_after.png);
 	background-size:100px 60px;
 	background-repeat: no-repeat;
 	float:right;
-
+	z-index: 999;
 }
 .acyeditor_action{
 	z-index: 998;
@@ -128,21 +94,48 @@ tr.acyeditor_delete:hover td.acyeditor_enedition .acyeditor_zoneeditionsuppressi
 	height: 60px;
 	display: inline-block;
 }
-.acyeditor_disable{
-	/* Netscape */
-	-moz-opacity: 0.5;
-	/* Safari 1.x */
-	-khtml-opacity: 0.5;
-	/* Good browsers */
-	opacity: 0.5;
-	/* IE 8 */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	/* IE 5-7 */
-	filter: alpha(opacity=50);
-}
 
 .acyeditor_mask{
 	z-index: 997;
 	top: 0px;
 	left: 0px;
+}
+
+.placeholder{
+	outline:2px dashed #444;
+	height: 60px;
+	width:auto;
+	-moz-box-shadow: 0px 0px 4px 2px #ffffff;
+	-webkit-box-shadow: 0px 0px 4px 2px #ffffff;
+	-o-box-shadow: 0px 0px 4px 2px #ffffff;
+	box-shadow: 0px 0px 4px 2px #ffffff;
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#ffffff, Direction=NaN, Strength=4);
+}
+
+tr.ui-sortable-helper .acyeditor_zoneeditionsuppression{
+	display: none !important;
+}
+
+tr.ui-sortable-helper{
+	opacity:0.8;
+	outline:1px solid #5290db;
+	box-shadow:1px 1px 6px #999;
+}
+
+.placeholder:after{
+	content:url(../images/arrow2.png);
+	position:relative;
+	left:10px;
+	top:20px;
+	display:block;
+	width:0px;
+}
+
+.placeholder:before{
+	content:url(../images/arrow1.png);
+	position:relative;
+	right:40px;
+	top:20px;
+	display:block;
+	width:0px;
 }

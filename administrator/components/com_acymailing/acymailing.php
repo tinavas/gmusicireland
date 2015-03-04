@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -43,7 +43,7 @@ $bar->addButtonPath(ACYMAILING_BUTTON);
 if($taskGroup != 'update' && !$config->get('installcomplete')){
 	$url = acymailing_completeLink('update&task=install',false,true);
 	echo "<script>document.location.href='".$url."';</script>\n";
-	echo 'Install not finished... You will be redirected to the second part of the install screen<br/>';
+	echo 'Install not finished... You will be redirected to the second part of the install screen<br />';
 	echo '<a href="'.$url.'">Please click here if you are not automatically redirected within 3 seconds</a>';
 	return;
 }

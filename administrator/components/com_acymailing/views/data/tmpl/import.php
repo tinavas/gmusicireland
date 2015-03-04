@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td>
 					<?php echo '<div class="roundsubscrib rounddisp" style="background-color:'.$row->color.'"></div>'; ?>
 					<?php
-					$text = '<b>'.JText::_('ACY_ID').' : </b>'.$row->listid.'<br/>'.$row->description;
+					$text = '<b>'.JText::_('ACY_ID').' : </b>'.$row->listid.'<br />'.$row->description;
 					echo acymailing_tooltip($text, $row->name, 'tooltip.png', $row->name);
 					?>
 				</td>
@@ -57,12 +57,14 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<?php
 			$k = 1-$k;
-		}?>
+		}
+		if(acymailing_isAllowed($this->config->get('acl_lists_manage','all'))){ ?>
 		<tr class="<?php echo "row$k"; ?>" id="importcreatelist">
 			<td colspan="2">
 				<?php echo JText::_('IMPORT_SUBSCRIBE_CREATE').' : <input type="text" name="createlist" placeholder="'.JText::_('LIST_NAME').'" />'; ?>
 			</td>
 		</tr>
+		<?php } ?>
 		</table>
 	</fieldset>
 </form>

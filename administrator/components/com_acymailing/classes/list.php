@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -41,6 +41,9 @@ class listClass extends acymailingClass{
 		if(empty($elements)) return 0;
 
 		$this->database->setQuery('DELETE FROM #__acymailing_listcampaign WHERE `campaignid` IN ('.implode(',',$elements).')');
+		$this->database->query();
+
+		$this->database->setQuery('DELETE #__acymailing_mail, #__acymailing_listmail FROM #__acymailing_mail INNER JOIN #__acymailing_listmail WHERE #__acymailing_mail.mailid=#__acymailing_listmail.mailid AND #__acymailing_listmail.listid IN ('.implode(',',$elements).')');
 		$this->database->query();
 
 		return parent::delete($elements);
@@ -83,6 +86,10 @@ class listClass extends acymailingClass{
 		$list->listid = acymailing_getCID('listid');
 
 		$formData = JRequest::getVar( 'data', array(), '', 'array' );
+
+		if(!empty($formData['list']['category']) && $formData['list']['category'] == -1){
+			$formData['list']['category'] = JRequest::getString('newcategory', '');
+		}
 
 		foreach($formData['list'] as $column => $value){
 			if($app->isAdmin() OR $this->allowedField('list',$column)){

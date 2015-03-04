@@ -1,16 +1,16 @@
 <?php
 /**
  * @package         Advanced Module Manager
- * @version         4.18.3
+ * @version         4.20.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
 /**
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -27,6 +27,9 @@ class AdvancedModulesModelSelect extends JModelList
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
 	 * @since   1.6
 	 */
@@ -56,7 +59,7 @@ class AdvancedModulesModelSelect extends JModelList
 	 * different modules that might need different sets of data or different
 	 * ordering requirements.
 	 *
-	 * @param   string    A prefix for the store id.
+	 * @param   string  $id  A prefix for the store id.
 	 *
 	 * @return  string    A store id.
 	 */
@@ -121,6 +124,7 @@ class AdvancedModulesModelSelect extends JModelList
 		foreach ($items as &$item)
 		{
 			$path = JPath::clean($client->path . '/modules/' . $item->module . '/' . $item->module . '.xml');
+
 			if (file_exists($path))
 			{
 				$item->xml = simplexml_load_file($path);
@@ -145,6 +149,7 @@ class AdvancedModulesModelSelect extends JModelList
 				$item->desc = JText::_('COM_MODULES_NODESCRIPTION');
 			}
 		}
+
 		$items = JArrayHelper::sortObjects($items, 'name', 1, true, true);
 
 		// TODO: Use the cached XML from the extensions table?

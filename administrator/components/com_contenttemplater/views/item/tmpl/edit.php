@@ -3,11 +3,11 @@
  * Item View Template: Edit
  *
  * @package         Content Templater
- * @version         4.10.2
+ * @version         4.12.2
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -243,6 +243,17 @@ JHtml::stylesheet('nnframework/style.min.css', false, true);
 	</div>
 
 	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="has_easyblog" value="<?php echo nnFrameworkFunctions::extensionInstalled('easyblog'); ?>" />
+	<input type="hidden" name="has_flexicontent" value="<?php echo nnFrameworkFunctions::extensionInstalled('flexicontent'); ?>" />
+	<input type="hidden" name="has_form2content" value="<?php echo nnFrameworkFunctions::extensionInstalled('form2content'); ?>" />
+	<input type="hidden" name="has_k2" value="<?php echo nnFrameworkFunctions::extensionInstalled('k2'); ?>" />
+	<input type="hidden" name="has_zoo" value="<?php echo nnFrameworkFunctions::extensionInstalled('zoo'); ?>" />
+	<input type="hidden" name="has_akeebasubs" value="<?php echo nnFrameworkFunctions::extensionInstalled('akeebasubs'); ?>" />
+	<input type="hidden" name="has_hikashop" value="<?php echo nnFrameworkFunctions::extensionInstalled('hikashop'); ?>" />
+	<input type="hidden" name="has_mijoshop" value="<?php echo nnFrameworkFunctions::extensionInstalled('mijoshop'); ?>" />
+	<input type="hidden" name="has_redshop" value="<?php echo nnFrameworkFunctions::extensionInstalled('redshop'); ?>" />
+	<input type="hidden" name="has_virtuemart" value="<?php echo nnFrameworkFunctions::extensionInstalled('virtuemart'); ?>" />
+	<input type="hidden" name="has_cookieconfirm" value="<?php echo nnFrameworkFunctions::extensionInstalled('cookieconfirm'); ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
 

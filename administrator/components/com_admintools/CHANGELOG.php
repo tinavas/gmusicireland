@@ -1,4 +1,37 @@
 <?php die() ?>
+Admin Tools 3.4.4
+================================================================================
+# [MEDIUM] Two Factor Authentication was not working
+# [MEDIUM] Custom administrator directory: some servers misbehave when asked to access /administrator instead of /administrator/index.php
+
+Admin Tools 3.4.3
+================================================================================
+! Work around BROKEN Apache installations when you are using BOTH .htaccess files (.htaccess Maker OR Joomla! htaccess.txt contents) AND administrator password protection. If you were affected by this issue PLEASE ASK YOUR HOST TO FIX THEIR SERVERS per the release notes of this version!
+# [LOW] The obsolete pro.php / core.php files of the system plugin were not removed automatically
+
+Admin Tools 3.4.2
+================================================================================
+! Language files were not being installed
+
+Admin Tools 3.4.1
+================================================================================
+~ Less intrusive display of the file integrity check results
+# [MEDIUM] Password protect administrator directory no longer works correctly due to changes in PHP's crypt() method
+# [MEDIUM] Removed .htaccess line causing issues with some hosts
+
+Admin Tools 3.4.0
+================================================================================
++ Warning added when Joomla!'s com_postinstall component is broken (with instructions to fix it)
+~ Some features are now deprecated and will be removed in 2015 when we discontinue Joomla! 2.5 support: change super user ID, change db prefix, change db collation, two factor authentication
+~ Explain that the corrupt files message is not something to worry about when you have renamed files of the System - Admin Tools plugin (thank you, Jenny!)
+~ .htaccess Maker: URL rewrites to Joomla! work no matter what is the SEF URL extension (part after the last dot)
+# [MEDIUM] Two Factor Authentication under Joomla 2.5.x was not working properly
+# [MEDIUM] Logging out of Joomla! 3.2 when using secret URL parameter may raise security exception
+# [MEDIUM] Users could change the master password even if they didn't authenticate inside Admin Tools
+# [MEDIUM] The option "Disable editing backend users' properties" was not working when clicking on "Save & New"
+# [MEDIUM] The option "Disable editing backend users' properties" was not working when trying to edit your own profile
+# [LOW] Prevent javascript error in WAF configuration page with translated strings due a Joomla bug.
+
 Admin Tools 3.3.1
 ================================================================================
 + Self-check the installation. If files are missing or have been tampered with you will be notified about it.

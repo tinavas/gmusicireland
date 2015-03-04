@@ -1,16 +1,16 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
 ?><div id="acy_content" >
 <div id="iframedoc"></div>
-<?php if(JRequest::getString('tmpl') == 'component'){
-?>
+<?php $app = JFactory::getApplication();
+if(JRequest::getString('tmpl') == 'component' && $app->isAdmin()){ ?>
 <fieldset>
 	<div class="acyheader icon-48-acyexport" style="float: left;"><?php echo JText::_('ACY_EXPORT'); ?></div>
 	<div class="toolbar" id="toolbar" style="float: right;">
@@ -74,7 +74,39 @@ defined('_JEXEC') or die('Restricted access');
 			$k = 1-$k;
 		}
 	}
+	if(!empty($this->geolocfields)){
+?>
+							<tr class="<?php echo "row$k"; ?>" id="userField_<?php echo $fieldName; ?>">
+								<td>
+									<?php echo JText::_('ACYEXPORT_GEOLOC_VALUE'); ?>
+								</td>
+								<td align="center" style="text-align:center" >
+									<?php
+									$values = array(
+										JHTML::_('select.option', 'asc', JText::_('SEPARATOR_FIRST_GEOL_SAVED')),
+										JHTML::_('select.option', 'desc', JText::_('ACYEXPORT_LAST_GEOL_SAVED'))
+									);
+									echo JHTML::_('acyselect.genericlist', $values, 'exportgeolocorder', '', 'value', 'text', $this->config->get('exportgeolocorder', 'asc')); ?>
+								</td>
+							</tr>
+<?php
+		$k = 1-$k;
 
+		foreach($this->geolocfields as $fieldName => $fieldType){
+			if(in_array($fieldName,array('geolocation_id','geolocation_subid'))) continue;
+?>
+							<tr class="<?php echo "row$k"; ?>" id="userField_<?php echo $fieldName; ?>">
+								<td>
+									<?php echo $fieldName ?>
+								</td>
+								<td align="center" style="text-align:center" >
+									<?php echo JHTML::_('acyselect.booleanlist', "exportdatageoloc[".$fieldName."]",'',in_array($fieldName,$this->selectedfields) ? 1 : 0); ?>
+								</td>
+							</tr>
+<?php
+			$k = 1-$k;
+		}
+	}
 ?>
 							<tr class="<?php echo "row$k"; $k = 1-$k;?>" id="userField_exportFormat">
 								<td>
@@ -156,7 +188,7 @@ defined('_JEXEC') or die('Restricted access');
 							<tr class="<?php echo "row$k"; ?>">
 								<td>
 									<?php echo '<div class="roundsubscrib rounddisp" style="background-color:'.$row->color.'"></div>';
-									$text = '<b>'.JText::_('ACY_ID').' : </b>'.$row->listid.'<br/>'.$row->description;
+									$text = '<b>'.JText::_('ACY_ID').' : </b>'.$row->listid.'<br />'.$row->description;
 									echo acymailing_tooltip($text, $row->name, 'tooltip.png', $row->name);
 									?>
 								</td>
@@ -230,8 +262,8 @@ defined('_JEXEC') or die('Restricted access');
 						$k = 0;
 						foreach( $this->users as $row){?>
 							<tr class="<?php echo "row$k"; ?>">
-								<td><?php echo $row->name; ?></td>
-								<td><?php echo $row->email; ?></td>
+								<td><?php echo htmlspecialchars($row->name, ENT_QUOTES, 'UTF-8'); ?></td>
+								<td><?php echo htmlspecialchars($row->email, ENT_QUOTES, 'UTF-8'); ?></td>
 							</tr>
 						<?php $k = 1-$k;}
 

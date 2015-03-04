@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -25,7 +25,7 @@ class NotificationViewNotification extends NewsletterViewNewsletter
 		$config = acymailing_config();
 
 		if(!class_exists('plgSystemAcymailingClassMail')){
-			$app->enqueueMessage('AcyMailing can customize some Joomla messages. If you want to do this, please first <a href="index.php?option=com_acymailing&ctrl=cpanel">enable the plugin acymailingclassmail</a>', 'notice');
+			$app->enqueueMessage('AcyMailing can customize some Joomla messages. If you want to do this, please first <a href="index.php?option=com_acymailing&ctrl=cpanel">enable the plugin acymailingclassmail (Override Joomla mailing system plugin)</a>', 'notice');
 		}
 
 		$pageInfo = new stdClass();
@@ -35,6 +35,7 @@ class NotificationViewNotification extends NewsletterViewNewsletter
 		$paramBase = ACYMAILING_COMPONENT.'.'.$this->getName();
 		$pageInfo->filter->order->value = $app->getUserStateFromRequest( $paramBase.".filter_order", 'filter_order',	'mailid','cmd' );
 		$pageInfo->filter->order->dir	= $app->getUserStateFromRequest( $paramBase.".filter_order_Dir", 'filter_order_Dir',	'desc',	'word' );
+		if(strtolower($pageInfo->filter->order->dir) !== 'desc') $pageInfo->filter->order->dir = 'asc';
 
 		$db = JFactory::getDBO();
 		$query = 'SELECT mailid, subject, alias, fromname, published, fromname, fromemail, replyname, replyemail FROM #__acymailing_mail WHERE `type` = '.$db->Quote($this->type);

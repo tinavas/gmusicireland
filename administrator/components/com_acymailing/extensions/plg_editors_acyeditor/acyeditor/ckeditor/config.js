@@ -50,5 +50,5 @@ CKEDITOR.editorConfig = function( config ) {
 	config.allowedContent = true;
 	config.disableNativeSpellChecker = false;
 	// Acyba: Added to prevent default styles in style dropdown
-	config.stylesSet = [];
+//	config.stylesSet = [];
 };

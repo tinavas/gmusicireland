@@ -1,9 +1,9 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.0
+ * @version	4.9.0
  * @author	acyba.com
- * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
+ * @copyright	(C) 2009-2015 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -73,6 +73,29 @@ $(document).ready(function() {
 			$attribs = JArrayHelper::toString($attribs);
 		}
 
+		if(!$backend){
+			$attribs = ' '.$attribs;
+			$onclick = '';
+			if(strpos($attribs, ' onclick="') !== false || strpos($attribs, 'onclick=\'') !== false) {
+				$onclick = $attribs;
+			}
+			if(strpos($attribs, ' style="') !== false) {
+				$attribs = str_replace(' style="', ' style="display:none;', $attribs);
+			} elseif(strpos($attribs, 'style=\'') !== false) {
+				$attribs = str_replace(' style=\'', ' style=\'display:none;', $attribs);
+			} else {
+				$attribs .= ' style="display:none;"';
+			}
+			if(strpos($attribs, ' onchange="') !== false) {
+				$attribs = str_replace(' onchange="', ' onchange="window.acyLocal.radioEvent(this);', $attribs);
+			} elseif(strpos($attribs, 'onchange=\'') !== false) {
+				$attribs = str_replace(' onchange=\'', ' onchange=\'window.acyLocal.radioEvent(this);', $attribs);
+			} else {
+				$attribs .= ' onchange="window.acyLocal.radioEvent(this);"';
+			}
+
+		}
+
 		$id_text = str_replace(array('[',']'),array('_',''),$idtag ? $idtag : $name);
 		$htmlBootstrap2 = '';
 		$htmlBootstrap3 = '';
@@ -122,24 +145,9 @@ $(document).ready(function() {
 					$html .= "\n\t".'<label for="' . $id_text.$k . '">' . $t . '</label>';
 
 			} else {
-				$attribs = ' '.$attribs;
-				if(strpos($attribs, ' style="') !== false) {
-					$attribs = str_replace(' style="', ' style="display:none;', $attribs);
-				} elseif(strpos($attribs, 'style=\'') !== false) {
-					$attribs = str_replace(' style=\'', ' style=\'display:none;', $attribs);
-				} else {
-					$attribs .= ' style="display:none;"';
-				}
-
-				if(strpos($attribs, ' onchange="') !== false) {
-					$attribs = str_replace(' onchange="', ' onchange="window.acyLocal.radioEvent(this);', $attribs);
-				} elseif(strpos($attribs, 'onchange=\'') !== false) {
-					$attribs = str_replace(' onchange=\'', ' onchange=\'window.acyLocal.radioEvent(this);', $attribs);
-				} else {
-					$attribs .= ' onchange="window.acyLocal.radioEvent(this);"';
-				}
 				if($config->get('bootstrap_frontend') == 2){
-					$htmlBootstrap3 .= "\n\t" . '<label class="btn btn-primary '.$active.'">';
+					$onclickFinal = str_replace('this.value', "'".$k."'", $onclick);
+					$htmlBootstrap3 .= "\n\t" . '<label class="btn btn-primary '.$active.'" '.$onclickFinal.'>';
 					$htmlBootstrap3 .= "\n\t" . '<input type="radio" name="' . $name .'"' . ' id="' . $currId . '"' . $extra . ' ' . $attribs . ' value="' . $k . '" > ' . $t . '</label>' ;
 				}else{
 					$html .= "\n\t" . '<input type="radio" name="' . $name . '"' . ' id="' . $currId . '" value="' . $k . '"' . ' ' . $extra . ' ' . $attribs . '/>';

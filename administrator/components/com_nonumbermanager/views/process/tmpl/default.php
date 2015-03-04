@@ -1,11 +1,11 @@
 <?php
 /**
  * @package         NoNumber Extension Manager
- * @version         4.6.4
+ * @version         4.7.1
  *
  * @author          Peter van Westen <peter@nonumber.nl>
  * @link            http://www.nonumber.nl
- * @copyright       Copyright © 2014 NoNumber All Rights Reserved
+ * @copyright       Copyright © 2015 NoNumber All Rights Reserved
  * @license         http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -48,6 +48,8 @@ JFactory::getDocument()->addScriptVersion(JURI::root(true) . '/media/nonumberman
 					<?php echo JText::_('NNEM_TITLE_RETRY'); ?>
 				</span>
 			</h2>
+
+			<div class="alert alert-danger"><?php echo JText::_('NNEM_MEET_REQUIREMENTS'); ?></div>
 		</div>
 		<div class="title processing hide">
 			<h2><?php echo JText::sprintf('NNEM_PROCESS_' . strtoupper($task), '...'); ?></h2>
@@ -64,32 +66,32 @@ JFactory::getDocument()->addScriptVersion(JURI::root(true) . '/media/nonumberman
 
 	<table class="table processlist">
 		<tbody>
-			<?php foreach ($this->items as $item) : ?>
-				<tr id="row_<?php echo $item->id; ?>">
-					<td width="1%" nowrap="nowrap" class="ext_name">
-						<span class="icon-nonumber icon-<?php echo $item->alias; ?>"></span>
-						<?php echo JText::_($item->name); ?>
-					</td>
-					<td class="statuses">
-						<input type="hidden" id="url_<?php echo $item->id; ?>" value="<?php echo $item->url; ?>" />
+		<?php foreach ($this->items as $item) : ?>
+			<tr id="row_<?php echo $item->id; ?>">
+				<td width="1%" nowrap="nowrap" class="ext_name">
+					<span class="icon-nonumber icon-<?php echo $item->alias; ?>"></span>
+					<?php echo JText::_($item->name); ?>
+				</td>
+				<td class="statuses">
+					<input type="hidden" id="url_<?php echo $item->id; ?>" value="<?php echo $item->url; ?>" />
 
-						<div class="queue_<?php echo $item->id; ?> status process queued">
-							<span class="label"><?php echo JText::_('NNEM_QUEUED'); ?></span>
+					<div class="queue_<?php echo $item->id; ?> status process queued">
+						<span class="label"><?php echo JText::_('NNEM_QUEUED'); ?></span>
+					</div>
+					<div class="processing_<?php echo $item->id; ?> status processing hide">
+						<div class="progress progress-striped active">
+							<div class="bar" style="width: 100%;"></div>
 						</div>
-						<div class="processing_<?php echo $item->id; ?> status processing hide">
-							<div class="progress progress-striped active">
-								<div class="bar" style="width: 100%;"></div>
-							</div>
-						</div>
-						<div class="success_<?php echo $item->id; ?> status success process hide">
-							<span class="label label-success"><?php echo JText::_(($task == 'uninstall') ? 'NNEM_UNINSTALLED' : 'NNEM_INSTALLED'); ?></span>
-						</div>
-						<div class="failed_<?php echo $item->id; ?> status failed process hide">
-							<span class="label label-important"><?php echo JText::_('NNEM_INSTALLATION_FAILED'); ?></span>
-						</div>
-					</td>
-				</tr>
-			<?php endforeach; ?>
+					</div>
+					<div class="success_<?php echo $item->id; ?> status success process hide">
+						<span class="label label-success"><?php echo JText::_(($task == 'uninstall') ? 'NNEM_UNINSTALLED' : 'NNEM_INSTALLED'); ?></span>
+					</div>
+					<div class="failed_<?php echo $item->id; ?> status failed process hide">
+						<span class="label label-important"><?php echo JText::_('NNEM_INSTALLATION_FAILED'); ?></span>
+					</div>
+				</td>
+			</tr>
+		<?php endforeach; ?>
 		</tbody>
 	</table>
 </div>
